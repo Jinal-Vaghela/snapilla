@@ -1,3 +1,12 @@
+@font-face {
+    font-family: 'Nikumaru';
+    src: url('../07NikumaruFont.otf') format('opentype'),
+         url('../07NikumaruFont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --primary: #FFC107;
     --primary-hover: #FFA000;
@@ -14,7 +23,7 @@
     --radius: 12px;
     --radius-lg: 18px;
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    --font-heading: 'Baloo 2', cursive;
+    --font-heading: 'Nikumaru', 'Baloo 2', cursive;
     --font-body: 'Outfit', sans-serif;
 }
 
