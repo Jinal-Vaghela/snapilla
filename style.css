@@ -93,19 +93,21 @@ nav.scrolled {
 .logo-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 }
 
 .logo-img {
-    height: 60px;
+    height: 75px;
     width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.08));
 }
 
 .logo-text {
     font-family: var(--font-heading);
-    font-size: 1.8rem;
+    font-size: 2.4rem;
     color: var(--primary-color);
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .nav-links {
