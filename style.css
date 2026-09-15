@@ -2,8 +2,7 @@
 
 @font-face {
     font-family: 'Nikumaru';
-    src: url('07NikumaruFont.otf') format('opentype'),
-         url('07NikumaruFont.ttf') format('truetype');
+    src: url('nikumaru.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
