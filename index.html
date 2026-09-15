@@ -73,10 +73,11 @@
 
         .hero-banner-bg {
             position: absolute;
-            inset: 0;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('sn banner.png');
+            background-image: url('banner.png');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
@@ -122,11 +123,13 @@
         .hero-overlay {
             position: relative;
             z-index: 10;
+            width: 100%;
             height: 100%;
             display: flex;
             justify-content: center;
-            align-items: flex-end; /* Move to bottom */
-            padding-bottom: 50px; /* Floating slightly above bottom */
+            align-items: center;
+            padding: 120px 20px 60px 20px;
+            box-sizing: border-box;
             pointer-events: none;
         }
 
@@ -905,34 +908,6 @@
     </style>
 </head>
 <body style="position: relative; overflow-x: hidden;">
-    <!-- Floating Background Decor: Wave 1 -->
-    <div class="decor-element" style="top: 10%; left: 5%; font-size: 5rem;"><i class="fas fa-camera slow-rotate"></i></div>
-    <div class="decor-element" style="top: 25%; right: 5%; font-size: 7rem; animation-delay: -2s;"><i class="fas fa-camera-retro"></i></div>
-    <div class="decor-element" style="top: 45%; left: 8%; font-size: 4rem; animation-delay: -5s;"><i class="fas fa-film slow-rotate"></i></div>
-    <div class="decor-element" style="top: 60%; right: 8%; font-size: 6rem; animation-delay: -8s;"><i class="fas fa-heart"></i></div>
-    <div class="decor-element" style="top: 80%; left: 10%; font-size: 5rem; animation-delay: -3s;"><i class="fas fa-baby slow-rotate"></i></div>
-    <div class="decor-element" style="top: 92%; right: 12%; font-size: 4rem;"><i class="fas fa-images"></i></div>
-    
-    <!-- Floating Background Decor: Wave 2 (Increasing density) -->
-    <div class="decor-element" style="top: 15%; left: 80%; font-size: 3.5rem; opacity: 0.04; animation-delay: -1s;"><i class="fas fa-star slow-rotate"></i></div>
-    <div class="decor-element" style="top: 35%; left: 20%; font-size: 4.5rem; opacity: 0.04; animation-delay: -4s;"><i class="fas fa-crown"></i></div>
-    <div class="decor-element" style="top: 55%; right: 25%; font-size: 5.5rem; opacity: 0.04; animation-delay: -7s;"><i class="fas fa-play"></i></div>
-    <div class="decor-element" style="top: 75%; left: 35%; font-size: 3.5rem; opacity: 0.04; animation-delay: -3s;"><i class="fas fa-smile"></i></div>
-    <div class="decor-element" style="top: 5%; right: 40%; font-size: 2.5rem; opacity: 0.03;"><i class="fas fa-camera"></i></div>
-    <div class="decor-element" style="top: 50%; left: 50%; font-size: 8rem; opacity: 0.02; animation: float 25s infinite alternate;"><i class="fas fa-camera-retro"></i></div>
-    <div class="decor-element" style="top: 85%; right: 45%; font-size: 4rem; opacity: 0.03;"><i class="fas fa-heart"></i></div>
-    <div class="decor-element" style="top: 100%; left: 70%; font-size: 3rem; opacity: 0.05;"><i class="fas fa-gift"></i></div>
-    <!-- Floating Background Decor: Wave 3 (High Density) -->
-    <div class="decor-element" style="top: 12%; left: 40%; font-size: 3rem; opacity: 0.06;"><i class="fas fa-bolt"></i></div>
-    <div class="decor-element" style="top: 30%; right: 40%; font-size: 5rem; opacity: 0.06; animation-delay: -9s;"><i class="fas fa-lightbulb"></i></div>
-    <div class="decor-element" style="top: 48%; left: 25%; font-size: 4rem; opacity: 0.06;"><i class="fas fa-camera"></i></div>
-    <div class="decor-element" style="top: 65%; right: 30%; font-size: 3.5rem; opacity: 0.06; animation-delay: -11s;"><i class="fas fa-images"></i></div>
-    <div class="decor-element" style="top: 2%; left: 15%; font-size: 4rem; opacity: 0.04;"><i class="fas fa-film"></i></div>
-    <div class="decor-element" style="top: 38%; right: 15%; font-size: 6rem; opacity: 0.04;"><i class="fas fa-heart"></i></div>
-    <div class="decor-element" style="top: 72%; left: 60%; font-size: 4.5rem; opacity: 0.04;"><i class="fas fa-camera-retro"></i></div>
-    <div class="decor-element" style="top: 88%; right: 60%; font-size: 3rem; opacity: 0.06;"><i class="fas fa-images"></i></div>
-    <div class="decor-element" style="top: 52%; right: 5%; font-size: 5rem; opacity: 0.05;"><i class="fas fa-camera"></i></div>
-    <div class="decor-element" style="top: 18%; left: 65%; font-size: 3.5rem; opacity: 0.05;"><i class="fas fa-bolt"></i></div>
     <!-- Navbar -->
     <nav>
         <div class="logo-container">
