@@ -96,10 +96,10 @@ nav.scrolled {
 }
 
 .logo-img {
-    height: 75px;
+    height: 85px;
     width: auto;
     object-fit: contain;
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.08));
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
 }
 
 .logo-text {
