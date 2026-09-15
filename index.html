@@ -71,42 +71,20 @@
             background: #0E0E0E;
         }
 
-        .hero-banner-bg {
+        #webgl-container {
             position: absolute;
-            top: -30px;
+            top: 0;
             left: 0;
             width: 100%;
-            height: calc(100% + 60px);
-            background-image: url('banner.png');
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            animation: bannerFloatUp 12s ease-in-out infinite alternate;
+            height: 100%;
             z-index: 1;
-        }
-
-        @keyframes bannerFloatUp {
-            0% {
-                transform: translateY(30px) scale(1.02);
-                opacity: 0.82;
-                filter: brightness(0.92);
-            }
-            50% {
-                transform: translateY(0px) scale(1.07);
-                opacity: 1;
-                filter: brightness(1.05);
-            }
-            100% {
-                transform: translateY(-30px) scale(1.12);
-                opacity: 0.88;
-                filter: brightness(0.96);
-            }
+            pointer-events: none;
         }
 
         .hero-gradient-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.7) 100%);
+            background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.65) 100%);
             z-index: 2;
             pointer-events: none;
         }
@@ -947,9 +925,9 @@
         </ul>
     </nav>
 
-    <!-- Photography Hero Section with sn banner.png -->
+    <!-- Interactive WebGL Liquid Hero Section -->
     <header class="webgl-hero" id="home">
-        <div class="hero-banner-bg"></div>
+        <div id="webgl-container"></div>
         <div class="hero-gradient-overlay"></div>
         <div class="hero-overlay">
             <div class="hero-content">
