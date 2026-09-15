@@ -1,0 +1,9 @@
+# Enable Directory Index & Clean URLs for Hostinger / Apache
+DirectoryIndex index.html
+
+# Rewrite engine to handle /admin without trailing slash
+RewriteEngine On
+RewriteBase /
+
+# Redirect /admin to /admin/
+RewriteRule ^admin$ admin/ [L,R=301]

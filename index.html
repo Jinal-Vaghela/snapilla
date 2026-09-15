@@ -933,8 +933,8 @@
         <div id="webgl-container"></div>
         <div class="hero-overlay">
             <div class="hero-content">
-                <h1>Capturing Moments That Last Forever</h1>
-                <p>At Snapilla Studio, we don’t just take photos — we create timeless memories filled with emotions, beauty, and storytelling.</p>
+                <h1 id="heroTitle">Capturing Moments That Last Forever</h1>
+                <p id="heroSubtitle">At Snapilla Studio, we don’t just take photos — we create timeless memories filled with emotions, beauty, and storytelling.</p>
                 <div class="hero-btns" style="display: flex; gap: 20px; justify-content: center;">
                     <a href="#booking" class="btn-burn">📅 Book Your Shoot</a>
                     <a href="#contact" class="btn-burn" style="background: transparent; border: 2px solid #000; color: #000;">📞 Contact Us</a>
@@ -984,7 +984,7 @@
         <h2 class="section-title">📸 Our Expertise</h2>
         <p style="text-align: center; margin-bottom: 40px; font-weight: 700;">Hover over our cameras to see the magic focus!</p>
         
-        <div class="camera-grid">
+        <div class="camera-grid" id="servicesGrid">
             <div class="camera-unit">
                 <div class="boxy-camera-shell" style="background: #FFCA28;">
                     <div class="boxy-screen"><img src="baby.png" alt="Baby Shoot"></div>
@@ -1061,7 +1061,7 @@
         <p style="text-align: center; max-width: 700px; margin: -30px auto 20px auto;">Every image we capture tells a story. Explore our 3D rotating albums and see the magic we create through our lens.</p>
         
         <div class="portfolio-stage">
-            <div class="portfolio-spinner">
+            <div class="portfolio-spinner" id="portfolioSpinner">
                 <div class="portfolio-card"><img src="p1.png" alt="Photography Album 1"></div>
                 <div class="portfolio-card"><img src="p2.png" alt="Photography Album 2"></div>
                 <div class="portfolio-card"><img src="p3.png" alt="Photography Album 3"></div>
@@ -1080,7 +1080,7 @@
         
         <div class="testimonial-wall">
             <!-- Row 1: Left to Right -->
-            <div class="marquee-track">
+            <div class="marquee-track" id="testimonialTrack1">
                 <!-- Batch 1 -->
                 <div class="testimonial-card">
                     <p>“The baby shoot was absolutely adorable. Highly professional team! They captured every smile perfectly.”</p>
@@ -1119,7 +1119,7 @@
             </div>
 
             <!-- Row 2: Right to Left -->
-            <div class="marquee-track reverse">
+            <div class="marquee-track reverse" id="testimonialTrack2">
                 <div class="testimonial-card">
                     <p>“Using this studio, our brand presence significantly improved. Amazing visuals!”</p>
                     <div class="clint-info">
@@ -1161,7 +1161,7 @@
     <!-- Pricing Section -->
     <section class="pricing" id="pricing" style="padding: 100px 5%; text-align: center;">
         <h2 class="section-title">💰 Investment Plans</h2>
-        <div class="pricing-table">
+        <div class="pricing-table" id="pricingTable">
             <!-- Starter -->
             <div class="pricing-card">
                 <div style="font-size: 2.5rem; margin-bottom: 20px;">📸</div>
@@ -1254,7 +1254,7 @@
     <!-- FAQ Section -->
     <section class="faq" style="padding: 100px 5%;">
         <h2 class="section-title">❓ FAQ SECTION</h2>
-        <div style="max-width: 800px; margin: 0 auto;">
+        <div id="faqContainer" style="max-width: 800px; margin: 0 auto;">
             <div style="margin-bottom: 30px;">
                 <h4 style="color: var(--primary-color);">Q: How long does it take to deliver photos?</h4>
                 <p>👉 3–7 days depending on the shoot type</p>
@@ -1282,17 +1282,17 @@
                 <h3>Contact Information</h3>
                 <div class="info-item">
                     <i class="fas fa-map-marker-alt"></i>
-                    <p>📍 Ahmedabad, India</p>
+                    <p id="contactAddress">📍 Ahmedabad, India</p>
                 </div>
                 <div class="info-item">
                     <i class="fas fa-phone"></i>
-                    <p>📞 +91 XXXXX XXXXX</p>
+                    <p id="contactPhone">📞 +91 XXXXX XXXXX</p>
                 </div>
                 <div class="info-item">
                     <i class="fas fa-envelope"></i>
-                    <p>📧 snapillastudio@gmail.com</p>
+                    <p id="contactEmail">📧 snapillastudio@gmail.com</p>
                 </div>
-                <div class="social-links">
+                <div class="social-links" id="socialLinks">
                     <a href="#"><i class="fab fa-instagram"></i></a>
                     <a href="#"><i class="fab fa-facebook"></i></a>
                     <a href="#"><i class="fab fa-youtube"></i></a>
@@ -1307,7 +1307,12 @@
     <!-- Footer -->
     <footer>
         <p>© 2026 Snapilla Studio. All Rights Reserved.</p>
-        <p style="margin-top: 10px; font-style: italic;">“Turning Moments Into Memories”</p>
+        <p id="footerTagline" style="margin-top: 10px; font-style: italic;">“Turning Moments Into Memories”</p>
+        <p style="margin-top: 15px;">
+            <a href="admin/" style="font-size: 0.8rem; color: #666; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#FFC107'" onmouseout="this.style.color='#666'">
+                <i class="fas fa-lock" style="font-size: 0.75rem; margin-right: 4px;"></i> Admin CMS Portal
+            </a>
+        </p>
     </footer>
 
     <!-- Lightbox -->
@@ -1315,6 +1320,11 @@
         <span class="lightbox-close">&times;</span>
         <img src="" alt="Enlarged Portfolio" id="lightbox-img" class="lightbox-content">
     </div>
+
+    <!-- Firebase SDK Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
 
     <!-- Dependencies -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>

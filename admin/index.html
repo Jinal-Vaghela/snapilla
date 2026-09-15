@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snapilla Studio | Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+    <!-- ========================================================
+         LOGIN MODAL / AUTH WRAPPER
+    ======================================================== -->
+    <div id="authWrapper" class="auth-wrapper">
+        <div class="auth-box">
+            <div class="auth-logo">
+                <img src="../logo.png" alt="Snapilla Studio" onerror="this.style.display='none'">
+                <span class="auth-logo-text">Snapilla</span>
+            </div>
+            <h2 class="auth-title">Admin Sign In</h2>
+            <p class="auth-subtitle">Manage all content, photos & leads for Snapilla Studio</p>
+
+            <form id="loginForm">
+                <div class="form-group" style="text-align: left;">
+                    <label for="loginEmail">Admin ID / Email</label>
+                    <input type="text" id="loginEmail" placeholder="admin@snapilla.com" value="admin@snapilla.com" required>
+                </div>
+                <div class="form-group" style="text-align: left;">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" value="snapilla2026" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px; padding: 14px;">
+                    <i class="fas fa-lock"></i> Sign In to Dashboard
+                </button>
+            </form>
+            
+            <p id="authError" style="color: var(--danger); font-size: 0.85rem; margin-top: 15px; display: none;"></p>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         MAIN ADMIN APPLICATION
+    ======================================================== -->
+    <div class="admin-app" id="adminApp" style="display: none;">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="../logo.png" alt="Snapilla" onerror="this.style.display='none'">
+                <div class="title-group">
+                    <span class="brand">Snapilla</span>
+                    <span class="badge">CMS Admin</span>
+                </div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li>
+                    <a class="sidebar-link active" data-tab="tab-overview">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Overview</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" data-tab="tab-settings">
+                        <i class="fas fa-sliders-h"></i>
+                        <span>Hero & Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" data-tab="tab-services">
+                        <i class="fas fa-camera-retro"></i>
+                        <span>Services / Expertise</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" data-tab="tab-portfolio">
+                        <i class="fas fa-images"></i>
+                        <span>3D Portfolio</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" data-tab="tab-pricing">
+                        <i class="fas fa-tags"></i>
+                        <span>Pricing Plans</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" data-tab="tab-testimonials">
+                        <i class="fas fa-star"></i>
+                        <span>Testimonials</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" data-tab="tab-faq">
+                        <i class="fas fa-question-circle"></i>
+                        <span>FAQ Items</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" data-tab="tab-bookings">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Booking Leads</span>
+                        <span class="nav-count" id="badgeBookingCount">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" data-tab="tab-firebase">
+                        <i class="fas fa-fire"></i>
+                        <span>Firebase Setup</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <a href="../index.html" target="_blank" class="btn btn-secondary btn-sm" style="width: 100%;">
+                    <i class="fas fa-external-link-alt"></i> View Public Site
+                </a>
+                <button id="btnLogout" class="btn btn-danger btn-sm" style="width: 100%;">
+                    <i class="fas fa-sign-out-alt"></i> Log Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="btn btn-secondary btn-icon" id="btnToggleSidebar" style="display: none;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="topbar-title" id="tabTitle">Overview & Quick Actions</h1>
+                </div>
+                <div class="topbar-right">
+                    <button id="btnSeedData" class="btn btn-secondary btn-sm" title="Seed current website content into Firestore">
+                        <i class="fas fa-cloud-upload-alt"></i> Seed Default Content
+                    </button>
+                    <div id="userBadge" style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-user-circle" style="color: var(--primary); font-size: 1.2rem;"></i>
+                        <span id="userEmailText">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Tab Contents -->
+            <main class="content-area">
+
+                <!-- 1. OVERVIEW TAB -->
+                <section class="tab-pane active" id="tab-overview">
+                    <div class="card" style="background: linear-gradient(135deg, #1E1E1E 0%, #292408 100%); border-color: rgba(255,193,7,0.3);">
+                        <h2 style="font-size: 1.6rem; font-family: var(--font-heading); color: var(--primary); margin-bottom: 8px;">Welcome to Snapilla Studio CMS</h2>
+                        <p style="color: var(--text-muted); max-width: 700px; line-height: 1.6;">
+                            Manage every detail of your live website in real-time. Changes are stored in Firebase Firestore and automatically update the live client site without code edits or rebuilds.
+                        </p>
+                    </div>
+
+                    <div class="grid-4" style="margin-bottom: 25px;">
+                        <div class="card" style="text-align: center; margin: 0;">
+                            <i class="fas fa-camera-retro" style="font-size: 1.8rem; color: var(--primary); margin-bottom: 10px;"></i>
+                            <h3 id="statServices" style="font-size: 1.8rem; font-weight: 800;">4</h3>
+                            <p style="color: var(--text-muted); font-size: 0.85rem;">Active Services</p>
+                        </div>
+                        <div class="card" style="text-align: center; margin: 0;">
+                            <i class="fas fa-images" style="font-size: 1.8rem; color: #64B5F6; margin-bottom: 10px;"></i>
+                            <h3 id="statPortfolio" style="font-size: 1.8rem; font-weight: 800;">8</h3>
+                            <p style="color: var(--text-muted); font-size: 0.85rem;">Portfolio Photos</p>
+                        </div>
+                        <div class="card" style="text-align: center; margin: 0;">
+                            <i class="fas fa-tags" style="font-size: 1.8rem; color: #81C784; margin-bottom: 10px;"></i>
+                            <h3 id="statPricing" style="font-size: 1.8rem; font-weight: 800;">3</h3>
+                            <p style="color: var(--text-muted); font-size: 0.85rem;">Pricing Plans</p>
+                        </div>
+                        <div class="card" style="text-align: center; margin: 0;">
+                            <i class="fas fa-calendar-check" style="font-size: 1.8rem; color: #BA68C8; margin-bottom: 10px;"></i>
+                            <h3 id="statBookings" style="font-size: 1.8rem; font-weight: 800;">0</h3>
+                            <p style="color: var(--text-muted); font-size: 0.85rem;">Booking Leads</p>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-bolt"></i> Quick Actions</h3>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                <button class="btn btn-secondary" onclick="switchTab('tab-settings')" style="justify-content: flex-start;">
+                                    <i class="fas fa-edit" style="color: var(--primary);"></i> Edit Hero Title & Subtitle
+                                </button>
+                                <button class="btn btn-secondary" onclick="openPortfolioModal()" style="justify-content: flex-start;">
+                                    <i class="fas fa-plus-circle" style="color: #64B5F6;"></i> Add New 3D Portfolio Photo
+                                </button>
+                                <button class="btn btn-secondary" onclick="switchTab('tab-bookings')" style="justify-content: flex-start;">
+                                    <i class="fas fa-inbox" style="color: #BA68C8;"></i> View Customer Inquiries
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-shield-alt"></i> System & Firebase Status</h3>
+                            </div>
+                            <div id="firebaseStatusWidget">
+                                <p style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                                    <span id="fbStatusDot" style="width: 12px; height: 12px; border-radius: 50%; background: var(--success); display: inline-block;"></span>
+                                    <strong id="fbStatusText">Connected to Firebase Firestore</strong>
+                                </p>
+                                <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">
+                                    Real-time sync is active. All updates made in this panel will reflect instantly on your live Hostinger website.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. SETTINGS TAB -->
+                <section class="tab-pane" id="tab-settings">
+                    <form id="settingsForm">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-bullhorn"></i> Hero Section</h3>
+                            </div>
+                            <div class="form-group">
+                                <label for="setHeroTitle">Hero Main Heading (H1)</label>
+                                <input type="text" id="setHeroTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="setHeroSubtitle">Hero Description Text</label>
+                                <textarea id="setHeroSubtitle" rows="3" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-address-book"></i> Contact & Direct WhatsApp Integration</h3>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="setWhatsapp">WhatsApp Number (with country code)</label>
+                                    <input type="text" id="setWhatsapp" placeholder="919000000000" required>
+                                    <span class="input-hint">Used for 1-click booking submissions. Digits only.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="setPhone">Display Phone Number</label>
+                                    <input type="text" id="setPhone" placeholder="+91 XXXXX XXXXX" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="setEmail">Email Address</label>
+                                    <input type="email" id="setEmail" placeholder="snapillastudio@gmail.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="setAddress">Studio Location / City</label>
+                                    <input type="text" id="setAddress" placeholder="Ahmedabad, India" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-share-alt"></i> Social Media & Footer</h3>
+                            </div>
+                            <div class="grid-3">
+                                <div class="form-group">
+                                    <label for="setInstagram">Instagram Profile URL</label>
+                                    <input type="url" id="setInstagram" placeholder="https://instagram.com/...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="setFacebook">Facebook Page URL</label>
+                                    <input type="url" id="setFacebook" placeholder="https://facebook.com/...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="setYoutube">YouTube Channel URL</label>
+                                    <input type="url" id="setYoutube" placeholder="https://youtube.com/...">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="setTagline">Footer Tagline Quote</label>
+                                <input type="text" id="setTagline" placeholder="Turning Moments Into Memories">
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-key"></i> Admin Access & Password</h3>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="setAdminEmail">Admin Email / ID</label>
+                                    <input type="text" id="setAdminEmail" placeholder="admin@snapilla.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="setAdminPassword">Admin Password</label>
+                                    <input type="password" id="setAdminPassword" placeholder="••••••••">
+                                </div>
+                            </div>
+                            <span class="input-hint">You can change your login email & password anytime. Default: admin@snapilla.com / snapilla2026</span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="padding: 14px 30px; font-size: 1rem;">
+                            <i class="fas fa-save"></i> Save All Settings
+                        </button>
+                    </form>
+                </section>
+
+                <!-- 3. SERVICES / EXPERTISE TAB -->
+                <section class="tab-pane" id="tab-services">
+                    <div class="card-header" style="border: none; padding: 0 0 20px 0;">
+                        <h2 style="font-size: 1.4rem; font-family: var(--font-heading);">📸 Photography Services</h2>
+                        <button class="btn btn-primary" onclick="openServiceModal()">
+                            <i class="fas fa-plus"></i> Add New Service
+                        </button>
+                    </div>
+                    <div class="grid-2" id="adminServicesGrid">
+                        <!-- Dynamic Service Cards -->
+                    </div>
+                </section>
+
+                <!-- 4. 3D PORTFOLIO CAROUSEL TAB -->
+                <section class="tab-pane" id="tab-portfolio">
+                    <div class="card-header" style="border: none; padding: 0 0 20px 0;">
+                        <div>
+                            <h2 style="font-size: 1.4rem; font-family: var(--font-heading);">🖼️ 3D Rotating Portfolio Photos</h2>
+                            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">These images rotate in the dynamic 3D cylinder showcase and open in high-res lightbox.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openPortfolioModal()">
+                            <i class="fas fa-plus"></i> Add Photo
+                        </button>
+                    </div>
+                    <div class="grid-4" id="adminPortfolioGrid">
+                        <!-- Dynamic Portfolio Cards -->
+                    </div>
+                </section>
+
+                <!-- 5. PRICING PLANS TAB -->
+                <section class="tab-pane" id="tab-pricing">
+                    <div class="card-header" style="border: none; padding: 0 0 20px 0;">
+                        <h2 style="font-size: 1.4rem; font-family: var(--font-heading);">💰 Investment / Pricing Tiers</h2>
+                        <button class="btn btn-primary" onclick="openPricingModal()">
+                            <i class="fas fa-plus"></i> Add Plan
+                        </button>
+                    </div>
+                    <div class="grid-3" id="adminPricingGrid">
+                        <!-- Dynamic Pricing Cards -->
+                    </div>
+                </section>
+
+                <!-- 6. TESTIMONIALS TAB -->
+                <section class="tab-pane" id="tab-testimonials">
+                    <div class="card-header" style="border: none; padding: 0 0 20px 0;">
+                        <h2 style="font-size: 1.4rem; font-family: var(--font-heading);">⭐ Client Reviews & Marquee</h2>
+                        <button class="btn btn-primary" onclick="openTestimonialModal()">
+                            <i class="fas fa-plus"></i> Add Testimonial
+                        </button>
+                    </div>
+                    <div class="grid-2" id="adminTestimonialsGrid">
+                        <!-- Dynamic Testimonial Cards -->
+                    </div>
+                </section>
+
+                <!-- 7. FAQ TAB -->
+                <section class="tab-pane" id="tab-faq">
+                    <div class="card-header" style="border: none; padding: 0 0 20px 0;">
+                        <h2 style="font-size: 1.4rem; font-family: var(--font-heading);">❓ Frequently Asked Questions</h2>
+                        <button class="btn btn-primary" onclick="openFaqModal()">
+                            <i class="fas fa-plus"></i> Add Question
+                        </button>
+                    </div>
+                    <div class="card" id="adminFaqContainer">
+                        <!-- Dynamic FAQ items -->
+                    </div>
+                </section>
+
+                <!-- 8. BOOKING LEADS TAB -->
+                <section class="tab-pane" id="tab-bookings">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title"><i class="fas fa-inbox"></i> Customer Inquiries & Bookings</h3>
+                                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Leads captured directly from the website booking form.</p>
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="loadBookings()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Date Submitted</th>
+                                        <th>Customer</th>
+                                        <th>Shoot Type</th>
+                                        <th>Preferred Date</th>
+                                        <th>Contact</th>
+                                        <th>Message</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bookingTableBody">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">
+                                            No booking inquiries yet.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 9. FIREBASE SETUP TAB -->
+                <section class="tab-pane" id="tab-firebase">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-fire"></i> Firebase Project Credentials</h3>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.6;">
+                            Paste your Firebase web credentials below. You can find these in the <a href="https://console.firebase.google.com/" target="_blank" style="color: var(--primary);">Firebase Console</a> under <strong>Project Settings</strong> → <strong>General</strong> → <strong>Your apps (Web)</strong>.
+                        </p>
+                        
+                        <form id="firebaseConfigForm">
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="fbApiKey">API Key</label>
+                                    <input type="text" id="fbApiKey" placeholder="AIzaSy..." required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fbProjectId">Project ID</label>
+                                    <input type="text" id="fbProjectId" placeholder="snapilla-studio" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fbAuthDomain">Auth Domain</label>
+                                    <input type="text" id="fbAuthDomain" placeholder="snapilla-studio.firebaseapp.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fbStorageBucket">Storage Bucket</label>
+                                    <input type="text" id="fbStorageBucket" placeholder="snapilla-studio.appspot.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="fbMessagingSenderId">Messaging Sender ID</label>
+                                    <input type="text" id="fbMessagingSenderId" placeholder="1234567890">
+                                </div>
+                                <div class="form-group">
+                                    <label for="fbAppId">App ID</label>
+                                    <input type="text" id="fbAppId" placeholder="1:12345:web:abcdef">
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 12px; margin-top: 10px;">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-check"></i> Save & Connect Firebase
+                                </button>
+                                <button type="button" id="btnClearConfig" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-undo"></i> Reset to Defaults
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         MODALS FOR EDITING/ADDING ITEMS
+    ======================================================== -->
+
+    <!-- SERVICE MODAL -->
+    <div class="modal-backdrop" id="modalService">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalServiceTitle">Add / Edit Service</h3>
+                <button class="btn btn-secondary btn-icon" onclick="closeModal('modalService')">&times;</button>
+            </div>
+            <form id="serviceForm">
+                <div class="modal-body">
+                    <input type="hidden" id="serviceIndex">
+                    <div class="form-group">
+                        <label for="serviceTitle">Service Name</label>
+                        <input type="text" id="serviceTitle" placeholder="e.g. Newborn Photography" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceDesc">Description</label>
+                        <textarea id="serviceDesc" rows="3" placeholder="Brief description..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceImage">Image Path / URL</label>
+                        <input type="text" id="serviceImage" placeholder="baby.png or https://..." required>
+                        <input type="file" id="serviceFile" accept="image/*" style="margin-top: 6px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceBgColor">Badge Background Color (Hex)</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="color" id="serviceColorPicker" value="#FFCA28" style="width: 50px; height: 40px; padding: 2px; border-radius: 6px; cursor: pointer;">
+                            <input type="text" id="serviceBgColor" value="#FFCA28" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalService')">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Service</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PORTFOLIO PHOTO MODAL -->
+    <div class="modal-backdrop" id="modalPortfolio">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalPortfolioTitle">Add / Edit 3D Portfolio Photo</h3>
+                <button class="btn btn-secondary btn-icon" onclick="closeModal('modalPortfolio')">&times;</button>
+            </div>
+            <form id="portfolioForm">
+                <div class="modal-body">
+                    <input type="hidden" id="portfolioIndex">
+                    <div class="form-group">
+                        <label for="portfolioPhotoTitle">Title / Caption</label>
+                        <input type="text" id="portfolioPhotoTitle" placeholder="Wedding Album" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="portfolioPhotoImage">Image Path / URL</label>
+                        <input type="text" id="portfolioPhotoImage" placeholder="p1.png or https://..." required>
+                        <input type="file" id="portfolioPhotoFile" accept="image/*" style="margin-top: 6px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="portfolioPhotoAlt">Alt Text</label>
+                        <input type="text" id="portfolioPhotoAlt" placeholder="Photo description">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalPortfolio')">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Photo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PRICING MODAL -->
+    <div class="modal-backdrop" id="modalPricing">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalPricingTitle">Add / Edit Pricing Tier</h3>
+                <button class="btn btn-secondary btn-icon" onclick="closeModal('modalPricing')">&times;</button>
+            </div>
+            <form id="pricingForm">
+                <div class="modal-body">
+                    <input type="hidden" id="pricingIndex">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="pricingTitle">Plan Name</label>
+                            <input type="text" id="pricingTitle" placeholder="Premium" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pricingIcon">Icon Emoji</label>
+                            <input type="text" id="pricingIcon" placeholder="🎬" value="📸" required>
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="pricingPrice">Price Display</label>
+                            <input type="text" id="pricingPrice" placeholder="₹14,999" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pricingPopular">Popular Badge</label>
+                            <select id="pricingPopular">
+                                <option value="false">Standard Plan</option>
+                                <option value="true">⭐ Popular Badge</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pricingSubtitle">Subtitle</label>
+                        <input type="text" id="pricingSubtitle" placeholder="Best for Family & Events">
+                    </div>
+                    <div class="form-group">
+                        <label for="pricingFeatures">Features (One per line)</label>
+                        <textarea id="pricingFeatures" rows="5" placeholder="1 Hour Session&#10;10 Edited Images&#10;Online Gallery" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalPricing')">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Plan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TESTIMONIAL MODAL -->
+    <div class="modal-backdrop" id="modalTestimonial">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTestimonialTitle">Add / Edit Testimonial</h3>
+                <button class="btn btn-secondary btn-icon" onclick="closeModal('modalTestimonial')">&times;</button>
+            </div>
+            <form id="testimonialForm">
+                <div class="modal-body">
+                    <input type="hidden" id="testimonialIndex">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="testName">Client Name</label>
+                            <input type="text" id="testName" placeholder="Bilal Ahmed" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="testRole">Role / Title</label>
+                            <input type="text" id="testRole" placeholder="IT Manager" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="testQuote">Testimonial Quote</label>
+                        <textarea id="testQuote" rows="3" placeholder="They made our shoot memorable..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="testRow">Marquee Scroll Row</label>
+                        <select id="testRow">
+                            <option value="1">Row 1 (Left to Right)</option>
+                            <option value="2">Row 2 (Right to Left)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalTestimonial')">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Testimonial</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FAQ MODAL -->
+    <div class="modal-backdrop" id="modalFaq">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalFaqTitle">Add / Edit FAQ</h3>
+                <button class="btn btn-secondary btn-icon" onclick="closeModal('modalFaq')">&times;</button>
+            </div>
+            <form id="faqForm">
+                <div class="modal-body">
+                    <input type="hidden" id="faqIndex">
+                    <div class="form-group">
+                        <label for="faqQuestion">Question</label>
+                        <input type="text" id="faqQuestion" placeholder="How long does delivery take?" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="faqAnswer">Answer</label>
+                        <textarea id="faqAnswer" rows="3" placeholder="3-7 days depending on shoot type" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalFaq')">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save FAQ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Alerts Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Firebase SDK Compat Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+    
+    <!-- App Config & Admin Logic -->
+    <script src="../firebase-config.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
