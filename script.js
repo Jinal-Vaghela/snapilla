@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Current Site Settings state
     let liveSettings = (typeof SNAP_DEFAULT_DATA !== 'undefined') ? SNAP_DEFAULT_DATA.settings : {
-        whatsapp_number: '919000000000'
+        whatsapp_number: '918780286850'
     };
 
     // 1. Navbar scroll & Mobile Menu Toggle
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 `*Preferred Date:* ${encodeURIComponent(date)}%0A` +
                                 `*Message:* ${encodeURIComponent(message)}`;
 
-            const targetPhone = (liveSettings.whatsapp_number || '919000000000').replace(/\D/g, '');
+            const targetPhone = (liveSettings.whatsapp_number || '918780286850').replace(/\D/g, '');
             const whatsappUrl = `https://wa.me/${targetPhone}?text=${whatsappText}`;
 
             window.open(whatsappUrl, '_blank');

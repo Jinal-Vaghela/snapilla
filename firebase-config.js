@@ -59,8 +59,8 @@ const SNAP_DEFAULT_DATA = {
     settings: {
         hero_title: "Where Every Moment Becomes A Memory",
         hero_subtitle: "From the tiniest smiles to the biggest celebrations, Snapilla Studio captures moments that deserve to be remembered. We provide professional Baby, Product, Wedding, Model, Portrait, Family, Birthday, and Special Occasion Photography from our dedicated studio.",
-        phone: "+91 98765 43210",
-        whatsapp_number: "919876543210",
+        phone: "+91 87802 86850",
+        whatsapp_number: "918780286850",
         email: "snapillastudio@gmail.com",
         address: "Snapilla Studio, Ahmedabad, Gujarat, India",
         instagram_url: "https://instagram.com",
