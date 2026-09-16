@@ -176,6 +176,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const footerTagline = document.getElementById('footerTagline');
         if (footerTagline && data.tagline) footerTagline.textContent = `“${data.tagline}”`;
 
+        if (data.whatsapp_number) {
+            const rawWa = data.whatsapp_number.replace(/\D/g, '');
+            document.querySelectorAll('a[href*="wa.me"]').forEach(waBtn => {
+                waBtn.href = `https://wa.me/${rawWa}`;
+            });
+        }
+
         const socialContainer = document.getElementById('socialLinks');
         if (socialContainer) {
             let html = '';
@@ -304,6 +311,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const localData = localStorage.getItem('snapilla_local_content');
             if (localData) {
                 const parsed = JSON.parse(localData);
+                if (parsed.settings) {
+                    if (parsed.settings.whatsapp_number === '919876543210' || parsed.settings.whatsapp_number === '919000000000' || !parsed.settings.whatsapp_number) {
+                        parsed.settings.whatsapp_number = '918780286850';
+                    }
+                    if (parsed.settings.phone === '+91 98765 43210' || parsed.settings.phone === '+91 XXXXX XXXXX' || !parsed.settings.phone) {
+                        parsed.settings.phone = '+91 87802 86850';
+                    }
+                    localStorage.setItem('snapilla_local_content', JSON.stringify(parsed));
+                }
                 if (parsed.settings) updateSettingsDOM(parsed.settings);
                 if (parsed.services) updateServicesDOM(parsed.services);
                 if (parsed.portfolio) updatePortfolioDOM(parsed.portfolio);

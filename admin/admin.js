@@ -242,6 +242,14 @@ async function loadAllContent() {
         if (localData) {
             try {
                 const parsed = JSON.parse(localData);
+                if (parsed.settings) {
+                    if (parsed.settings.whatsapp_number === '919876543210' || parsed.settings.whatsapp_number === '919000000000' || !parsed.settings.whatsapp_number) {
+                        parsed.settings.whatsapp_number = '918780286850';
+                    }
+                    if (parsed.settings.phone === '+91 98765 43210' || parsed.settings.phone === '+91 XXXXX XXXXX' || !parsed.settings.phone) {
+                        parsed.settings.phone = '+91 87802 86850';
+                    }
+                }
                 currentContent = {
                     ...SNAP_DEFAULT_DATA,
                     ...parsed,
@@ -252,6 +260,7 @@ async function loadAllContent() {
                     portfolio: (parsed.portfolio && parsed.portfolio.length > 0) ? parsed.portfolio : SNAP_DEFAULT_DATA.portfolio,
                     testimonials: (parsed.testimonials && parsed.testimonials.length > 0) ? parsed.testimonials : SNAP_DEFAULT_DATA.testimonials
                 };
+                localStorage.setItem('snapilla_local_content', JSON.stringify(currentContent));
             } catch (err) {}
         } else {
             currentContent = JSON.parse(JSON.stringify(SNAP_DEFAULT_DATA));
