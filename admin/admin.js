@@ -241,8 +241,20 @@ async function loadAllContent() {
         const localData = localStorage.getItem('snapilla_local_content');
         if (localData) {
             try {
-                currentContent = JSON.parse(localData);
+                const parsed = JSON.parse(localData);
+                currentContent = {
+                    ...SNAP_DEFAULT_DATA,
+                    ...parsed,
+                    settings: { ...SNAP_DEFAULT_DATA.settings, ...(parsed.settings || {}) },
+                    services: (parsed.services && parsed.services.length >= 9) ? parsed.services : SNAP_DEFAULT_DATA.services,
+                    faqs: (parsed.faqs && parsed.faqs.length >= 7) ? parsed.faqs : SNAP_DEFAULT_DATA.faqs,
+                    pricing: (parsed.pricing && parsed.pricing.length > 0) ? parsed.pricing : SNAP_DEFAULT_DATA.pricing,
+                    portfolio: (parsed.portfolio && parsed.portfolio.length > 0) ? parsed.portfolio : SNAP_DEFAULT_DATA.portfolio,
+                    testimonials: (parsed.testimonials && parsed.testimonials.length > 0) ? parsed.testimonials : SNAP_DEFAULT_DATA.testimonials
+                };
             } catch (err) {}
+        } else {
+            currentContent = JSON.parse(JSON.stringify(SNAP_DEFAULT_DATA));
         }
     }
 
@@ -892,7 +904,8 @@ if (firebaseConfigForm) {
 // ----------------------------------------------------
 if (btnSeedData) {
     btnSeedData.addEventListener('click', async () => {
-        if (confirm('Seed all default Snapilla content (Hero, Services, 3D Portfolio, Pricing, Testimonials, FAQ) to Firestore?')) {
+        if (confirm('Reset and seed all latest Snapilla content (Hero, all 9 Services, 3D Portfolio, Pricing, Testimonials, FAQ)?')) {
+            currentContent = JSON.parse(JSON.stringify(SNAP_DEFAULT_DATA));
             await saveDoc('settings', SNAP_DEFAULT_DATA.settings);
             await saveDoc('services', { items: SNAP_DEFAULT_DATA.services });
             await saveDoc('portfolio', { items: SNAP_DEFAULT_DATA.portfolio });
@@ -900,9 +913,8 @@ if (btnSeedData) {
             await saveDoc('testimonials', { items: SNAP_DEFAULT_DATA.testimonials });
             await saveDoc('faqs', { items: SNAP_DEFAULT_DATA.faqs });
 
-            currentContent = JSON.parse(JSON.stringify(SNAP_DEFAULT_DATA));
             renderAllViews();
-            showToast('All default content successfully seeded to Firestore!', 'success');
+            showToast('All default content successfully seeded and updated!', 'success');
         }
     });
 }

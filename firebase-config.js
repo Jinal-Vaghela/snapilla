@@ -59,10 +59,10 @@ const SNAP_DEFAULT_DATA = {
     settings: {
         hero_title: "Where Every Moment Becomes A Memory",
         hero_subtitle: "From the tiniest smiles to the biggest celebrations, Snapilla Studio captures moments that deserve to be remembered. We provide professional Baby, Product, Wedding, Model, Portrait, Family, Birthday, and Special Occasion Photography from our dedicated studio.",
-        phone: "+91 XXXXX XXXXX",
-        whatsapp_number: "919000000000",
+        phone: "+91 98765 43210",
+        whatsapp_number: "919876543210",
         email: "snapillastudio@gmail.com",
-        address: "Ahmedabad, Gujarat, India",
+        address: "Snapilla Studio, Ahmedabad, Gujarat, India",
         instagram_url: "https://instagram.com",
         facebook_url: "https://facebook.com",
         youtube_url: "https://youtube.com",
@@ -71,27 +71,57 @@ const SNAP_DEFAULT_DATA = {
     services: [
         {
             title: "Baby Shoots",
-            description: "Little Moments. Big Memories. Precious giggles captured forever.",
+            description: "Little Moments. Big Memories. Precious giggles, cozy wraps, and milestones captured with love.",
             image: "baby.png",
             background_color: "#FFCA28"
         },
         {
-            title: "Weddings",
-            description: "Your Day. Your People. Your Story. Grand cinematic romance.",
+            title: "Wedding Photography",
+            description: "Your Day. Your People. Your Story. Grand cinematic romance, rituals, and unforgettable celebrations.",
             image: "wedding.png",
             background_color: "#ECEFF1"
         },
         {
-            title: "Products",
-            description: "Make Your Product Impossible to Ignore. High-converting commercial visuals.",
+            title: "Product Shoots",
+            description: "Make Your Product Impossible to Ignore. High-converting commercial visuals for Amazon, Shopify & ads.",
             image: "product.png",
             background_color: "#FF7043"
         },
         {
-            title: "Modeling",
-            description: "Confidence Looks Good On Camera. High-fashion portfolios.",
+            title: "Modeling & Portfolio",
+            description: "Confidence Looks Good On Camera. High-fashion modeling portfolios, headshots, and editorial casting.",
             image: "modeling.png",
             background_color: "#263238"
+        },
+        {
+            title: "Portrait Photography",
+            description: "Expressions that define who you are. Signature studio portraits with creative mood lighting.",
+            image: "p1.png",
+            background_color: "#FFA000"
+        },
+        {
+            title: "Family Photography",
+            description: "Generations together in one perfect frame. Warm, joyful, and timeless family portraits.",
+            image: "p2.png",
+            background_color: "#FFB300"
+        },
+        {
+            title: "Birthday Photography",
+            description: "Celebrate another wonderful year! Vibrant cake smash sessions and birthday memories.",
+            image: "p3.png",
+            background_color: "#FFC107"
+        },
+        {
+            title: "Special Occasions",
+            description: "Anniversaries, graduations, and achievements captured with elegance and emotion.",
+            image: "p4.png",
+            background_color: "#FF8F00"
+        },
+        {
+            title: "Studio Setup & Rental",
+            description: "Equipped studio space available for creators, influencers, and brand shoots with pro gear.",
+            image: "banner.png",
+            background_color: "#37474F"
         }
     ],
     portfolio: [
