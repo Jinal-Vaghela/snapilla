@@ -256,5 +256,54 @@ const SNAP_DEFAULT_DATA = {
             question: "Can I discuss a custom or creative photoshoot?",
             answer: "Absolutely! If you have a unique concept, theme, editorial moodboard, or commercial idea, simply contact us and we will design a tailored session for you."
         }
-    ]
+    ],
+    why_us: {
+        title: "Why Snapilla Studio?",
+        subtitle: "More Than Just Photography — We blend high-end equipment, creative vision, and personalized direction to capture your most authentic self.",
+        quote: "Every picture we click is a story you’ll relive forever.",
+        pillars: [
+            { icon: "📸", title: "Professional Photography", desc: "We focus on studio lighting, composition, expressions, natural poses, and micro details that make every frame stand out." },
+            { icon: "💡", title: "Creative Approach", desc: "Every shoot is thoughtfully planned according to your purpose, personal style, mood, and creative aspirations." },
+            { icon: "🏠", title: "Dedicated Studio", desc: "A controlled studio environment allows us to work with precise lighting, customizable backdrops, and creative setups." },
+            { icon: "🤝", title: "Client-Focused Experience", desc: "We guide you step-by-step through poses and expressions so you feel completely relaxed and confident in front of the lens." },
+            { icon: "✨", title: "Quality Editing", desc: "Selected photographs are retouched and color-graded by skilled photo artists to deliver a magazine-worthy final output." },
+            { icon: "🎯", title: "Personalized Sessions", desc: "Your photoshoot is tailored to your exact requirements, wardrobe choices, time preferences, and expectations." }
+        ]
+    },
+    experience: {
+        title: "The Snapilla Experience",
+        subtitle: "From Idea To Final Photograph — We make your photoshoot effortless, comfortable, and fun through our proven 8-step workflow.",
+        steps: [
+            { step: "01", title: "Talk To Us", desc: "Tell us about the type of photoshoot, purpose, ideas, and expectations you have in mind." },
+            { step: "02", title: "Choose Your Session", desc: "Select your photography service, package, deliverables, and schedule your preferred date." },
+            { step: "03", title: "Visit Our Studio", desc: "Come to Snapilla Studio at your scheduled time where our clean, equipped studio awaits you." },
+            { step: "04", title: "Get Camera Ready", desc: "Our photographer guides you through positioning, outfits, expressions, and posing ease." },
+            { step: "05", title: "The Shoot", desc: "We capture different angles, expressions, creative lighting, and genuine candid moments." },
+            { step: "06", title: "Photo Selection", desc: "Review the unedited preview frames together and pick your favorite shots for final retouching." },
+            { step: "07", title: "Professional Editing", desc: "Selected images receive detailed color correction, skin retouching, and premium finishing." },
+            { step: "08", title: "Memories Are Ready", desc: "Receive your high-res digital files and album prints — ready to share, print, and treasure forever." }
+        ]
+    },
+    studio_info: {
+        badge: "Studio-Based Photography Only",
+        title: "Welcome To Snapilla Studio",
+        desc: "Snapilla Studio currently operates as a dedicated studio-based photography service. Clients are warmly invited to visit our studio for photography sessions. We do not currently provide doorstep or home photography services.",
+        hours_weekday: "10:00 AM – 8:00 PM",
+        hours_sunday: "10:00 AM – 6:00 PM",
+        notice: "* Appointments are highly recommended prior to visiting to ensure studio setup availability.",
+        maps_url: "https://maps.google.com"
+    },
+    about_us: {
+        title: "Who We Are",
+        p1: "Snapilla Studio is a premier creative photography studio dedicated to capturing life’s most authentic and joyful milestones.",
+        p2: "We believe photography is never just about pressing a button — it’s about light, perspective, emotion, and timeless storytelling.",
+        mission_title: "Our Mission",
+        mission_desc: "Deliver premium-quality photography that creates lifelong memories and elevates personal & commercial brands.",
+        vision_title: "Our Vision",
+        vision_desc: "To be the most trusted, artistic, and client-cherished photography studio in the region."
+    },
+    final_cta: {
+        title: "Don’t Let Your Best Moments Become Forgotten Moments.",
+        desc: "Your memories deserve more than a camera roll. Whether it’s your child’s first birthday, your wedding day, a new product launch, a modeling portfolio, or simply a moment you want to remember — Let’s capture it beautifully."
+    }
 };

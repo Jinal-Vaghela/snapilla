@@ -303,12 +303,116 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = document.getElementById('faqContainer');
         if (container) {
             container.innerHTML = faqsList.map(item => `
-                <div style="margin-bottom: 30px;">
-                    <h4 style="color: var(--primary-color);">Q: ${item.question}</h4>
-                    <p>👉 ${item.answer}</p>
+                <div class="faq-card">
+                    <h4><i class="fas fa-question-circle" style="color: #FF9800;"></i> ${item.question}</h4>
+                    <p>${item.answer}</p>
                 </div>
             `).join('');
         }
+    }
+
+    function updateWhyUsDOM(data) {
+        if (!data) return;
+        const whyTitle = document.getElementById('whyTitle');
+        if (whyTitle && data.title) whyTitle.textContent = data.title;
+
+        const whySubtitle = document.getElementById('whySubtitle');
+        if (whySubtitle && data.subtitle) whySubtitle.textContent = data.subtitle;
+
+        const whyQuote = document.getElementById('whyQuote');
+        if (whyQuote && data.quote) whyQuote.textContent = `“${data.quote}”`;
+
+        if (Array.isArray(data.pillars) && data.pillars.length > 0) {
+            const grid = document.getElementById('whyPillarsGrid');
+            if (grid) {
+                grid.innerHTML = data.pillars.map(p => `
+                    <div class="why-pillar-card">
+                        <span class="why-pillar-icon">${p.icon || '📸'}</span>
+                        <h3>${p.title}</h3>
+                        <p>${p.desc}</p>
+                    </div>
+                `).join('');
+            }
+        }
+    }
+
+    function updateExperienceDOM(data) {
+        if (!data) return;
+        const expTitle = document.getElementById('expTitle');
+        if (expTitle && data.title) expTitle.textContent = data.title;
+
+        const expSubtitle = document.getElementById('expSubtitle');
+        if (expSubtitle && data.subtitle) expSubtitle.textContent = data.subtitle;
+
+        if (Array.isArray(data.steps) && data.steps.length > 0) {
+            const grid = document.getElementById('experienceGrid');
+            if (grid) {
+                grid.innerHTML = data.steps.map(s => `
+                    <div class="experience-step-card">
+                        <div class="step-number">${s.number || '01'}</div>
+                        <h3>${s.title}</h3>
+                        <p>${s.desc}</p>
+                    </div>
+                `).join('');
+            }
+        }
+    }
+
+    function updateStudioDOM(data) {
+        if (!data) return;
+        const badge = document.getElementById('studioBadge');
+        if (badge && data.badge) badge.textContent = data.badge;
+
+        const title = document.getElementById('studioTitle');
+        if (title && data.title) title.textContent = data.title;
+
+        const desc = document.getElementById('studioDesc');
+        if (desc && data.desc) desc.innerHTML = data.desc.replace(/\n/g, '<br>');
+
+        const weekday = document.getElementById('studioHoursWeekday');
+        if (weekday && data.hours_weekday) weekday.textContent = data.hours_weekday;
+
+        const sunday = document.getElementById('studioHoursSunday');
+        if (sunday && data.hours_sunday) sunday.textContent = data.hours_sunday;
+
+        const notice = document.getElementById('studioNotice');
+        if (notice && data.notice) notice.textContent = data.notice;
+
+        const mapsBtn = document.getElementById('studioMapsBtn');
+        if (mapsBtn && data.maps_url) mapsBtn.href = data.maps_url;
+    }
+
+    function updateAboutDOM(data) {
+        if (!data) return;
+        const title = document.getElementById('aboutTitle');
+        if (title && data.title) title.textContent = data.title;
+
+        const p1 = document.getElementById('aboutP1');
+        if (p1 && data.p1) p1.innerHTML = data.p1;
+
+        const p2 = document.getElementById('aboutP2');
+        if (p2 && data.p2) p2.innerHTML = data.p2;
+
+        const mTitle = document.getElementById('aboutMissionTitle');
+        if (mTitle && data.mission_title) mTitle.textContent = data.mission_title;
+
+        const mDesc = document.getElementById('aboutMissionDesc');
+        if (mDesc && data.mission_desc) mDesc.textContent = data.mission_desc;
+
+        const vTitle = document.getElementById('aboutVisionTitle');
+        if (vTitle && data.vision_title) vTitle.textContent = data.vision_title;
+
+        const vDesc = document.getElementById('aboutVisionDesc');
+        if (vDesc && data.vision_desc) vDesc.textContent = data.vision_desc;
+    }
+
+    function updateFinalCtaDOM(data) {
+        if (!data) return;
+        const title = document.getElementById('finalCtaTitle');
+        if (title && data.title) title.textContent = data.title;
+
+        const desc = document.getElementById('finalCtaDesc');
+        if (desc && data.desc) desc.innerHTML = data.desc.replace(/\n/g, '<br>');
     }
 
     // 6. Connect Real-time Listeners or fetch cached data
@@ -328,11 +432,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('snapilla_local_content', JSON.stringify(parsed));
                 }
                 if (parsed.settings) updateSettingsDOM(parsed.settings);
+                if (parsed.why_us) updateWhyUsDOM(parsed.why_us);
                 if (parsed.services) updateServicesDOM(parsed.services);
+                if (parsed.experience) updateExperienceDOM(parsed.experience);
+                if (parsed.studio_info) updateStudioDOM(parsed.studio_info);
+                if (parsed.about_us) updateAboutDOM(parsed.about_us);
                 if (parsed.portfolio) updatePortfolioDOM(parsed.portfolio);
                 if (parsed.pricing) updatePricingDOM(parsed.pricing);
                 if (parsed.testimonials) updateTestimonialsDOM(parsed.testimonials);
                 if (parsed.faqs) updateFaqDOM(parsed.faqs);
+                if (parsed.final_cta) updateFinalCtaDOM(parsed.final_cta);
             }
         } catch (err) {}
 
@@ -343,10 +452,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (doc.exists) updateSettingsDOM(doc.data());
             }, err => console.warn('Settings listener error', err));
 
+            // Realtime Why Us
+            db.collection('content').doc('why_us').onSnapshot(doc => {
+                if (doc.exists) updateWhyUsDOM(doc.data());
+            }, err => console.warn('Why Us listener error', err));
+
             // Realtime Services
             db.collection('content').doc('services').onSnapshot(doc => {
                 if (doc.exists && doc.data().items) updateServicesDOM(doc.data().items);
             }, err => console.warn('Services listener error', err));
+
+            // Realtime Experience Steps
+            db.collection('content').doc('experience').onSnapshot(doc => {
+                if (doc.exists) updateExperienceDOM(doc.data());
+            }, err => console.warn('Experience listener error', err));
+
+            // Realtime Studio Info
+            db.collection('content').doc('studio_info').onSnapshot(doc => {
+                if (doc.exists) updateStudioDOM(doc.data());
+            }, err => console.warn('Studio listener error', err));
+
+            // Realtime About Us
+            db.collection('content').doc('about_us').onSnapshot(doc => {
+                if (doc.exists) updateAboutDOM(doc.data());
+            }, err => console.warn('About Us listener error', err));
 
             // Realtime Portfolio
             db.collection('content').doc('portfolio').onSnapshot(doc => {
@@ -367,6 +496,11 @@ document.addEventListener('DOMContentLoaded', () => {
             db.collection('content').doc('faqs').onSnapshot(doc => {
                 if (doc.exists && doc.data().items) updateFaqDOM(doc.data().items);
             }, err => console.warn('FAQs listener error', err));
+
+            // Realtime Final CTA
+            db.collection('content').doc('final_cta').onSnapshot(doc => {
+                if (doc.exists) updateFinalCtaDOM(doc.data());
+            }, err => console.warn('Final CTA listener error', err));
         }
     }
 

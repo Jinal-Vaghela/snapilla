@@ -66,13 +66,37 @@
                 <li>
                     <a class="sidebar-link" data-tab="tab-settings">
                         <i class="fas fa-sliders-h"></i>
-                        <span>Hero & Settings</span>
+                        <span>Hero & Brand</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" data-tab="tab-why-us">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Why Us (6 Pillars)</span>
                     </a>
                 </li>
                 <li>
                     <a class="sidebar-link" data-tab="tab-services">
                         <i class="fas fa-camera-retro"></i>
                         <span>Services / Expertise</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" data-tab="tab-experience">
+                        <i class="fas fa-route"></i>
+                        <span>8-Step Experience</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" data-tab="tab-studio">
+                        <i class="fas fa-store-alt"></i>
+                        <span>Studio & Hours</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" data-tab="tab-about">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About Us (Mission)</span>
                     </a>
                 </li>
                 <li>
@@ -97,6 +121,12 @@
                     <a class="sidebar-link" data-tab="tab-faq">
                         <i class="fas fa-question-circle"></i>
                         <span>FAQ Items</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" data-tab="tab-cta">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Final CTA Banner</span>
                     </a>
                 </li>
                 <li>
@@ -305,7 +335,46 @@
                     </form>
                 </section>
 
-                <!-- 3. SERVICES / EXPERTISE TAB -->
+                <!-- 3. WHY US & 6 PILLARS TAB -->
+                <section class="tab-pane" id="tab-why-us">
+                    <form id="whyUsForm" style="margin-bottom: 30px;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-lightbulb"></i> Why Us Section Header & Quote</h3>
+                            </div>
+                            <div class="form-group">
+                                <label for="setWhyTitle">Section Heading</label>
+                                <input type="text" id="setWhyTitle" placeholder="Why Snapilla Studio?" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="setWhySubtitle">Section Subtitle</label>
+                                <textarea id="setWhySubtitle" rows="2" placeholder="More Than Just Photography..." required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="setWhyQuote">Highlight Slogan / Quote</label>
+                                <input type="text" id="setWhyQuote" placeholder="Every picture we click is a story you’ll relive forever." required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">
+                                <i class="fas fa-save"></i> Save Why Us Header
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="card-header" style="border: none; padding: 0 0 20px 0;">
+                        <div>
+                            <h2 style="font-size: 1.4rem; font-family: var(--font-heading);">🏛️ 6 Core Value Pillars</h2>
+                            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Cards showcasing your core strengths and client promises.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openPillarModal()">
+                            <i class="fas fa-plus"></i> Add Pillar Card
+                        </button>
+                    </div>
+                    <div class="grid-3" id="adminPillarsGrid">
+                        <!-- Dynamic Pillar Cards -->
+                    </div>
+                </section>
+
+                <!-- 4. SERVICES / EXPERTISE TAB -->
                 <section class="tab-pane" id="tab-services">
                     <div class="card-header" style="border: none; padding: 0 0 20px 0;">
                         <h2 style="font-size: 1.4rem; font-family: var(--font-heading);">📸 Photography Services</h2>
@@ -318,7 +387,130 @@
                     </div>
                 </section>
 
-                <!-- 4. 3D PORTFOLIO CAROUSEL TAB -->
+                <!-- 5. 8-STEP EXPERIENCE TAB -->
+                <section class="tab-pane" id="tab-experience">
+                    <form id="experienceForm" style="margin-bottom: 30px;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-route"></i> Experience Section Header</h3>
+                            </div>
+                            <div class="form-group">
+                                <label for="setExpTitle">Section Heading</label>
+                                <input type="text" id="setExpTitle" placeholder="The Snapilla Experience" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="setExpSubtitle">Section Subtitle</label>
+                                <textarea id="setExpSubtitle" rows="2" placeholder="From Idea To Final Photograph..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">
+                                <i class="fas fa-save"></i> Save Experience Header
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="card-header" style="border: none; padding: 0 0 20px 0;">
+                        <div>
+                            <h2 style="font-size: 1.4rem; font-family: var(--font-heading);">🎬 8-Step Client Roadmap</h2>
+                            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Step-by-step photoshoot workflow steps shown to clients.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openStepModal()">
+                            <i class="fas fa-plus"></i> Add Step
+                        </button>
+                    </div>
+                    <div class="grid-4" id="adminStepsGrid">
+                        <!-- Dynamic Experience Steps -->
+                    </div>
+                </section>
+
+                <!-- 6. STUDIO & HOURS TAB -->
+                <section class="tab-pane" id="tab-studio">
+                    <form id="studioForm">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-store-alt"></i> Studio Visit & Operating Hours</h3>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="setStudioBadge">Top Highlight Pill Badge</label>
+                                    <input type="text" id="setStudioBadge" placeholder="Studio-Based Photography Only" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="setStudioTitle">Studio Heading</label>
+                                    <input type="text" id="setStudioTitle" placeholder="Welcome To Snapilla Studio" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="setStudioDesc">Studio Notice / Description</label>
+                                <textarea id="setStudioDesc" rows="3" placeholder="Snapilla Studio currently operates as a dedicated studio-based photography service..." required></textarea>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="setStudioWeekday">Monday – Saturday Hours</label>
+                                    <input type="text" id="setStudioWeekday" placeholder="10:00 AM – 8:00 PM" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="setStudioSunday">Sunday Hours</label>
+                                    <input type="text" id="setStudioSunday" placeholder="10:00 AM – 6:00 PM" required>
+                                </div>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="setStudioNotice">Appointment Advisory Note</label>
+                                    <input type="text" id="setStudioNotice" placeholder="* Appointments are highly recommended prior to visiting..." required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="setStudioMaps">Google Maps Link (Get Directions)</label>
+                                    <input type="url" id="setStudioMaps" placeholder="https://maps.google.com">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="padding: 12px 28px;">
+                                <i class="fas fa-save"></i> Save Studio Details & Hours
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- 7. ABOUT US TAB -->
+                <section class="tab-pane" id="tab-about">
+                    <form id="aboutForm">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-info-circle"></i> About Us Story & Background</h3>
+                            </div>
+                            <div class="form-group">
+                                <label for="setAboutTitle">Section Heading</label>
+                                <input type="text" id="setAboutTitle" placeholder="Who We Are" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="setAboutP1">Paragraph 1</label>
+                                <textarea id="setAboutP1" rows="2" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="setAboutP2">Paragraph 2</label>
+                                <textarea id="setAboutP2" rows="2" required></textarea>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="setMissionTitle">Mission Title</label>
+                                    <input type="text" id="setMissionTitle" placeholder="Our Mission" required>
+                                    <label for="setMissionDesc" style="margin-top: 10px;">Mission Description</label>
+                                    <textarea id="setMissionDesc" rows="3" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="setVisionTitle">Vision Title</label>
+                                    <input type="text" id="setVisionTitle" placeholder="Our Vision" required>
+                                    <label for="setVisionDesc" style="margin-top: 10px;">Vision Description</label>
+                                    <textarea id="setVisionDesc" rows="3" required></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="padding: 12px 28px;">
+                                <i class="fas fa-save"></i> Save About Us & Vision
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- 8. 3D PORTFOLIO CAROUSEL TAB -->
                 <section class="tab-pane" id="tab-portfolio">
                     <div class="card-header" style="border: none; padding: 0 0 20px 0;">
                         <div>
@@ -373,7 +565,29 @@
                     </div>
                 </section>
 
-                <!-- 8. BOOKING LEADS TAB -->
+                <!-- 12. FINAL CTA BANNER TAB -->
+                <section class="tab-pane" id="tab-cta">
+                    <form id="ctaForm">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-bullhorn"></i> Final Call-To-Action Banner</h3>
+                            </div>
+                            <div class="form-group">
+                                <label for="setCtaTitle">Banner Main Headline</label>
+                                <input type="text" id="setCtaTitle" placeholder="Don’t Let Your Best Moments Become Forgotten Moments." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="setCtaDesc">Banner Subtext / Description</label>
+                                <textarea id="setCtaDesc" rows="4" placeholder="Your memories deserve more than a camera roll..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="padding: 12px 28px;">
+                                <i class="fas fa-save"></i> Save Final CTA Banner
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- 13. BOOKING LEADS TAB -->
                 <section class="tab-pane" id="tab-bookings">
                     <div class="card">
                         <div class="card-header">
@@ -650,6 +864,72 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeModal('modalFaq')">Cancel</button>
                     <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save FAQ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PILLAR MODAL -->
+    <div class="modal-backdrop" id="modalPillar">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalPillarTitle">Add / Edit Value Pillar</h3>
+                <button class="btn btn-secondary btn-icon" onclick="closeModal('modalPillar')">&times;</button>
+            </div>
+            <form id="pillarForm">
+                <div class="modal-body">
+                    <input type="hidden" id="pillarIndex">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="pillarIcon">Emoji Icon</label>
+                            <input type="text" id="pillarIcon" placeholder="📸" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pillarTitle">Pillar Title</label>
+                            <input type="text" id="pillarTitle" placeholder="Professional Photography" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pillarDesc">Description</label>
+                        <textarea id="pillarDesc" rows="3" placeholder="We focus on studio lighting, composition..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalPillar')">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Pillar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- EXPERIENCE STEP MODAL -->
+    <div class="modal-backdrop" id="modalStep">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalStepTitle">Add / Edit Experience Step</h3>
+                <button class="btn btn-secondary btn-icon" onclick="closeModal('modalStep')">&times;</button>
+            </div>
+            <form id="stepForm">
+                <div class="modal-body">
+                    <input type="hidden" id="stepIndex">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="stepNum">Step Number (e.g. 01)</label>
+                            <input type="text" id="stepNum" placeholder="01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="stepTitle">Step Title</label>
+                            <input type="text" id="stepTitle" placeholder="Talk To Us" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="stepDesc">Description</label>
+                        <textarea id="stepDesc" rows="3" placeholder="Tell us about the type of photoshoot..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalStep')">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Step</button>
                 </div>
             </form>
         </div>

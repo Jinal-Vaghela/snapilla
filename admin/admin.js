@@ -155,12 +155,17 @@ const tabPanes = document.querySelectorAll('.tab-pane');
 
 const tabTitles = {
     'tab-overview': 'Overview & Quick Actions',
-    'tab-settings': 'Hero & Site Settings',
+    'tab-settings': 'Hero & Brand Settings',
+    'tab-why-us': 'Why Us (6 Core Value Pillars)',
     'tab-services': 'Photography Services / Expertise',
+    'tab-experience': '8-Step Snapilla Experience Workflow',
+    'tab-studio': 'Studio Visit & Operating Hours',
+    'tab-about': 'About Us, Story & Vision',
     'tab-portfolio': '3D Rotating Portfolio Photos',
     'tab-pricing': 'Investment / Pricing Plans',
     'tab-testimonials': 'Client Reviews & Marquee',
     'tab-faq': 'Frequently Asked Questions',
+    'tab-cta': 'Final High-Impact CTA Banner',
     'tab-bookings': 'Customer Inquiries & Leads',
     'tab-firebase': 'Firebase Setup & Credentials'
 };
@@ -204,11 +209,27 @@ async function loadAllContent() {
             const setSnap = await db.collection('content').doc('settings').get();
             if (setSnap.exists) currentContent.settings = setSnap.data();
 
+            // Why Us
+            const whySnap = await db.collection('content').doc('why_us').get();
+            if (whySnap.exists) currentContent.why_us = whySnap.data();
+
             // Services
             const servSnap = await db.collection('content').doc('services').get();
             if (servSnap.exists && Array.isArray(servSnap.data().items)) {
                 currentContent.services = servSnap.data().items;
             }
+
+            // Experience
+            const expSnap = await db.collection('content').doc('experience').get();
+            if (expSnap.exists) currentContent.experience = expSnap.data();
+
+            // Studio Info
+            const studSnap = await db.collection('content').doc('studio_info').get();
+            if (studSnap.exists) currentContent.studio_info = studSnap.data();
+
+            // About Us
+            const abtSnap = await db.collection('content').doc('about_us').get();
+            if (abtSnap.exists) currentContent.about_us = abtSnap.data();
 
             // Portfolio
             const portSnap = await db.collection('content').doc('portfolio').get();
@@ -233,6 +254,11 @@ async function loadAllContent() {
             if (faqSnap.exists && Array.isArray(faqSnap.data().items)) {
                 currentContent.faqs = faqSnap.data().items;
             }
+
+            // Final CTA
+            const ctaSnap = await db.collection('content').doc('final_cta').get();
+            if (ctaSnap.exists) currentContent.final_cta = ctaSnap.data();
+
         } catch (e) {
             console.warn('Error reading from Firestore, using cached/default data', e);
         }
@@ -254,6 +280,11 @@ async function loadAllContent() {
                     ...SNAP_DEFAULT_DATA,
                     ...parsed,
                     settings: { ...SNAP_DEFAULT_DATA.settings, ...(parsed.settings || {}) },
+                    why_us: { ...SNAP_DEFAULT_DATA.why_us, ...(parsed.why_us || {}) },
+                    experience: { ...SNAP_DEFAULT_DATA.experience, ...(parsed.experience || {}) },
+                    studio_info: { ...SNAP_DEFAULT_DATA.studio_info, ...(parsed.studio_info || {}) },
+                    about_us: { ...SNAP_DEFAULT_DATA.about_us, ...(parsed.about_us || {}) },
+                    final_cta: { ...SNAP_DEFAULT_DATA.final_cta, ...(parsed.final_cta || {}) },
                     services: (parsed.services && parsed.services.length >= 9) ? parsed.services : SNAP_DEFAULT_DATA.services,
                     faqs: (parsed.faqs && parsed.faqs.length >= 7) ? parsed.faqs : SNAP_DEFAULT_DATA.faqs,
                     pricing: (parsed.pricing && parsed.pricing.length > 0) ? parsed.pricing : SNAP_DEFAULT_DATA.pricing,
@@ -272,11 +303,16 @@ async function loadAllContent() {
 
 function renderAllViews() {
     renderSettingsView();
+    renderWhyUsView();
     renderServicesView();
+    renderExperienceView();
+    renderStudioView();
+    renderAboutView();
     renderPortfolioView();
     renderPricingView();
     renderTestimonialsView();
     renderFaqView();
+    renderCtaView();
     updateOverviewStats();
 }
 
@@ -341,6 +377,335 @@ if (settingsForm) {
 
         await saveDoc('settings', currentContent.settings);
         showToast('Site & Admin Settings Saved Successfully!', 'success');
+    });
+}
+
+// ----------------------------------------------------
+// 4B. WHY US & 6 PILLARS CRUD
+// ----------------------------------------------------
+function renderWhyUsView() {
+    const w = currentContent.why_us || {};
+    const setWhyTitle = document.getElementById('setWhyTitle');
+    const setWhySubtitle = document.getElementById('setWhySubtitle');
+    const setWhyQuote = document.getElementById('setWhyQuote');
+
+    if (setWhyTitle) setWhyTitle.value = w.title || '';
+    if (setWhySubtitle) setWhySubtitle.value = w.subtitle || '';
+    if (setWhyQuote) setWhyQuote.value = w.quote || '';
+
+    const container = document.getElementById('adminPillarsGrid');
+    if (!container) return;
+
+    const pillars = w.pillars || [];
+    container.innerHTML = pillars.map((item, index) => `
+        <div class="item-card">
+            <div class="item-card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.8rem;">${item.icon || '📸'}</span>
+                    <h4 class="item-card-title">${item.title}</h4>
+                </div>
+                <div class="item-card-actions">
+                    <button class="btn btn-secondary btn-icon btn-sm" onclick="editPillar(${index})"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-danger btn-icon btn-sm" onclick="deletePillar(${index})"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; margin-top: 8px;">${item.desc}</p>
+        </div>
+    `).join('');
+}
+
+const whyUsForm = document.getElementById('whyUsForm');
+if (whyUsForm) {
+    whyUsForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        currentContent.why_us = currentContent.why_us || {};
+        currentContent.why_us.title = document.getElementById('setWhyTitle').value;
+        currentContent.why_us.subtitle = document.getElementById('setWhySubtitle').value;
+        currentContent.why_us.quote = document.getElementById('setWhyQuote').value;
+
+        await saveDoc('why_us', currentContent.why_us);
+        showToast('Why Us Header Saved Successfully!', 'success');
+    });
+}
+
+function openPillarModal(index = null) {
+    const modal = document.getElementById('modalPillar');
+    const title = document.getElementById('modalPillarTitle');
+    const idxInput = document.getElementById('pillarIndex');
+
+    currentContent.why_us = currentContent.why_us || {};
+    currentContent.why_us.pillars = currentContent.why_us.pillars || [];
+
+    if (index !== null) {
+        title.textContent = 'Edit Value Pillar';
+        idxInput.value = index;
+        const item = currentContent.why_us.pillars[index];
+        document.getElementById('pillarIcon').value = item.icon;
+        document.getElementById('pillarTitle').value = item.title;
+        document.getElementById('pillarDesc').value = item.desc;
+    } else {
+        title.textContent = 'Add Value Pillar';
+        idxInput.value = '';
+        document.getElementById('pillarForm').reset();
+    }
+
+    modal.classList.add('active');
+}
+
+function editPillar(index) {
+    openPillarModal(index);
+}
+
+async function deletePillar(index) {
+    if (confirm('Delete this pillar card?')) {
+        currentContent.why_us.pillars.splice(index, 1);
+        await saveDoc('why_us', currentContent.why_us);
+        renderWhyUsView();
+        showToast('Pillar card deleted', 'info');
+    }
+}
+
+const pillarForm = document.getElementById('pillarForm');
+if (pillarForm) {
+    pillarForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const idx = document.getElementById('pillarIndex').value;
+        const item = {
+            icon: document.getElementById('pillarIcon').value,
+            title: document.getElementById('pillarTitle').value,
+            desc: document.getElementById('pillarDesc').value
+        };
+
+        currentContent.why_us = currentContent.why_us || {};
+        currentContent.why_us.pillars = currentContent.why_us.pillars || [];
+
+        if (idx !== '') {
+            currentContent.why_us.pillars[parseInt(idx)] = item;
+        } else {
+            currentContent.why_us.pillars.push(item);
+        }
+
+        await saveDoc('why_us', currentContent.why_us);
+        closeModal('modalPillar');
+        renderWhyUsView();
+        showToast('Pillar saved successfully!', 'success');
+    });
+}
+
+// ----------------------------------------------------
+// 4C. 8-STEP EXPERIENCE CRUD
+// ----------------------------------------------------
+function renderExperienceView() {
+    const exp = currentContent.experience || {};
+    const setExpTitle = document.getElementById('setExpTitle');
+    const setExpSubtitle = document.getElementById('setExpSubtitle');
+
+    if (setExpTitle) setExpTitle.value = exp.title || '';
+    if (setExpSubtitle) setExpSubtitle.value = exp.subtitle || '';
+
+    const container = document.getElementById('adminStepsGrid');
+    if (!container) return;
+
+    const steps = exp.steps || [];
+    container.innerHTML = steps.map((item, index) => `
+        <div class="item-card">
+            <div class="item-card-header">
+                <div>
+                    <span style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--primary);">${item.step}</span>
+                    <h4 class="item-card-title" style="margin-top: 4px;">${item.title}</h4>
+                </div>
+                <div class="item-card-actions">
+                    <button class="btn btn-secondary btn-icon btn-sm" onclick="editStep(${index})"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-danger btn-icon btn-sm" onclick="deleteStep(${index})"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; margin-top: 8px;">${item.desc}</p>
+        </div>
+    `).join('');
+}
+
+const experienceForm = document.getElementById('experienceForm');
+if (experienceForm) {
+    experienceForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        currentContent.experience = currentContent.experience || {};
+        currentContent.experience.title = document.getElementById('setExpTitle').value;
+        currentContent.experience.subtitle = document.getElementById('setExpSubtitle').value;
+
+        await saveDoc('experience', currentContent.experience);
+        showToast('Experience Header Saved Successfully!', 'success');
+    });
+}
+
+function openStepModal(index = null) {
+    const modal = document.getElementById('modalStep');
+    const title = document.getElementById('modalStepTitle');
+    const idxInput = document.getElementById('stepIndex');
+
+    currentContent.experience = currentContent.experience || {};
+    currentContent.experience.steps = currentContent.experience.steps || [];
+
+    if (index !== null) {
+        title.textContent = 'Edit Experience Step';
+        idxInput.value = index;
+        const item = currentContent.experience.steps[index];
+        document.getElementById('stepNum').value = item.step;
+        document.getElementById('stepTitle').value = item.title;
+        document.getElementById('stepDesc').value = item.desc;
+    } else {
+        title.textContent = 'Add Experience Step';
+        idxInput.value = '';
+        document.getElementById('stepForm').reset();
+    }
+
+    modal.classList.add('active');
+}
+
+function editStep(index) {
+    openStepModal(index);
+}
+
+async function deleteStep(index) {
+    if (confirm('Delete this step?')) {
+        currentContent.experience.steps.splice(index, 1);
+        await saveDoc('experience', currentContent.experience);
+        renderExperienceView();
+        showToast('Experience step deleted', 'info');
+    }
+}
+
+const stepForm = document.getElementById('stepForm');
+if (stepForm) {
+    stepForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const idx = document.getElementById('stepIndex').value;
+        const item = {
+            step: document.getElementById('stepNum').value,
+            title: document.getElementById('stepTitle').value,
+            desc: document.getElementById('stepDesc').value
+        };
+
+        currentContent.experience = currentContent.experience || {};
+        currentContent.experience.steps = currentContent.experience.steps || [];
+
+        if (idx !== '') {
+            currentContent.experience.steps[parseInt(idx)] = item;
+        } else {
+            currentContent.experience.steps.push(item);
+        }
+
+        await saveDoc('experience', currentContent.experience);
+        closeModal('modalStep');
+        renderExperienceView();
+        showToast('Step saved successfully!', 'success');
+    });
+}
+
+// ----------------------------------------------------
+// 4D. STUDIO VISIT & OPERATING HOURS
+// ----------------------------------------------------
+function renderStudioView() {
+    const st = currentContent.studio_info || {};
+    const setStudioBadge = document.getElementById('setStudioBadge');
+    const setStudioTitle = document.getElementById('setStudioTitle');
+    const setStudioDesc = document.getElementById('setStudioDesc');
+    const setStudioWeekday = document.getElementById('setStudioWeekday');
+    const setStudioSunday = document.getElementById('setStudioSunday');
+    const setStudioNotice = document.getElementById('setStudioNotice');
+    const setStudioMaps = document.getElementById('setStudioMaps');
+
+    if (setStudioBadge) setStudioBadge.value = st.badge || '';
+    if (setStudioTitle) setStudioTitle.value = st.title || '';
+    if (setStudioDesc) setStudioDesc.value = st.desc || '';
+    if (setStudioWeekday) setStudioWeekday.value = st.hours_weekday || '';
+    if (setStudioSunday) setStudioSunday.value = st.hours_sunday || '';
+    if (setStudioNotice) setStudioNotice.value = st.notice || '';
+    if (setStudioMaps) setStudioMaps.value = st.maps_url || '';
+}
+
+const studioForm = document.getElementById('studioForm');
+if (studioForm) {
+    studioForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        currentContent.studio_info = {
+            badge: document.getElementById('setStudioBadge').value,
+            title: document.getElementById('setStudioTitle').value,
+            desc: document.getElementById('setStudioDesc').value,
+            hours_weekday: document.getElementById('setStudioWeekday').value,
+            hours_sunday: document.getElementById('setStudioSunday').value,
+            notice: document.getElementById('setStudioNotice').value,
+            maps_url: document.getElementById('setStudioMaps').value
+        };
+
+        await saveDoc('studio_info', currentContent.studio_info);
+        showToast('Studio Details & Hours Saved Successfully!', 'success');
+    });
+}
+
+// ----------------------------------------------------
+// 4E. ABOUT US STORY & VISION
+// ----------------------------------------------------
+function renderAboutView() {
+    const ab = currentContent.about_us || {};
+    const setAboutTitle = document.getElementById('setAboutTitle');
+    const setAboutP1 = document.getElementById('setAboutP1');
+    const setAboutP2 = document.getElementById('setAboutP2');
+    const setMissionTitle = document.getElementById('setMissionTitle');
+    const setMissionDesc = document.getElementById('setMissionDesc');
+    const setVisionTitle = document.getElementById('setVisionTitle');
+    const setVisionDesc = document.getElementById('setVisionDesc');
+
+    if (setAboutTitle) setAboutTitle.value = ab.title || '';
+    if (setAboutP1) setAboutP1.value = ab.p1 || '';
+    if (setAboutP2) setAboutP2.value = ab.p2 || '';
+    if (setMissionTitle) setMissionTitle.value = ab.mission_title || '';
+    if (setMissionDesc) setMissionDesc.value = ab.mission_desc || '';
+    if (setVisionTitle) setVisionTitle.value = ab.vision_title || '';
+    if (setVisionDesc) setVisionDesc.value = ab.vision_desc || '';
+}
+
+const aboutForm = document.getElementById('aboutForm');
+if (aboutForm) {
+    aboutForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        currentContent.about_us = {
+            title: document.getElementById('setAboutTitle').value,
+            p1: document.getElementById('setAboutP1').value,
+            p2: document.getElementById('setAboutP2').value,
+            mission_title: document.getElementById('setMissionTitle').value,
+            mission_desc: document.getElementById('setMissionDesc').value,
+            vision_title: document.getElementById('setVisionTitle').value,
+            vision_desc: document.getElementById('setVisionDesc').value
+        };
+
+        await saveDoc('about_us', currentContent.about_us);
+        showToast('About Us Details Saved Successfully!', 'success');
+    });
+}
+
+// ----------------------------------------------------
+// 4F. FINAL CTA BANNER
+// ----------------------------------------------------
+function renderCtaView() {
+    const cta = currentContent.final_cta || {};
+    const setCtaTitle = document.getElementById('setCtaTitle');
+    const setCtaDesc = document.getElementById('setCtaDesc');
+
+    if (setCtaTitle) setCtaTitle.value = cta.title || '';
+    if (setCtaDesc) setCtaDesc.value = cta.desc || '';
+}
+
+const ctaForm = document.getElementById('ctaForm');
+if (ctaForm) {
+    ctaForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        currentContent.final_cta = {
+            title: document.getElementById('setCtaTitle').value,
+            desc: document.getElementById('setCtaDesc').value
+        };
+
+        await saveDoc('final_cta', currentContent.final_cta);
+        showToast('Final CTA Banner Saved Successfully!', 'success');
     });
 }
 
@@ -913,17 +1278,22 @@ if (firebaseConfigForm) {
 // ----------------------------------------------------
 if (btnSeedData) {
     btnSeedData.addEventListener('click', async () => {
-        if (confirm('Reset and seed all latest Snapilla content (Hero, all 9 Services, 3D Portfolio, Pricing, Testimonials, FAQ)?')) {
+        if (confirm('Reset and seed all latest Snapilla content (Hero, Why Us, all 9 Services, Experience, Studio, About Us, 3D Portfolio, Pricing, Testimonials, FAQ, Final CTA)?')) {
             currentContent = JSON.parse(JSON.stringify(SNAP_DEFAULT_DATA));
             await saveDoc('settings', SNAP_DEFAULT_DATA.settings);
+            await saveDoc('why_us', SNAP_DEFAULT_DATA.why_us);
             await saveDoc('services', { items: SNAP_DEFAULT_DATA.services });
+            await saveDoc('experience', SNAP_DEFAULT_DATA.experience);
+            await saveDoc('studio_info', SNAP_DEFAULT_DATA.studio_info);
+            await saveDoc('about_us', SNAP_DEFAULT_DATA.about_us);
             await saveDoc('portfolio', { items: SNAP_DEFAULT_DATA.portfolio });
             await saveDoc('pricing', { items: SNAP_DEFAULT_DATA.pricing });
             await saveDoc('testimonials', { items: SNAP_DEFAULT_DATA.testimonials });
             await saveDoc('faqs', { items: SNAP_DEFAULT_DATA.faqs });
+            await saveDoc('final_cta', SNAP_DEFAULT_DATA.final_cta);
 
             renderAllViews();
-            showToast('All default content successfully seeded and updated!', 'success');
+            showToast('All 12+ website sections successfully seeded and updated!', 'success');
         }
     });
 }

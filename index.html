@@ -1544,8 +1544,8 @@
 
     <!-- Why Choose Us Section (Pillars & ORBITAL) -->
     <section class="why-us" id="why-us" style="padding: 100px 5%; text-align: center; overflow: hidden; background: #fafafa;">
-        <h2 class="section-title">💡 Why Snapilla Studio?</h2>
-        <p class="section-subtitle">More Than Just Photography — We blend high-end equipment, creative vision, and personalized direction to capture your most authentic self.</p>
+        <h2 class="section-title" id="whyTitle">💡 Why Snapilla Studio?</h2>
+        <p class="section-subtitle" id="whySubtitle">More Than Just Photography — We blend high-end equipment, creative vision, and personalized direction to capture your most authentic self.</p>
         
         <div class="why-us-orbit">
             <!-- Central Focus -->
@@ -1575,7 +1575,7 @@
         </div>
 
         <!-- 6 Core Value Pillars -->
-        <div class="why-pillars-grid">
+        <div class="why-pillars-grid" id="whyPillarsGrid">
             <div class="why-pillar-card">
                 <span class="why-pillar-icon">📸</span>
                 <h3>Professional Photography</h3>
@@ -1608,7 +1608,7 @@
             </div>
         </div>
 
-        <p style="font-size: 1.8rem; font-family: var(--font-logo); max-width: 800px; margin: 60px auto 0 auto; color: #000;">
+        <p id="whyQuote" style="font-size: 1.8rem; font-family: var(--font-logo); max-width: 800px; margin: 60px auto 0 auto; color: #000;">
             “Every picture we click is a story you’ll relive forever.”
         </p>
     </section>
@@ -1828,10 +1828,10 @@
 
     <!-- The Snapilla Experience Section -->
     <section class="experience-sec" id="experience" style="padding: 100px 5%; text-align: center; background: #fdfdfd;">
-        <h2 class="section-title">🎬 The Snapilla Experience</h2>
-        <p class="section-subtitle">From Idea To Final Photograph — We make your photoshoot effortless, comfortable, and fun through our proven 8-step workflow.</p>
+        <h2 class="section-title" id="expTitle">🎬 The Snapilla Experience</h2>
+        <p class="section-subtitle" id="expSubtitle">From Idea To Final Photograph — We make your photoshoot effortless, comfortable, and fun through our proven 8-step workflow.</p>
         
-        <div class="experience-grid">
+        <div class="experience-grid" id="experienceGrid">
             <div class="experience-step-card">
                 <div class="step-number">01</div>
                 <h3>Talk To Us</h3>
@@ -1882,9 +1882,9 @@
         
         <div class="studio-notice-box">
             <div class="studio-info-col">
-                <span class="studio-highlight-pill">Studio-Based Photography Only</span>
-                <h3>Welcome To Snapilla Studio</h3>
-                <p>
+                <span class="studio-highlight-pill" id="studioBadge">Studio-Based Photography Only</span>
+                <h3 id="studioTitle">Welcome To Snapilla Studio</h3>
+                <p id="studioDesc">
                     Snapilla Studio currently operates as a <strong>dedicated studio-based photography service</strong>. 
                     Clients are warmly invited to visit our studio for photography sessions. 
                     <em>We do not currently provide doorstep or home photography services.</em>
@@ -1894,7 +1894,7 @@
                     <p style="margin: 0; color: #555;">Snapilla Studio, Ahmedabad, Gujarat, India</p>
                 </div>
                 <div class="studio-btns">
-                    <a href="https://maps.google.com" target="_blank" class="btn-studio-dir"><i class="fas fa-map-marked-alt"></i> Get Directions</a>
+                    <a href="https://maps.google.com" target="_blank" class="btn-studio-dir" id="studioMapsBtn"><i class="fas fa-map-marked-alt"></i> Get Directions</a>
                     <a href="https://wa.me/918780286850?text=Hello%20Snapilla%20Studio!%20I%20would%20like%20to%20inquire%20about%20booking%20a%20photoshoot%20session." target="_blank" class="btn-studio-wa"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
                 </div>
             </div>
@@ -1903,13 +1903,13 @@
                 <h4><i class="far fa-clock" style="color: #FF9800; margin-right: 8px;"></i> Studio Hours</h4>
                 <div class="hours-row">
                     <span><strong>Monday – Saturday:</strong></span>
-                    <span>10:00 AM – 8:00 PM</span>
+                    <span id="studioHoursWeekday">10:00 AM – 8:00 PM</span>
                 </div>
                 <div class="hours-row">
                     <span><strong>Sunday:</strong></span>
-                    <span>10:00 AM – 6:00 PM</span>
+                    <span id="studioHoursSunday">10:00 AM – 6:00 PM</span>
                 </div>
-                <p style="margin-top: 15px; font-size: 0.85rem; color: #888; font-style: italic;">
+                <p id="studioNotice" style="margin-top: 15px; font-size: 0.85rem; color: #888; font-style: italic;">
                     * Appointments are highly recommended prior to visiting to ensure studio setup availability.
                 </p>
             </div>
@@ -1918,18 +1918,18 @@
 
     <!-- Detailed About Us -->
     <section class="about-us" id="about" style="padding: 100px 5%; text-align: center; background: #fafafa;">
-        <h2 class="section-title">Who We Are</h2>
+        <h2 class="section-title" id="aboutTitle">Who We Are</h2>
         <div style="max-width: 850px; margin: 0 auto; font-size: 1.2rem; line-height: 1.8;">
-            <p><strong>Snapilla Studio</strong> is a premier creative photography studio dedicated to capturing life’s most authentic and joyful milestones.</p>
-            <p>We believe photography is never just about pressing a button — it’s about light, perspective, emotion, and timeless storytelling.</p>
+            <p id="aboutP1"><strong>Snapilla Studio</strong> is a premier creative photography studio dedicated to capturing life’s most authentic and joyful milestones.</p>
+            <p id="aboutP2">We believe photography is never just about pressing a button — it’s about light, perspective, emotion, and timeless storytelling.</p>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-top: 50px;">
                 <div style="background: #fff; padding: 30px 20px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 8px 25px rgba(0,0,0,0.04);">
-                    <h4 style="font-family: var(--font-logo); color: var(--primary-color); font-size: 1.3rem; margin-bottom: 10px;">🎯 Our Mission</h4>
-                    <p style="font-size: 0.95rem; color: #666; margin: 0;">Deliver premium-quality photography that creates lifelong memories and elevates personal & commercial brands.</p>
+                    <h4 id="aboutMissionTitle" style="font-family: var(--font-logo); color: var(--primary-color); font-size: 1.3rem; margin-bottom: 10px;">🎯 Our Mission</h4>
+                    <p id="aboutMissionDesc" style="font-size: 0.95rem; color: #666; margin: 0;">Deliver premium-quality photography that creates lifelong memories and elevates personal & commercial brands.</p>
                 </div>
                 <div style="background: #fff; padding: 30px 20px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 8px 25px rgba(0,0,0,0.04);">
-                    <h4 style="font-family: var(--font-logo); color: var(--primary-color); font-size: 1.3rem; margin-bottom: 10px;">👁️ Our Vision</h4>
-                    <p style="font-size: 0.95rem; color: #666; margin: 0;">To be the most trusted, artistic, and client-cherished photography studio in the region.</p>
+                    <h4 id="aboutVisionTitle" style="font-family: var(--font-logo); color: var(--primary-color); font-size: 1.3rem; margin-bottom: 10px;">👁️ Our Vision</h4>
+                    <p id="aboutVisionDesc" style="font-size: 0.95rem; color: #666; margin: 0;">To be the most trusted, artistic, and client-cherished photography studio in the region.</p>
                 </div>
             </div>
         </div>
@@ -2203,8 +2203,8 @@
     <!-- Final Call to Action High-Impact Banner -->
     <section class="final-cta-sec" style="padding: 0 5% 100px 5%; background: #fafafa;">
         <div class="final-cta-card">
-            <h2>Don’t Let Your Best Moments Become Forgotten Moments.</h2>
-            <p>
+            <h2 id="finalCtaTitle">Don’t Let Your Best Moments Become Forgotten Moments.</h2>
+            <p id="finalCtaDesc">
                 Your memories deserve more than a camera roll. Whether it’s your child’s first birthday, your wedding day, a new product launch, a modeling portfolio, or simply a moment you want to remember — <strong>Let’s capture it beautifully.</strong>
             </p>
             <div class="final-cta-btns">
