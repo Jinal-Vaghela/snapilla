@@ -109,14 +109,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Prepare WhatsApp message
-            const whatsappText = `*New Booking Request - Snapilla Studio*%0A%0A` +
-                                `*Name:* ${encodeURIComponent(name)}%0A` +
-                                `*Email:* ${encodeURIComponent(email)}%0A` +
-                                `*Phone:* ${encodeURIComponent(phone)}%0A` +
-                                `*Shoot Type:* ${encodeURIComponent(shootType)}%0A` +
-                                `*Preferred Date:* ${encodeURIComponent(date)}%0A` +
-                                `*Message:* ${encodeURIComponent(message)}`;
+            // Prepare structured WhatsApp booking message
+            const whatsappText = `*📸 NEW BOOKING INQUIRY - SNAPILLA STUDIO*%0A` +
+                                `━━━━━━━━━━━━━━━━━━━━━%0A` +
+                                `👤 *Name:* ${encodeURIComponent(name)}%0A` +
+                                `📧 *Email:* ${encodeURIComponent(email)}%0A` +
+                                `📞 *Phone:* ${encodeURIComponent(phone)}%0A` +
+                                `🎯 *Shoot Type:* ${encodeURIComponent(shootType)}%0A` +
+                                `📅 *Preferred Date:* ${encodeURIComponent(date)}%0A` +
+                                `💬 *Details / Message:* ${encodeURIComponent(message || 'Looking forward to booking my shoot!')}%0A` +
+                                `━━━━━━━━━━━━━━━━━━━━━%0A` +
+                                `✨ _Sent directly via Snapilla Studio Website_`;
 
             const targetPhone = (liveSettings.whatsapp_number || '918780286850').replace(/\D/g, '');
             const whatsappUrl = `https://wa.me/${targetPhone}?text=${whatsappText}`;
@@ -178,8 +181,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (data.whatsapp_number) {
             const rawWa = data.whatsapp_number.replace(/\D/g, '');
+            const defaultMsg = encodeURIComponent("Hello Snapilla Studio! 📸 I would like to inquire about booking a photoshoot session.");
             document.querySelectorAll('a[href*="wa.me"]').forEach(waBtn => {
-                waBtn.href = `https://wa.me/${rawWa}`;
+                let msg = defaultMsg;
+                try {
+                    const currentUrl = new URL(waBtn.href);
+                    const existingParam = currentUrl.searchParams.get('text');
+                    if (existingParam) msg = encodeURIComponent(existingParam);
+                } catch(e) {}
+                waBtn.href = `https://wa.me/${rawWa}?text=${msg}`;
             });
         }
 
