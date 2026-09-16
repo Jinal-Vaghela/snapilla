@@ -7,9 +7,9 @@
 }
 
 :root {
-    --primary: #FFC107;
-    --primary-hover: #FFA000;
-    --primary-light: #FFF8E1;
+    --primary: #FEAB45;
+    --primary-hover: #E59530;
+    --primary-light: #FFF6EB;
     --dark: #121212;
     --dark-surface: #1E1E1E;
     --dark-card: #282828;
