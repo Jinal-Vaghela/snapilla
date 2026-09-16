@@ -890,23 +890,550 @@
             100% { transform: translateX(-50%); }
         }
 
-        h1, h2, h3, h4, h5, .section-title, .logo-main, .price-btn, .btn-burn, .orbit-hub { 
+        h1, h2, h3, h4, h5, .section-title, .logo-main, .price-btn, .btn-burn, .orbit-hub, .btn-service-book, .step-number, .final-cta-card h2 { 
             font-family: var(--font-logo); 
             text-transform: uppercase;
         }
         .section-title { 
             font-size: 3.5rem; 
             text-align: center; 
-            margin-bottom: 60px; 
+            margin-bottom: 15px; 
             color: #000; 
             text-shadow: 2px 2px 0px var(--primary-color);
+        }
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.25rem;
+            color: #555;
+            max-width: 780px;
+            margin: 0 auto 50px auto;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        /* Hero Pill Enhancements */
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 179, 0, 0.15);
+            border: 1.5px solid rgba(255, 160, 0, 0.4);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: #000;
+        }
+        .hero-slogan {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #E65100;
+            margin-bottom: 15px;
+            font-family: var(--font-logo);
+            letter-spacing: 1px;
+        }
+        .hero-desc {
+            font-size: 1.15rem;
+            color: #333;
+            max-width: 640px;
+            margin: 0 auto 35px auto;
+            line-height: 1.65;
+            font-weight: 500;
+        }
+
+        /* 6 Pillars of Snapilla */
+        .why-pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 60px auto 0 auto;
+            text-align: left;
+        }
+        .why-pillar-card {
+            background: #fff;
+            padding: 35px 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 2px solid #f0f0f0;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        .why-pillar-card:hover {
+            transform: translateY(-8px);
+            border-color: #FFB300;
+            box-shadow: 0 20px 45px rgba(255, 179, 0, 0.15);
+        }
+        .why-pillar-icon {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+        .why-pillar-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 10px;
+            color: #111;
+        }
+        .why-pillar-card p {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Comprehensive 9 Services Grid */
+        .services-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1250px;
+            margin: 50px auto 0 auto;
+            text-align: left;
+        }
+        .service-detail-card {
+            background: #ffffff;
+            border-radius: 25px;
+            padding: 35px 30px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.06);
+            border: 2px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.35s ease;
+            position: relative;
+        }
+        .service-detail-card:hover {
+            transform: translateY(-8px);
+            border-color: #FFB300;
+            box-shadow: 0 20px 45px rgba(255, 179, 0, 0.15);
+        }
+        .service-icon-badge {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+        .service-detail-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 6px;
+            color: #111;
+        }
+        .service-tagline {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #E65100;
+            margin-bottom: 14px;
+            font-family: var(--font-logo);
+            letter-spacing: 0.5px;
+        }
+        .service-desc {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+        .service-features-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+        .service-features-list li {
+            font-size: 0.9rem;
+            color: #333;
+            padding: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .service-features-list li i {
+            color: #FFB300;
+            font-size: 0.85rem;
+        }
+        .service-platforms-tag {
+            background: #FFF8E1;
+            border: 1px dashed #FFA000;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            color: #E65100;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .btn-service-book {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: #000;
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: auto;
+        }
+        .btn-service-book:hover {
+            background: #FFB300;
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 179, 0, 0.3);
+        }
+
+        /* 8-Step Snapilla Experience */
+        .experience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 50px auto 0 auto;
+        }
+        .experience-step-card {
+            background: #fff;
+            padding: 30px 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            border: 1.5px solid #eee;
+            text-align: left;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .experience-step-card:hover {
+            transform: translateY(-6px);
+            border-color: #FF9800;
+            box-shadow: 0 15px 35px rgba(255, 152, 0, 0.12);
+        }
+        .step-number {
+            font-family: var(--font-logo);
+            font-size: 2.2rem;
+            color: #FF9800;
+            margin-bottom: 10px;
+            line-height: 1;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+        }
+        .experience-step-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            color: #111;
+        }
+        .experience-step-card p {
+            color: #666;
+            font-size: 0.92rem;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        /* Studio Visit Notice Box */
+        .studio-notice-box {
+            max-width: 1050px;
+            margin: 50px auto 0 auto;
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFE0B2 100%);
+            border: 2px solid #FFA000;
+            border-radius: 30px;
+            padding: 45px 40px;
+            box-shadow: 0 15px 40px rgba(255, 160, 0, 0.12);
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            align-items: center;
+            text-align: left;
+        }
+        @media (max-width: 850px) {
+            .studio-notice-box {
+                grid-template-columns: 1fr;
+                padding: 30px 25px;
+            }
+        }
+        .studio-highlight-pill {
+            display: inline-block;
+            background: #E65100;
+            color: #fff;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+        .studio-info-col h3 {
+            font-size: 1.8rem;
+            color: #111;
+            margin-bottom: 12px;
+        }
+        .studio-info-col p {
+            color: #444;
+            font-size: 1rem;
+            line-height: 1.65;
+            margin-bottom: 20px;
+        }
+        .studio-hours-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid #FFE082;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+        }
+        .studio-hours-card h4 {
+            font-size: 1.15rem;
+            margin-bottom: 15px;
+            color: #111;
+        }
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.95rem;
+            color: #333;
+        }
+        .hours-row:last-child {
+            border-bottom: none;
+        }
+        .studio-btns {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .btn-studio-dir {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 26px;
+            background: #111;
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-studio-dir:hover {
+            background: #E65100;
+            transform: translateY(-2px);
+        }
+        .btn-studio-wa {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 26px;
+            background: #25D366;
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-studio-wa:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+        }
+
+        /* Gallery Category Filters */
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        .filter-btn {
+            padding: 10px 22px;
+            border-radius: 50px;
+            border: 2px solid #000;
+            background: #fff;
+            color: #000;
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+        /* FAQ Section */
+        .faq-grid {
+            max-width: 900px;
+            margin: 40px auto 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: left;
+        }
+        .faq-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            border: 1.5px solid #eee;
+            transition: all 0.3s ease;
+        }
+        .faq-card:hover {
+            border-color: #FFB300;
+            box-shadow: 0 12px 30px rgba(255, 179, 0, 0.12);
+        }
+        .faq-card h4 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: #111;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .faq-card p {
+            color: #555;
+            font-size: 0.98rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Social Follow Showcase */
+        .social-follow-grid {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            max-width: 850px;
+            margin: 40px auto 0 auto;
+            flex-wrap: wrap;
+        }
+        .social-follow-card {
+            background: #fff;
+            padding: 25px 35px;
+            border-radius: 20px;
+            border: 2px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            text-decoration: none;
+            color: #111;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+            flex: 1 1 240px;
+        }
+        .social-follow-card:hover {
+            transform: translateY(-5px);
+            border-color: #E1306C;
+            box-shadow: 0 12px 30px rgba(225, 48, 108, 0.15);
+        }
+        .social-follow-card i {
+            font-size: 2.2rem;
+            color: #E1306C;
+        }
+        .social-follow-card.fb i {
+            color: #1877F2;
+        }
+        .social-follow-card.yt i {
+            color: #FF0000;
+        }
+        .social-follow-card h4 {
+            font-size: 1.1rem;
+            margin: 0 0 4px 0;
+        }
+        .social-follow-card p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #777;
+        }
+
+        /* High-Impact Final CTA */
+        .final-cta-card {
+            max-width: 1100px;
+            margin: 60px auto 0 auto;
+            background: linear-gradient(135deg, #1A1A1A 0%, #000000 100%);
+            border-radius: 40px;
+            padding: 70px 50px;
+            color: #fff;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+            border: 2px solid rgba(255, 179, 0, 0.4);
+        }
+        .final-cta-card h2 {
+            font-size: 3rem;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: none;
+        }
+        .final-cta-card p {
+            font-size: 1.25rem;
+            color: #ccc;
+            max-width: 750px;
+            margin: 0 auto 35px auto;
+            line-height: 1.7;
+        }
+        .final-cta-btns {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Footer Grid */
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr 1.5fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+            text-align: left;
+        }
+        @media (max-width: 900px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 600px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        .footer-col h4 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: none;
+        }
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+        .footer-col ul li a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .footer-col ul li a:hover {
+            color: #FFB300;
         }
     </style>
 </head>
 <body style="position: relative; overflow-x: hidden;">
     <!-- Navbar -->
     <nav>
-        <div class="logo-container">
+        <div class="logo-container" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
             <img src="logo.png" alt="Snapilla Studio" class="logo-img">
             <div class="logo-text-group">
                 <span class="logo-main">Snapilla</span>
@@ -915,10 +1442,14 @@
         </div>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
+            <li><a href="#why-us">Why Us</a></li>
             <li><a href="#services">Services</a></li>
-            <li><a href="#portfolio">Portfolio</a></li>
-            <li><a href="#booking">Booking</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#studio">Studio</a></li>
+            <li><a href="#portfolio">Gallery</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#booking" class="btn-burn" style="padding: 10px 22px; font-size: 0.82rem;">Book Shoot</a></li>
         </ul>
     </nav>
 
@@ -927,19 +1458,26 @@
         <div id="webgl-container"></div>
         <div class="hero-overlay">
             <div class="hero-content">
-                <h1 id="heroTitle">Capturing Moments That Last Forever</h1>
-                <p id="heroSubtitle">At Snapilla Studio, we don’t just take photos — we create timeless memories filled with emotions, beauty, and storytelling.</p>
-                <div class="hero-btns" style="display: flex; gap: 20px; justify-content: center;">
+                <div class="hero-badge">
+                    📍 Studio Photography • 🎥 Professional Setup • ✨ Creative Results
+                </div>
+                <h1 id="heroTitle">Where Every Moment Becomes A Memory</h1>
+                <div class="hero-slogan">Your Story. Our Vision. One Perfect Frame.</div>
+                <p id="heroSubtitle" class="hero-desc">
+                    From the tiniest smiles to the biggest celebrations, Snapilla Studio captures moments that deserve to be remembered. We provide professional <strong>Baby, Product, Wedding, Model, Portrait, Family, Birthday, and Special Occasion Photography</strong> from our dedicated studio.
+                </p>
+                <div class="hero-btns" style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
                     <a href="#booking" class="btn-burn">📅 Book Your Shoot</a>
-                    <a href="#contact" class="btn-burn" style="background: transparent; border: 2px solid #000; color: #000;">📞 Contact Us</a>
+                    <a href="#portfolio" class="btn-burn" style="background: transparent; border: 2px solid #000; color: #000;">🖼️ View Our Work</a>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Why Choose Us Section (ORBITAL) -->
-    <section class="why-us" style="padding: 100px 5%; text-align: center; overflow: hidden;">
-        <h2 class="section-title">💡 Why Choose Us</h2>
+    <!-- Why Choose Us Section (Pillars & ORBITAL) -->
+    <section class="why-us" id="why-us" style="padding: 100px 5%; text-align: center; overflow: hidden; background: #fafafa;">
+        <h2 class="section-title">💡 Why Snapilla Studio?</h2>
+        <p class="section-subtitle">More Than Just Photography — We blend high-end equipment, creative vision, and personalized direction to capture your most authentic self.</p>
         
         <div class="why-us-orbit">
             <!-- Central Focus -->
@@ -951,57 +1489,92 @@
             <div class="orbit-track">
                 <div class="orbit-item">
                     <i class="fas fa-bullseye"></i>
-                    <span class="orbit-label">Professional Team</span>
+                    <span class="orbit-label">Pro Direction</span>
                 </div>
                 <div class="orbit-item">
                     <i class="fas fa-camera"></i>
-                    <span class="orbit-label">High-End Setup</span>
+                    <span class="orbit-label">Studio Gear</span>
                 </div>
                 <div class="orbit-item">
                     <i class="fas fa-palette"></i>
-                    <span class="orbit-label">Unique Concepts</span>
+                    <span class="orbit-label">Creative Themes</span>
                 </div>
                 <div class="orbit-item">
-                    <i class="fas fa-bolt"></i>
-                    <span class="orbit-label">Fast Delivery</span>
+                    <i class="fas fa-magic"></i>
+                    <span class="orbit-label">Master Editing</span>
                 </div>
             </div>
         </div>
 
-        <p style="font-size: 1.8rem; font-family: var(--font-logo); max-width: 800px; margin: 50px auto 0 auto; color: #000;">
+        <!-- 6 Core Value Pillars -->
+        <div class="why-pillars-grid">
+            <div class="why-pillar-card">
+                <span class="why-pillar-icon">📸</span>
+                <h3>Professional Photography</h3>
+                <p>We focus on studio lighting, composition, expressions, natural poses, and micro details that make every frame stand out.</p>
+            </div>
+            <div class="why-pillar-card">
+                <span class="why-pillar-icon">💡</span>
+                <h3>Creative Approach</h3>
+                <p>Every shoot is thoughtfully planned according to your purpose, personal style, mood, and creative aspirations.</p>
+            </div>
+            <div class="why-pillar-card">
+                <span class="why-pillar-icon">🏠</span>
+                <h3>Dedicated Studio</h3>
+                <p>A controlled studio environment allows us to work with precise lighting, customizable backdrops, and creative setups.</p>
+            </div>
+            <div class="why-pillar-card">
+                <span class="why-pillar-icon">🤝</span>
+                <h3>Client-Focused Experience</h3>
+                <p>We guide you step-by-step through poses and expressions so you feel completely relaxed and confident in front of the lens.</p>
+            </div>
+            <div class="why-pillar-card">
+                <span class="why-pillar-icon">✨</span>
+                <h3>Quality Editing</h3>
+                <p>Selected photographs are retouched and color-graded by skilled photo artists to deliver a magazine-worthy final output.</p>
+            </div>
+            <div class="why-pillar-card">
+                <span class="why-pillar-icon">🎯</span>
+                <h3>Personalized Sessions</h3>
+                <p>Your photoshoot is tailored to your exact requirements, wardrobe choices, time preferences, and expectations.</p>
+            </div>
+        </div>
+
+        <p style="font-size: 1.8rem; font-family: var(--font-logo); max-width: 800px; margin: 60px auto 0 auto; color: #000;">
             “Every picture we click is a story you’ll relive forever.”
         </p>
     </section>
 
-    <!-- Expertise Section (MOSAIC GRID) -->
-    <section class="expertise-sec" id="services" style="padding: 100px 5%; position: relative; z-index: 5;">
-        <h2 class="section-title">📸 Our Expertise</h2>
-        <p style="text-align: center; margin-bottom: 40px; font-weight: 700;">Hover over our cameras to see the magic focus!</p>
+    <!-- Services Section -->
+    <section class="expertise-sec" id="services" style="padding: 100px 5%; position: relative; z-index: 5; background: #ffffff;">
+        <h2 class="section-title">📸 Photography For Every Story</h2>
+        <p class="section-subtitle">Whether you're celebrating a special occasion, building your brand, creating memories with your family, or simply want beautiful portraits — we've got a session for you.</p>
         
+        <!-- Interactive Camera Preview Units -->
         <div class="camera-grid" id="servicesGrid">
             <div class="camera-unit">
                 <div class="boxy-camera-shell" style="background: #FFCA28;">
                     <div class="boxy-screen"><img src="baby.png" alt="Baby Shoot"></div>
                 </div>
-                <div class="camera-info"><h3>Baby Shoots</h3><p>Precious giggles and innocent moments captured beautifully.</p></div>
+                <div class="camera-info"><h3>Baby Shoots</h3><p>Little Moments. Big Memories. Precious giggles captured forever.</p></div>
             </div>
             <div class="camera-unit">
                 <div class="boxy-camera-shell" style="background: #ECEFF1;">
                     <div class="boxy-screen"><img src="wedding.png" alt="Wedding Shoot"></div>
                 </div>
-                <div class="camera-info"><h3>Weddings</h3><p>Your grand love story, framed in cinematic perfection.</p></div>
+                <div class="camera-info"><h3>Weddings</h3><p>Your Day. Your People. Your Story. Grand cinematic romance.</p></div>
             </div>
             <div class="camera-unit">
                 <div class="boxy-camera-shell" style="background: #FF7043;">
                     <div class="boxy-screen"><img src="product.png" alt="Product Shoot"></div>
                 </div>
-                <div class="camera-info"><h3>Products</h3><p>Commercial-grade visuals that drive sales and branding.</p></div>
+                <div class="camera-info"><h3>Products</h3><p>Make Your Product Impossible to Ignore. High-converting commercial visuals.</p></div>
             </div>
             <div class="camera-unit">
                 <div class="boxy-camera-shell" style="background: #263238;">
                     <div class="boxy-screen"><img src="modeling.png" alt="Modeling Shoot"></div>
                 </div>
-                <div class="camera-info"><h3>Modeling</h3><p>High-fashion portfolios for creators and professionals.</p></div>
+                <div class="camera-info"><h3>Modeling</h3><p>Confidence Looks Good On Camera. High-fashion portfolios.</p></div>
             </div>
         </div>
 
@@ -1010,165 +1583,404 @@
             <div class="cartoon-baby">
                 <!-- Baby Legs (Back layer) -->
                 <div class="baby-leg left"></div>
-                
                 <!-- Baby Body -->
                 <div class="baby-body"></div>
-                
                 <!-- Baby Head -->
                 <div class="baby-head">
                     <div class="baby-hair"></div>
                     <div class="baby-blush left"></div>
                     <div class="baby-blush right"></div>
-                    
                     <div class="baby-eye left"></div>
                     <div class="baby-eye right"></div>
                     <div class="baby-mouth"></div>
                 </div>
-                
                 <!-- Baby Legs (Front layer) -->
                 <div class="baby-leg right" style="animation-delay: -0.2s;"></div>
+            </div>
+        </div>
+
+        <!-- Comprehensive 9-Services Detailed Breakdown -->
+        <div class="services-detail-grid">
+            <!-- 1. Baby Shoot -->
+            <div class="service-detail-card">
+                <div class="service-card-top">
+                    <span class="service-icon-badge">👶</span>
+                    <h3>Baby Shoot</h3>
+                    <div class="service-tagline">Little Moments. Big Memories.</div>
+                    <p class="service-desc">Children grow up faster than we realize. Capture those tiny smiles, adorable expressions, little hands, and beautiful moments before they become memories.</p>
+                    <ul class="service-features-list">
+                        <li><i class="fas fa-check-circle"></i> Newborn photography & baby portraits</li>
+                        <li><i class="fas fa-check-circle"></i> Baby milestone & first birthday shoots</li>
+                        <li><i class="fas fa-check-circle"></i> Cake smash & creative themed sessions</li>
+                        <li><i class="fas fa-check-circle"></i> Kids portraits, family & baby portraits</li>
+                    </ul>
+                </div>
+                <a href="#booking" class="btn-service-book">Book Baby Shoot <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- 2. Product Shoot -->
+            <div class="service-detail-card">
+                <div class="service-card-top">
+                    <span class="service-icon-badge">🛍️</span>
+                    <h3>Product Shoot</h3>
+                    <div class="service-tagline">Make Your Product Impossible to Ignore.</div>
+                    <p class="service-desc">Great product photography makes a huge difference in how customers perceive your brand. Clean, attractive, and professional commercial imagery.</p>
+                    <ul class="service-features-list">
+                        <li><i class="fas fa-check-circle"></i> E-commerce products, fashion & clothing</li>
+                        <li><i class="fas fa-check-circle"></i> Jewelry, cosmetics, electronics & food</li>
+                        <li><i class="fas fa-check-circle"></i> Lifestyle products & brand campaigns</li>
+                    </ul>
+                    <div class="service-platforms-tag">
+                        <strong>Perfect For:</strong> Instagram • Websites • Amazon • Flipkart • Catalogs • Ads
+                    </div>
+                </div>
+                <a href="#booking" class="btn-service-book">Book Product Shoot <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- 3. Wedding Shoot -->
+            <div class="service-detail-card">
+                <div class="service-card-top">
+                    <span class="service-icon-badge">💍</span>
+                    <h3>Wedding Shoot</h3>
+                    <div class="service-tagline">Your Day. Your People. Your Story.</div>
+                    <p class="service-desc">A wedding is a collection of heartfelt emotions, smiles, family celebrations, and memories you'll want to revisit for decades to come.</p>
+                    <ul class="service-features-list">
+                        <li><i class="fas fa-check-circle"></i> Pre-wedding & couple romance portraits</li>
+                        <li><i class="fas fa-check-circle"></i> Bride & groom aesthetic portraits</li>
+                        <li><i class="fas fa-check-circle"></i> Wedding ceremonies & candid celebrations</li>
+                        <li><i class="fas fa-check-circle"></i> Traditional photography, details & receptions</li>
+                    </ul>
+                </div>
+                <a href="#booking" class="btn-service-book">Enquire Wedding Shoot <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- 4. Model Shoot -->
+            <div class="service-detail-card">
+                <div class="service-card-top">
+                    <span class="service-icon-badge">👗</span>
+                    <h3>Model Shoot</h3>
+                    <div class="service-tagline">Confidence Looks Good On Camera.</div>
+                    <p class="service-desc">Build a professional modeling portfolio with high-quality studio photography for aspiring models, fashion creators, influencers, and brands.</p>
+                    <ul class="service-features-list">
+                        <li><i class="fas fa-check-circle"></i> Professional model portfolio shoots</li>
+                        <li><i class="fas fa-check-circle"></i> Fashion & editorial creative sessions</li>
+                        <li><i class="fas fa-check-circle"></i> Social media content & personal branding</li>
+                        <li><i class="fas fa-check-circle"></i> Commercial & promotional photography</li>
+                    </ul>
+                </div>
+                <a href="#booking" class="btn-service-book">Book Model Shoot <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- 5. Family Portraits -->
+            <div class="service-detail-card">
+                <div class="service-card-top">
+                    <span class="service-icon-badge">👨‍👩‍👧</span>
+                    <h3>Family Portraits</h3>
+                    <div class="service-tagline">Together Is Our Favorite Place To Be.</div>
+                    <p class="service-desc">Families change, children grow, and moments pass. A professional family photoshoot gives you timeless portraits you can frame at home.</p>
+                    <ul class="service-features-list">
+                        <li><i class="fas fa-check-circle"></i> Multi-generation family portraits</li>
+                        <li><i class="fas fa-check-circle"></i> Candid family interaction & bonding</li>
+                        <li><i class="fas fa-check-circle"></i> Festive & milestone family gatherings</li>
+                        <li><i class="fas fa-check-circle"></i> High-resolution canvas wall portraits</li>
+                    </ul>
+                </div>
+                <a href="#booking" class="btn-service-book">Book Family Session <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- 6. Birthday Shoots -->
+            <div class="service-detail-card">
+                <div class="service-card-top">
+                    <span class="service-icon-badge">🎂</span>
+                    <h3>Birthday Shoots</h3>
+                    <div class="service-tagline">Another Year. Another Story.</div>
+                    <p class="service-desc">Birthdays deserve more than phone pictures. Celebrate your special day with a customized studio photoshoot designed around you and your theme.</p>
+                    <ul class="service-features-list">
+                        <li><i class="fas fa-check-circle"></i> Kids birthdays & 1st birthday celebrations</li>
+                        <li><i class="fas fa-check-circle"></i> Milestone birthdays & cake smash fun</li>
+                        <li><i class="fas fa-check-circle"></i> Themed backdrop & prop photography</li>
+                        <li><i class="fas fa-check-circle"></i> Birthday portraits & family moments</li>
+                    </ul>
+                </div>
+                <a href="#booking" class="btn-service-book">Book Birthday Shoot <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- 7. Portrait Photography -->
+            <div class="service-detail-card">
+                <div class="service-card-top">
+                    <span class="service-icon-badge">👔</span>
+                    <h3>Portrait Photography</h3>
+                    <div class="service-tagline">A Better Picture Starts With The Right Light.</div>
+                    <p class="service-desc">Elevate your professional identity with high-impact headshots and portrait sessions crafted with deliberate studio lighting and angles.</p>
+                    <ul class="service-features-list">
+                        <li><i class="fas fa-check-circle"></i> LinkedIn & corporate executive portraits</li>
+                        <li><i class="fas fa-check-circle"></i> Resumes, CVs & author portfolios</li>
+                        <li><i class="fas fa-check-circle"></i> Website bio & business profiles</li>
+                        <li><i class="fas fa-check-circle"></i> Personal branding & speaker imagery</li>
+                    </ul>
+                </div>
+                <a href="#booking" class="btn-service-book">Book Portrait Session <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- 8. Couple Photography -->
+            <div class="service-detail-card">
+                <div class="service-card-top">
+                    <span class="service-icon-badge">❤️</span>
+                    <h3>Couple Photography</h3>
+                    <div class="service-tagline">Two People. One Beautiful Story.</div>
+                    <p class="service-desc">Celebrate your relationship with relaxed and romantic photography that captures your genuine chemistry, connection, and joy.</p>
+                    <ul class="service-features-list">
+                        <li><i class="fas fa-check-circle"></i> Romantic couple studio portraits</li>
+                        <li><i class="fas fa-check-circle"></i> Engagement & pre-wedding sessions</li>
+                        <li><i class="fas fa-check-circle"></i> Anniversary celebration photography</li>
+                        <li><i class="fas fa-check-circle"></i> Special relationship occasion shoots</li>
+                    </ul>
+                </div>
+                <a href="#booking" class="btn-service-book">Book Couple Shoot <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- 9. Creative Photoshoots -->
+            <div class="service-detail-card">
+                <div class="service-card-top">
+                    <span class="service-icon-badge">🎨</span>
+                    <h3>Creative Photoshoots</h3>
+                    <div class="service-tagline">Have an Idea? Let's Create It.</div>
+                    <p class="service-desc">Not every photoshoot needs to follow standard formulas. You bring the idea, outfit, or mood — and we build the frame, lighting, and art.</p>
+                    <ul class="service-features-list">
+                        <li><i class="fas fa-check-circle"></i> Custom artistic & cinematic concepts</li>
+                        <li><i class="fas fa-check-circle"></i> Color gel & creative lighting setups</li>
+                        <li><i class="fas fa-check-circle"></i> Fine art & experimental photography</li>
+                        <li><i class="fas fa-check-circle"></i> Editorial & concept storytelling</li>
+                    </ul>
+                </div>
+                <a href="#booking" class="btn-service-book">Discuss Custom Idea <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Snapilla Experience Section -->
+    <section class="experience-sec" id="experience" style="padding: 100px 5%; text-align: center; background: #fdfdfd;">
+        <h2 class="section-title">🎬 The Snapilla Experience</h2>
+        <p class="section-subtitle">From Idea To Final Photograph — We make your photoshoot effortless, comfortable, and fun through our proven 8-step workflow.</p>
+        
+        <div class="experience-grid">
+            <div class="experience-step-card">
+                <div class="step-number">01</div>
+                <h3>Talk To Us</h3>
+                <p>Tell us about the type of photoshoot, purpose, ideas, and expectations you have in mind.</p>
+            </div>
+            <div class="experience-step-card">
+                <div class="step-number">02</div>
+                <h3>Choose Your Session</h3>
+                <p>Select your photography service, package, deliverables, and schedule your preferred date.</p>
+            </div>
+            <div class="experience-step-card">
+                <div class="step-number">03</div>
+                <h3>Visit Our Studio</h3>
+                <p>Come to Snapilla Studio at your scheduled time where our clean, equipped studio awaits you.</p>
+            </div>
+            <div class="experience-step-card">
+                <div class="step-number">04</div>
+                <h3>Get Camera Ready</h3>
+                <p>Our photographer guides you through positioning, outfits, expressions, and posing ease.</p>
+            </div>
+            <div class="experience-step-card">
+                <div class="step-number">05</div>
+                <h3>The Shoot</h3>
+                <p>We capture different angles, expressions, creative lighting, and genuine candid moments.</p>
+            </div>
+            <div class="experience-step-card">
+                <div class="step-number">06</div>
+                <h3>Photo Selection</h3>
+                <p>Review the unedited preview frames together and pick your favorite shots for final retouching.</p>
+            </div>
+            <div class="experience-step-card">
+                <div class="step-number">07</div>
+                <h3>Professional Editing</h3>
+                <p>Selected images receive detailed color correction, skin retouching, and premium finishing.</p>
+            </div>
+            <div class="experience-step-card">
+                <div class="step-number">08</div>
+                <h3>Memories Are Ready</h3>
+                <p>Receive your high-res digital files and album prints — ready to share, print, and treasure forever.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Studio Visit Section -->
+    <section class="studio-visit-sec" id="studio" style="padding: 100px 5%; background: #ffffff;">
+        <h2 class="section-title">📍 Studio Visit</h2>
+        <p class="section-subtitle">Your Photoshoot Starts At Our Dedicated Photography Studio</p>
+        
+        <div class="studio-notice-box">
+            <div class="studio-info-col">
+                <span class="studio-highlight-pill">Studio-Based Photography Only</span>
+                <h3>Welcome To Snapilla Studio</h3>
+                <p>
+                    Snapilla Studio currently operates as a <strong>dedicated studio-based photography service</strong>. 
+                    Clients are warmly invited to visit our studio for photography sessions. 
+                    <em>We do not currently provide doorstep or home photography services.</em>
+                </p>
+                <div style="margin-bottom: 20px;">
+                    <p style="margin: 0 0 6px 0; font-weight: 700; color: #111;">📍 Location:</p>
+                    <p style="margin: 0; color: #555;">Snapilla Studio, Ahmedabad, Gujarat, India</p>
+                </div>
+                <div class="studio-btns">
+                    <a href="https://maps.google.com" target="_blank" class="btn-studio-dir"><i class="fas fa-map-marked-alt"></i> Get Directions</a>
+                    <a href="https://wa.me/919000000000" target="_blank" class="btn-studio-wa"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+                </div>
+            </div>
+
+            <div class="studio-hours-card">
+                <h4><i class="far fa-clock" style="color: #FF9800; margin-right: 8px;"></i> Studio Hours</h4>
+                <div class="hours-row">
+                    <span><strong>Monday – Saturday:</strong></span>
+                    <span>10:00 AM – 8:00 PM</span>
+                </div>
+                <div class="hours-row">
+                    <span><strong>Sunday:</strong></span>
+                    <span>10:00 AM – 6:00 PM</span>
+                </div>
+                <p style="margin-top: 15px; font-size: 0.85rem; color: #888; font-style: italic;">
+                    * Appointments are highly recommended prior to visiting to ensure studio setup availability.
+                </p>
             </div>
         </div>
     </section>
 
     <!-- Detailed About Us -->
-    <section class="about-us" id="about" style="padding: 100px 5%; text-align: center;">
+    <section class="about-us" id="about" style="padding: 100px 5%; text-align: center; background: #fafafa;">
         <h2 class="section-title">Who We Are</h2>
-        <div style="max-width: 800px; margin: 0 auto; font-size: 1.2rem; line-height: 1.8;">
-            <p><strong>Snapilla Studio</strong> is a creative photography brand dedicated to capturing life’s most beautiful moments.</p>
-            <p>We believe photography is not just about pictures — it’s about emotions, memories, and storytelling.</p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 50px;">
-                <div>
-                    <h4 style="font-family: var(--font-logo); color: var(--primary-color);">🎯 Mission</h4>
-                    <p>Premium-quality photography that creates lifelong memories.</p>
+        <div style="max-width: 850px; margin: 0 auto; font-size: 1.2rem; line-height: 1.8;">
+            <p><strong>Snapilla Studio</strong> is a premier creative photography studio dedicated to capturing life’s most authentic and joyful milestones.</p>
+            <p>We believe photography is never just about pressing a button — it’s about light, perspective, emotion, and timeless storytelling.</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-top: 50px;">
+                <div style="background: #fff; padding: 30px 20px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 8px 25px rgba(0,0,0,0.04);">
+                    <h4 style="font-family: var(--font-logo); color: var(--primary-color); font-size: 1.3rem; margin-bottom: 10px;">🎯 Our Mission</h4>
+                    <p style="font-size: 0.95rem; color: #666; margin: 0;">Deliver premium-quality photography that creates lifelong memories and elevates personal & commercial brands.</p>
                 </div>
-                <div>
-                    <h4 style="font-family: var(--font-logo); color: var(--primary-color);">👁️ Vision</h4>
-                    <p>To become the most trusted and creative photography studio.</p>
+                <div style="background: #fff; padding: 30px 20px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 8px 25px rgba(0,0,0,0.04);">
+                    <h4 style="font-family: var(--font-logo); color: var(--primary-color); font-size: 1.3rem; margin-bottom: 10px;">👁️ Our Vision</h4>
+                    <p style="font-size: 0.95rem; color: #666; margin: 0;">To be the most trusted, artistic, and client-cherished photography studio in the region.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="portfolio" id="portfolio">
-        <h2 class="section-title">🖼️ Our Work, Our Pride</h2>
-        <p style="text-align: center; max-width: 700px; margin: -30px auto 20px auto;">Every image we capture tells a story. Explore our 3D rotating albums and see the magic we create through our lens.</p>
+    <!-- Portfolio Section -->
+    <section class="portfolio" id="portfolio" style="padding: 100px 5%; background: #ffffff;">
+        <h2 class="section-title">🖼️ Our Gallery</h2>
+        <p class="section-subtitle">A Collection of Moments — Explore our photography work across baby, wedding, products, models, portraits, couples, family, and events.</p>
         
+        <div class="gallery-filters">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Baby</button>
+            <button class="filter-btn">Wedding</button>
+            <button class="filter-btn">Products</button>
+            <button class="filter-btn">Models</button>
+            <button class="filter-btn">Portraits</button>
+            <button class="filter-btn">Couples</button>
+            <button class="filter-btn">Family</button>
+        </div>
+
         <div class="portfolio-stage">
             <div class="portfolio-spinner" id="portfolioSpinner">
                 <div class="portfolio-card"><img src="p1.png" alt="Photography Album 1"></div>
                 <div class="portfolio-card"><img src="p2.png" alt="Photography Album 2"></div>
                 <div class="portfolio-card"><img src="p3.png" alt="Photography Album 3"></div>
                 <div class="portfolio-card"><img src="p4.png" alt="Photography Album 4"></div>
-                <div class="portfolio-card"><img src="baby.png" alt="Photography Album 5"></div>
-                <div class="portfolio-card"><img src="wedding.png" alt="Photography Album 6"></div>
-                <div class="portfolio-card"><img src="modeling.png" alt="Photography Album 7"></div>
-                <div class="portfolio-card"><img src="product.png" alt="Photography Album 8"></div>
+                <div class="portfolio-card"><img src="baby.png" alt="Baby Shoot Album"></div>
+                <div class="portfolio-card"><img src="wedding.png" alt="Wedding Shoot Album"></div>
+                <div class="portfolio-card"><img src="modeling.png" alt="Model Shoot Album"></div>
+                <div class="portfolio-card"><img src="product.png" alt="Product Shoot Album"></div>
             </div>
         </div>
     </section>
 
     <!-- Testimonials Section -->
-    <section class="testimonials-sec" style="padding: 100px 0;">
-        <h2 class="section-title">⭐ What Clients Say</h2>
+    <section class="testimonials-sec" id="reviews" style="padding: 100px 0; background: #fafafa;">
+        <h2 class="section-title">⭐ Client Reviews</h2>
+        <p class="section-subtitle">What Our Clients Say — Genuine feedback from families, brands, models, and couples who trusted Snapilla Studio.</p>
         
         <div class="testimonial-wall">
             <!-- Row 1: Left to Right -->
             <div class="marquee-track" id="testimonialTrack1">
-                <!-- Batch 1 -->
                 <div class="testimonial-card">
-                    <p>“The baby shoot was absolutely adorable. Highly professional team! They captured every smile perfectly.”</p>
-                    <div class="clint-info">
-                        <div class="clint-avatar"></div>
-                        <div class="clint-details"><h4>Bilal Ahmed</h4><p>IT Manager</p></div>
-                    </div>
+                    <p>“Beautiful photographs and a very comfortable experience. The team guided us with natural poses!”</p>
+                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Ananya Patel</h4><p>Family Shoot</p></div></div>
                 </div>
                 <div class="testimonial-card">
-                    <p>“They made our wedding look like a movie. Amazing work, high-end quality throughout!”</p>
-                    <div class="clint-info">
-                        <div class="clint-avatar"></div>
-                        <div class="clint-details"><h4>Sana Sheikh</h4><p>Sales Manager</p></div>
-                    </div>
+                    <p>“The photos came out exactly how we wanted. Great experience from booking to final album!”</p>
+                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Rohan Mehta</h4><p>Couple Portrait</p></div></div>
                 </div>
                 <div class="testimonial-card">
-                    <p>“Best product shoot I’ve ever done. My sales increased! Professionalism at its peak.”</p>
-                    <div class="clint-info">
-                        <div class="clint-avatar"></div>
-                        <div class="clint-details"><h4>Zainab Hussain</h4><p>Project Manager</p></div>
-                    </div>
-                </div>
-                <!-- Cloning for Infinite Effect -->
-                <div class="testimonial-card">
-                    <p>“The baby shoot was absolutely adorable. Highly professional team! They captured every smile perfectly.”</p>
-                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Bilal Ahmed</h4><p>IT Manager</p></div></div>
+                    <p>“Professional setup and amazing attention to detail. Our e-commerce sales jumped after this product shoot.”</p>
+                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Pooja Shah</h4><p>E-commerce Brand Owner</p></div></div>
                 </div>
                 <div class="testimonial-card">
-                    <p>“They made our wedding look like a movie. Amazing work, high-end quality throughout!”</p>
-                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Sana Sheikh</h4><p>Sales Manager</p></div></div>
+                    <p>“Loved the way our special moments were captured. The baby shoot was heartwarming and adorable!”</p>
+                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Kavita Desai</h4><p>Baby Milestone Shoot</p></div></div>
+                </div>
+                <!-- Duplicate for Infinite Loop -->
+                <div class="testimonial-card">
+                    <p>“Beautiful photographs and a very comfortable experience. The team guided us with natural poses!”</p>
+                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Ananya Patel</h4><p>Family Shoot</p></div></div>
                 </div>
                 <div class="testimonial-card">
-                    <p>“Best product shoot I’ve ever done. My sales increased! Professionalism at its peak.”</p>
-                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Zainab Hussain</h4><p>Project Manager</p></div></div>
+                    <p>“The photos came out exactly how we wanted. Great experience from booking to final album!”</p>
+                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Rohan Mehta</h4><p>Couple Portrait</p></div></div>
                 </div>
             </div>
 
             <!-- Row 2: Right to Left -->
             <div class="marquee-track reverse" id="testimonialTrack2">
                 <div class="testimonial-card">
-                    <p>“Using this studio, our brand presence significantly improved. Amazing visuals!”</p>
-                    <div class="clint-info">
-                        <div class="clint-avatar"></div>
-                        <div class="clint-details"><h4>Hassan Ali</h4><p>E-commerce Manager</p></div>
-                    </div>
+                    <p>“They made our wedding look like a cinematic movie. The color grading is breathtaking!”</p>
+                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Sana Sheikh</h4><p>Wedding Couple</p></div></div>
                 </div>
                 <div class="testimonial-card">
-                    <p>“The support team is exceptional, guiding us through setup and providing assistance.”</p>
-                    <div class="clint-info">
-                        <div class="clint-avatar"></div>
-                        <div class="clint-details"><h4>Saman Malik</h4><p>Customer Support Lead</p></div>
-                    </div>
+                    <p>“Best modeling portfolio I’ve ever built. Agency loved the lighting and angles!”</p>
+                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Hassan Ali</h4><p>Fashion Model</p></div></div>
                 </div>
                 <div class="testimonial-card">
-                    <p>“Smooth implementation and quick delivery. The final edits were breathless!”</p>
-                    <div class="clint-info">
-                        <div class="clint-avatar"></div>
-                        <div class="clint-details"><h4>Rahul Sharma</h4><p>Marketing Head</p></div>
-                    </div>
-                </div>
-                <!-- Cloning for Infinite Effect -->
-                <div class="testimonial-card">
-                    <p>“Using this studio, our brand presence significantly improved. Amazing visuals!”</p>
-                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Hassan Ali</h4><p>E-commerce Manager</p></div></div>
+                    <p>“Smooth experience, transparent pricing, and quick turnaround. The final retouches are flawless.”</p>
+                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Rahul Sharma</h4><p>Corporate Executive</p></div></div>
                 </div>
                 <div class="testimonial-card">
-                    <p>“The support team is exceptional, guiding us through setup and providing assistance.”</p>
-                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Saman Malik</h4><p>Customer Support Lead</p></div></div>
+                    <p>“Capturing our baby’s first birthday with cake smash was pure joy. Highly recommend Snapilla Studio!”</p>
+                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Bilal Ahmed</h4><p>Parent</p></div></div>
+                </div>
+                <!-- Duplicate for Infinite Loop -->
+                <div class="testimonial-card">
+                    <p>“They made our wedding look like a cinematic movie. The color grading is breathtaking!”</p>
+                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Sana Sheikh</h4><p>Wedding Couple</p></div></div>
                 </div>
                 <div class="testimonial-card">
-                    <p>“Smooth implementation and quick delivery. The final edits were breathless!”</p>
-                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Rahul Sharma</h4><p>Marketing Head</p></div></div>
+                    <p>“Best modeling portfolio I’ve ever built. Agency loved the lighting and angles!”</p>
+                    <div class="clint-info"><div class="clint-avatar"></div><div class="clint-details"><h4>Hassan Ali</h4><p>Fashion Model</p></div></div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Pricing Section -->
-    <section class="pricing" id="pricing" style="padding: 100px 5%; text-align: center;">
+    <section class="pricing" id="pricing" style="padding: 100px 5%; text-align: center; background: #ffffff;">
         <h2 class="section-title">💰 Investment Plans</h2>
+        <p class="section-subtitle">Transparent, value-packed studio photography packages designed for individual portraits, families, and commercial brands.</p>
         <div class="pricing-table" id="pricingTable">
             <!-- Starter -->
             <div class="pricing-card">
                 <div style="font-size: 2.5rem; margin-bottom: 20px;">📸</div>
                 <h3 style="font-size: 1.8rem; margin-bottom: 10px;">Starter</h3>
-                <p style="color: #666; font-size: 0.9rem;">Perfect for small memories.</p>
+                <p style="color: #666; font-size: 0.9rem;">Perfect for quick portraits & small memories.</p>
                 <div style="font-size: 2.5rem; font-weight: 800; margin: 20px 0;">₹4,999</div>
                 <ul class="pricing-list">
-                    <li><i class="fas fa-check"></i> 1 Hour Session</li>
-                    <li><i class="fas fa-check"></i> 10 Edited Images</li>
-                    <li><i class="fas fa-check"></i> Online Gallery</li>
-                    <li><i class="fas fa-check"></i> Standard Delivery</li>
+                    <li><i class="fas fa-check"></i> 1 Hour Studio Session</li>
+                    <li><i class="fas fa-check"></i> 10 Master Edited Images</li>
+                    <li><i class="fas fa-check"></i> Online Digital Gallery</li>
+                    <li><i class="fas fa-check"></i> Standard Delivery (3–5 Days)</li>
                 </ul>
-                <button class="price-btn">Book Plan</button>
+                <a href="#booking" class="price-btn" style="text-decoration: none; display: block;">Book Plan</a>
             </div>
 
             <!-- Premium -->
@@ -1176,60 +1988,68 @@
                 <div class="popular-tag">Popular</div>
                 <div style="font-size: 2.5rem; margin-bottom: 20px;">🎬</div>
                 <h3 style="font-size: 1.8rem; margin-bottom: 10px;">Premium</h3>
-                <p style="color: #666; font-size: 0.9rem;">Best for Family & Events.</p>
+                <p style="color: #666; font-size: 0.9rem;">Best for Family, Baby & Event Sessions.</p>
                 <div style="font-size: 2.5rem; font-weight: 800; margin: 20px 0;">₹14,999</div>
                 <ul class="pricing-list">
-                    <li><i class="fas fa-check"></i> 3 Hours Session</li>
-                    <li><i class="fas fa-check"></i> 30 Edited Images</li>
-                    <li><i class="fas fa-check"></i> Cinematic Teaser</li>
-                    <li><i class="fas fa-check"></i> Priority Delivery</li>
+                    <li><i class="fas fa-check"></i> 3 Hours Studio Session</li>
+                    <li><i class="fas fa-check"></i> 30 Master Edited Images</li>
+                    <li><i class="fas fa-check"></i> Multiple Backdrops & Outfits</li>
+                    <li><i class="fas fa-check"></i> Cinematic Short Teaser</li>
+                    <li><i class="fas fa-check"></i> Priority Express Delivery</li>
                 </ul>
-                <button class="price-btn">Book Plan</button>
+                <a href="#booking" class="price-btn" style="text-decoration: none; display: block;">Book Plan</a>
             </div>
 
             <!-- Luxury -->
             <div class="pricing-card">
                 <div style="font-size: 2.5rem; margin-bottom: 20px;">💎</div>
                 <h3 style="font-size: 1.8rem; margin-bottom: 10px;">Luxury</h3>
-                <p style="color: #666; font-size: 0.9rem;">Elite storytelling experience.</p>
+                <p style="color: #666; font-size: 0.9rem;">Elite storytelling & portfolio experience.</p>
                 <div style="font-size: 2.5rem; font-weight: 800; margin: 20px 0;">₹29,999</div>
                 <ul class="pricing-list">
-                    <li><i class="fas fa-check"></i> Full Day Coverage</li>
-                    <li><i class="fas fa-check"></i> 100+ Edited Images</li>
-                    <li><i class="fas fa-check"></i> Cinematic Film (5 min)</li>
-                    <li><i class="fas fa-check"></i> Premium Photo Album</li>
+                    <li><i class="fas fa-check"></i> Full Day Studio Coverage</li>
+                    <li><i class="fas fa-check"></i> 100+ High-Res Edited Images</li>
+                    <li><i class="fas fa-check"></i> Cinematic Film (5 min 4K)</li>
+                    <li><i class="fas fa-check"></i> Premium Hardcover Photo Album</li>
+                    <li><i class="fas fa-check"></i> Complete Raw Files Included</li>
                 </ul>
-                <button class="price-btn">Book Plan</button>
+                <a href="#booking" class="price-btn" style="text-decoration: none; display: block;">Book Plan</a>
             </div>
         </div>
     </section>
 
     <!-- Booking Section -->
-    <section class="booking" id="booking">
-        <h2 class="section-title">📅 Book Your Dream Shoot Today</h2>
-        <p style="text-align: center; margin-bottom: 40px;">Let us capture your special moments beautifully. Fill out the form and we’ll get back to you within 24 hours.</p>
+    <section class="booking" id="booking" style="padding: 100px 5%; background: #fafafa;">
+        <h2 class="section-title">📅 Book Your Photoshoot</h2>
+        <p class="section-subtitle">Let’s Plan Your Perfect Shoot — Tell us what you're looking for and our team will help you plan your session.</p>
         <div class="booking-container">
             <form id="bookingForm">
                 <div class="form-group">
                     <label for="name">Full Name</label>
-                    <input type="text" id="name" placeholder="Enter your name" required>
+                    <input type="text" id="name" placeholder="Enter your full name" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="Enter your email" required>
+                    <input type="email" id="email" placeholder="Enter your email address" required>
                 </div>
                 <div class="form-group">
-                    <label for="phone">Phone Number</label>
+                    <label for="phone">Phone Number / WhatsApp</label>
                     <input type="tel" id="phone" placeholder="Enter your phone number" required>
                 </div>
                 <div class="form-group">
-                    <label for="shootType">Shoot Type</label>
+                    <label for="shootType">Select Service</label>
                     <select id="shootType" required>
-                        <option value="" disabled selected>Select shoot type</option>
-                        <option value="Baby Shoot">Baby Shoot Photography</option>
-                        <option value="Wedding Shoot">Wedding Photography</option>
-                        <option value="Product Shoot">Product Photography</option>
-                        <option value="Modeling Shoot">Modeling / Portfolio Shoot</option>
+                        <option value="" disabled selected>Select photography service</option>
+                        <option value="Baby Shoot">👶 Baby Shoot (Newborn, Milestones, Cake Smash)</option>
+                        <option value="Product Shoot">🛍️ Product Shoot (E-commerce, Fashion, Jewelry)</option>
+                        <option value="Wedding Shoot">💍 Wedding Shoot (Pre-Wedding, Ceremonies)</option>
+                        <option value="Model Shoot">👗 Model Shoot (Portfolio, Fashion, Editorial)</option>
+                        <option value="Portrait Photography">👔 Portrait Photography (LinkedIn, Corporate)</option>
+                        <option value="Family Portraits">👨‍👩‍👧 Family Portraits (Generational, Group)</option>
+                        <option value="Birthday Shoots">🎂 Birthday Shoot (Kids, Milestones)</option>
+                        <option value="Couple Photography">❤️ Couple Photography (Romance, Anniversary)</option>
+                        <option value="Creative Photoshoot">🎨 Creative / Custom Concept Shoot</option>
+                        <option value="Other">✨ Other Special Requirement</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1237,46 +2057,106 @@
                     <input type="date" id="date" required>
                 </div>
                 <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" placeholder="Tell us about your requirements..."></textarea>
+                    <label for="message">Tell Us About Your Shoot & Requirements</label>
+                    <textarea id="message" placeholder="Share your outfit ideas, concepts, themes, or questions with us..."></textarea>
                 </div>
-                <button type="submit" class="btn-burn" style="width: 100%;">Connect via WhatsApp</button>
+                <button type="submit" class="btn-burn" style="width: 100%;">🚀 Send Enquiry & Connect via WhatsApp</button>
             </form>
         </div>
     </section>
 
     <!-- FAQ Section -->
-    <section class="faq" style="padding: 100px 5%;">
-        <h2 class="section-title">❓ FAQ SECTION</h2>
-        <div id="faqContainer" style="max-width: 800px; margin: 0 auto;">
-            <div style="margin-bottom: 30px;">
-                <h4 style="color: var(--primary-color);">Q: How long does it take to deliver photos?</h4>
-                <p>👉 3–7 days depending on the shoot type</p>
+    <section class="faq" id="faq" style="padding: 100px 5%; background: #ffffff;">
+        <h2 class="section-title">💬 Have Questions?</h2>
+        <p class="section-subtitle">We're Here To Help — Answers to the most common questions about our studio, sessions, outfits, and deliverables.</p>
+        
+        <div class="faq-grid" id="faqContainer">
+            <div class="faq-card">
+                <h4><i class="fas fa-calendar-check" style="color: #FF9800;"></i> Do I need an appointment?</h4>
+                <p>Yes. We recommend booking your session in advance so our photography team can prepare the studio, lighting, and customized props according to your specific requirements.</p>
             </div>
-            <div style="margin-bottom: 30px;">
-                <h4 style="color: var(--primary-color);">Q: Do you provide raw photos?</h4>
-                <p>👉 Yes, on request</p>
+            <div class="faq-card">
+                <h4><i class="fas fa-home" style="color: #FF9800;"></i> Do you provide home or doorstep photography?</h4>
+                <p>Currently, <strong>Snapilla Studio provides photography sessions exclusively at our dedicated studio</strong>. Our controlled studio setup allows us to deliver high-end lighting and aesthetic backdrops that cannot be replicated at home.</p>
             </div>
-            <div style="margin-bottom: 30px;">
-                <h4 style="color: var(--primary-color);">Q: Can I customize my shoot theme?</h4>
-                <p>👉 Absolutely! We love creative ideas</p>
+            <div class="faq-card">
+                <h4><i class="fas fa-users" style="color: #FF9800;"></i> Can I bring family or friends?</h4>
+                <p>Yes, absolutely! You are welcome to bring family members or friends depending on the type and package size of your session.</p>
             </div>
-            <div style="margin-bottom: 30px;">
-                <h4 style="color: var(--primary-color);">Q: Do you travel for shoots?</h4>
-                <p>👉 Yes, we cover multiple locations</p>
+            <div class="faq-card">
+                <h4><i class="fas fa-tshirt" style="color: #FF9800;"></i> Can I bring my own outfits and props?</h4>
+                <p>Yes. You can discuss your outfit choices, color palettes, and styling requirements with us before the session. We also have private changing rooms available.</p>
+            </div>
+            <div class="faq-card">
+                <h4><i class="fas fa-magic" style="color: #FF9800;"></i> Do you provide photo editing and retouching?</h4>
+                <p>Yes, professional editing is included in all packages. Selected photographs receive careful skin retouching, color grading, tone adjustments, and polish.</p>
+            </div>
+            <div class="faq-card">
+                <h4><i class="fas fa-hourglass-half" style="color: #FF9800;"></i> How long does a photoshoot take?</h4>
+                <p>The duration typically ranges from 1 hour to a full day, depending on the chosen service, number of outfits, backdrops, and creative concepts.</p>
+            </div>
+            <div class="faq-card">
+                <h4><i class="fas fa-lightbulb" style="color: #FF9800;"></i> Can I discuss a custom or creative photoshoot?</h4>
+                <p>Absolutely! If you have a unique concept, theme, editorial moodboard, or commercial idea, simply contact us and we will design a tailored session for you.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Follow Our Work Section -->
+    <section class="social-follow-sec" style="padding: 100px 5%; text-align: center; background: #fafafa;">
+        <h2 class="section-title">📱 Follow Our Work</h2>
+        <p class="section-subtitle">See More. Get Inspired. Follow Snapilla Studio for our latest photoshoots, behind-the-scenes moments, creative ideas, and new work.</p>
+        
+        <div class="social-follow-grid">
+            <a href="https://instagram.com" target="_blank" class="social-follow-card">
+                <i class="fab fa-instagram"></i>
+                <div>
+                    <h4>Instagram</h4>
+                    <p>@SnapillaStudio</p>
+                </div>
+            </a>
+            <a href="https://facebook.com" target="_blank" class="social-follow-card fb">
+                <i class="fab fa-facebook"></i>
+                <div>
+                    <h4>Facebook</h4>
+                    <p>Snapilla Studio</p>
+                </div>
+            </a>
+            <a href="https://youtube.com" target="_blank" class="social-follow-card yt">
+                <i class="fab fa-youtube"></i>
+                <div>
+                    <h4>YouTube</h4>
+                    <p>Snapilla Studio Stories</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Final Call to Action High-Impact Banner -->
+    <section class="final-cta-sec" style="padding: 0 5% 100px 5%; background: #fafafa;">
+        <div class="final-cta-card">
+            <h2>Don’t Let Your Best Moments Become Forgotten Moments.</h2>
+            <p>
+                Your memories deserve more than a camera roll. Whether it’s your child’s first birthday, your wedding day, a new product launch, a modeling portfolio, or simply a moment you want to remember — <strong>Let’s capture it beautifully.</strong>
+            </p>
+            <div class="final-cta-btns">
+                <a href="#booking" class="btn-burn" style="background: #FFB300; color: #000; border: none; font-size: 1.1rem; padding: 22px 55px;">📸 Book Your Shoot Now</a>
+                <a href="https://wa.me/919000000000" target="_blank" class="btn-burn" style="background: transparent; border: 2px solid #fff; color: #fff; font-size: 1.1rem; padding: 22px 50px;">💬 Chat on WhatsApp</a>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section class="contact" id="contact">
+    <section class="contact" id="contact" style="padding: 100px 5%; background: #ffffff;">
         <h2 class="section-title">📍 Get In Touch</h2>
+        <p class="section-subtitle">Have a question? Want to book a photoshoot? Have a creative idea? Get in touch with Snapilla Studio.</p>
+        
         <div class="contact-grid">
             <div class="contact-info">
                 <h3>Contact Information</h3>
                 <div class="info-item">
                     <i class="fas fa-map-marker-alt"></i>
-                    <p id="contactAddress">📍 Ahmedabad, India</p>
+                    <p id="contactAddress">📍 Ahmedabad, Gujarat, India</p>
                 </div>
                 <div class="info-item">
                     <i class="fas fa-phone"></i>
@@ -1286,10 +2166,14 @@
                     <i class="fas fa-envelope"></i>
                     <p id="contactEmail">📧 snapillastudio@gmail.com</p>
                 </div>
+                <div class="info-item">
+                    <i class="far fa-clock"></i>
+                    <p>🕐 Mon – Sat: 10 AM – 8 PM | Sun: 10 AM – 6 PM</p>
+                </div>
                 <div class="social-links" id="socialLinks">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
             <div class="map-container">
@@ -1298,15 +2182,71 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>© 2026 Snapilla Studio. All Rights Reserved.</p>
-        <p id="footerTagline" style="margin-top: 10px; font-style: italic;">“Turning Moments Into Memories”</p>
-        <p style="margin-top: 15px;">
-            <a href="admin/" style="font-size: 0.8rem; color: #666; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#FFC107'" onmouseout="this.style.color='#666'">
-                <i class="fas fa-lock" style="font-size: 0.75rem; margin-right: 4px;"></i> Admin CMS Portal
-            </a>
-        </p>
+    <!-- Rich Multi-Column Footer -->
+    <footer style="background: #111; color: #fff; padding: 80px 5% 40px 5%;">
+        <div class="footer-content">
+            <div class="footer-col">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                    <img src="logo.png" alt="Snapilla Studio" style="height: 55px; filter: brightness(1.1);">
+                    <span style="font-family: var(--font-logo); font-size: 1.8rem; color: var(--primary-color);">Snapilla Studio</span>
+                </div>
+                <p style="color: #bbb; font-size: 0.95rem; line-height: 1.7; margin-bottom: 15px;">
+                    Professional photography studio specializing in Baby Shoots, Product Shoots, Weddings, Models, Portraits, Families, Birthdays, and Creative Concept Photography.
+                </p>
+                <p id="footerTagline" style="color: var(--primary-color); font-style: italic; font-weight: 600;">
+                    “Where Every Moment Becomes A Memory”
+                </p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#why-us">Why Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#studio">Studio Visit</a></li>
+                    <li><a href="#portfolio">Gallery</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#booking">Book a Shoot</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Our Services</h4>
+                <ul>
+                    <li><a href="#services">Baby Photography</a></li>
+                    <li><a href="#services">Product Photography</a></li>
+                    <li><a href="#services">Wedding Photography</a></li>
+                    <li><a href="#services">Model Photography</a></li>
+                    <li><a href="#services">Portrait Photography</a></li>
+                    <li><a href="#services">Family Photography</a></li>
+                    <li><a href="#services">Birthday Photography</a></li>
+                    <li><a href="#services">Couple Photography</a></li>
+                    <li><a href="#services">Creative Shoots</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Studio Details</h4>
+                <p style="color: #bbb; font-size: 0.9rem; margin-bottom: 10px;">📍 Ahmedabad, Gujarat, India</p>
+                <p style="color: #bbb; font-size: 0.9rem; margin-bottom: 10px;">📞 +91 XXXXX XXXXX</p>
+                <p style="color: #bbb; font-size: 0.9rem; margin-bottom: 15px;">📧 snapillastudio@gmail.com</p>
+                <p style="color: #888; font-size: 0.85rem; line-height: 1.5;">
+                    Studio Sessions by Appointment. Doorstep services are not currently provided.
+                </p>
+            </div>
+        </div>
+
+        <div style="text-align: center; border-top: 1px solid #282828; padding-top: 30px; margin-top: 40px; color: #777; font-size: 0.88rem;">
+            <p>© 2026 Snapilla Studio. All Rights Reserved. Professional Photography Studio.</p>
+            <p style="margin-top: 12px;">
+                <a href="admin/" style="font-size: 0.82rem; color: #888; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#FFC107'" onmouseout="this.style.color='#888'">
+                    <i class="fas fa-lock" style="font-size: 0.75rem; margin-right: 4px;"></i> Admin CMS Portal
+                </a>
+            </p>
+        </div>
     </footer>
 
     <!-- Lightbox -->
