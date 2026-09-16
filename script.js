@@ -4,8 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
         whatsapp_number: '919000000000'
     };
 
-    // 1. Navbar scroll effect
+    // 1. Navbar scroll & Mobile Menu Toggle
     const nav = document.querySelector('nav');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
     if (nav) {
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
@@ -13,6 +16,28 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 nav.classList.remove('scrolled');
             }
+        });
+    }
+
+    if (navToggle && navLinks) {
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = navToggle.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            }
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                const icon = navToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.add('fa-bars');
+                    icon.classList.remove('fa-times');
+                }
+            });
         });
     }
 
