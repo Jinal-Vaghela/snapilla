@@ -119,86 +119,104 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 5000);
     }
 
-    if (bookingForm) {
-        bookingForm.addEventListener('submit', (e) => {
+    // 3. Booking Form - Instant Lead Capture & Direct WhatsApp Connection
+    const bookingForm = document.getElementById('bookingForm');
+    const btnSubmitBooking = document.getElementById('btnSubmitBooking');
+
+    function handleBookingSubmit(e) {
+        if (e) {
             e.preventDefault();
-            
-            const name = (document.getElementById('name')?.value || '').trim();
-            const email = (document.getElementById('email')?.value || '').trim();
-            const phone = (document.getElementById('phone')?.value || '').trim();
-            const shootType = document.getElementById('shootType')?.value || 'General Inquiry';
-            const date = document.getElementById('date')?.value || '';
-            const message = (document.getElementById('message')?.value || '').trim();
+            e.stopPropagation();
+        }
 
-            const leadId = 'lead_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
-            const formattedDate = new Date().toLocaleString('en-IN', {
-                day: '2-digit', month: 'short', year: 'numeric',
-                hour: '2-digit', minute: '2-digit', hour12: true
-            });
+        const name = (document.getElementById('name')?.value || '').trim();
+        const email = (document.getElementById('email')?.value || '').trim();
+        const phone = (document.getElementById('phone')?.value || '').trim();
+        const shootType = document.getElementById('shootType')?.value || 'General Studio Inquiry';
+        const date = document.getElementById('date')?.value || '';
+        const message = (document.getElementById('message')?.value || '').trim();
 
-            const leadRecord = {
-                id: leadId,
-                name: name || 'Website Visitor',
-                email: email || 'Not provided',
-                phone: phone || 'Not provided',
-                shootType: shootType,
-                date: date || 'Flexible',
-                message: message || 'Inquired via website booking form',
-                source: 'Website Booking Form',
-                status: 'New Lead',
-                submittedAt: formattedDate,
-                timestamp: Date.now()
-            };
+        const leadId = 'lead_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+        const formattedDate = new Date().toLocaleString('en-IN', {
+            day: '2-digit', month: 'short', year: 'numeric',
+            hour: '2-digit', minute: '2-digit', hour12: true
+        });
 
-            // 1. Save lead to LocalStorage cache immediately
+        const leadRecord = {
+            id: leadId,
+            name: name || 'Website Visitor',
+            email: email || 'Not provided',
+            phone: phone || 'Not provided',
+            shootType: shootType,
+            date: date || 'Flexible',
+            message: message || 'Inquired via website booking form',
+            source: 'Website Booking Form',
+            status: 'New Lead',
+            submittedAt: formattedDate,
+            timestamp: Date.now()
+        };
+
+        // 1. Immediately save lead to LocalStorage cache
+        try {
+            const existingLeads = JSON.parse(localStorage.getItem('snapilla_bookings_leads') || '[]');
+            existingLeads.unshift(leadRecord);
+            localStorage.setItem('snapilla_bookings_leads', JSON.stringify(existingLeads));
+        } catch (err) {
+            console.warn('LocalStorage lead cache error:', err);
+        }
+
+        // 2. Save lead to Firebase Firestore in background
+        if (typeof isFirebaseInitialized !== 'undefined' && isFirebaseInitialized && db) {
             try {
-                const existingLeads = JSON.parse(localStorage.getItem('snapilla_bookings_leads') || '[]');
-                existingLeads.unshift(leadRecord);
-                localStorage.setItem('snapilla_bookings_leads', JSON.stringify(existingLeads));
-            } catch (err) {
-                console.warn('LocalStorage lead cache error:', err);
-            }
-
-            // 2. Save lead to Firebase Firestore in background (non-blocking)
-            if (typeof isFirebaseInitialized !== 'undefined' && isFirebaseInitialized && db) {
                 db.collection('bookings').doc(leadId).set({
                     ...leadRecord,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 }).catch(err => {
                     console.warn('Could not save booking to Firestore', err);
                 });
+            } catch (fbErr) {
+                console.warn('Firestore set error:', fbErr);
             }
+        }
 
-            // 3. Show instant confirmation to visitor
-            showBookingToast('Opening WhatsApp to connect with Snapilla Studio...');
+        // 3. Show instant confirmation toast
+        showBookingToast('Opening WhatsApp to connect with Snapilla Studio...');
 
-            // 4. Prepare structured WhatsApp booking message
-            const lines = [
-                "📸 *NEW BOOKING INQUIRY - SNAPILLA STUDIO*",
-                "━━━━━━━━━━━━━━━━━━━━━",
-                `👤 *Name:* ${name || 'Not provided'}`,
-                `📧 *Email:* ${email || 'Not provided'}`,
-                `📞 *Phone:* ${phone || 'Not provided'}`,
-                `🎯 *Shoot Type:* ${shootType}`,
-                `📅 *Preferred Date:* ${date || 'Flexible'}`,
-                `💬 *Details:* ${message || 'Looking forward to booking my shoot!'}`,
-                "━━━━━━━━━━━━━━━━━━━━━",
-                "✨ _Sent directly via Snapilla Studio Website_"
-            ];
-            const whatsappText = encodeURIComponent(lines.join('\n'));
-            const targetPhone = (liveSettings.whatsapp_number || '918780286850').replace(/\D/g, '');
-            const whatsappUrl = `https://wa.me/${targetPhone}?text=${whatsappText}`;
+        // 4. Prepare WhatsApp booking message text
+        const lines = [
+            "📸 *NEW BOOKING INQUIRY - SNAPILLA STUDIO*",
+            "━━━━━━━━━━━━━━━━━━━━━",
+            `👤 *Name:* ${name || 'Not provided'}`,
+            `📧 *Email:* ${email || 'Not provided'}`,
+            `📞 *Phone:* ${phone || 'Not provided'}`,
+            `🎯 *Shoot Type:* ${shootType}`,
+            `📅 *Preferred Date:* ${date || 'Flexible'}`,
+            `💬 *Details:* ${message || 'Looking forward to booking my shoot!'}`,
+            "━━━━━━━━━━━━━━━━━━━━━",
+            "✨ _Sent directly via Snapilla Studio Website_"
+        ];
+        const whatsappText = encodeURIComponent(lines.join('\n'));
+        const targetPhone = (liveSettings.whatsapp_number || '918780286850').replace(/\D/g, '');
+        const whatsappUrl = `https://wa.me/${targetPhone}?text=${whatsappText}`;
 
-            // 5. Open WhatsApp directly (reliable popup + mobile fallback)
-            try {
-                const win = window.open(whatsappUrl, '_blank');
-                if (!win || win.closed || typeof win.closed === 'undefined') {
-                    window.location.href = whatsappUrl;
-                }
-            } catch (openErr) {
+        // 5. Open WhatsApp directly and reliably
+        try {
+            const newTab = window.open(whatsappUrl, '_blank');
+            if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
                 window.location.href = whatsappUrl;
             }
-        });
+        } catch (navErr) {
+            window.location.href = whatsappUrl;
+        }
+
+        return false;
+    }
+
+    if (btnSubmitBooking) {
+        btnSubmitBooking.addEventListener('click', handleBookingSubmit);
+    }
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', handleBookingSubmit);
     }
 
     // 3B. Wire "Book Plan", Studio Visit & "Book Service" buttons to redirect/scroll to form
