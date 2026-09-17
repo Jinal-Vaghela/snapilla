@@ -163,17 +163,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // 2. Save lead to Firebase Firestore in background
-        if (typeof isFirebaseInitialized !== 'undefined' && isFirebaseInitialized && db) {
-            try {
+        try {
+            if (typeof isFirebaseInitialized !== 'undefined' && isFirebaseInitialized && db) {
                 db.collection('bookings').doc(leadId).set({
                     ...leadRecord,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                }).catch(err => {
-                    console.warn('Could not save booking to Firestore', err);
-                });
-            } catch (fbErr) {
-                console.warn('Firestore set error:', fbErr);
+                    timestamp: (typeof firebase !== 'undefined' && firebase.firestore && firebase.firestore.FieldValue) ? firebase.firestore.FieldValue.serverTimestamp() : new Date()
+                }).catch(err => console.warn('Firestore err', err));
             }
+        } catch (fbErr) {
+            console.warn('Firestore set error:', fbErr);
         }
 
         // 3. Show instant confirmation toast
@@ -193,15 +191,19 @@ document.addEventListener('DOMContentLoaded', () => {
             "✨ _Sent directly via Snapilla Studio Website_"
         ];
         const whatsappText = encodeURIComponent(lines.join('\n'));
-        const targetPhone = (liveSettings.whatsapp_number || '918780286850').replace(/\D/g, '');
+        const rawNumber = (liveSettings && liveSettings.whatsapp_number) ? liveSettings.whatsapp_number : '918780286850';
+        const targetPhone = rawNumber.replace(/\D/g, '') || '918780286850';
         const whatsappUrl = `https://wa.me/${targetPhone}?text=${whatsappText}`;
 
-        // 5. Open WhatsApp directly and reliably
+        // 5. Open WhatsApp directly via link click (unblockable by popup blockers)
         try {
-            const newTab = window.open(whatsappUrl, '_blank');
-            if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
-                window.location.href = whatsappUrl;
-            }
+            const waLink = document.createElement('a');
+            waLink.href = whatsappUrl;
+            waLink.target = '_blank';
+            waLink.rel = 'noopener noreferrer';
+            document.body.appendChild(waLink);
+            waLink.click();
+            setTimeout(() => waLink.remove(), 200);
         } catch (navErr) {
             window.location.href = whatsappUrl;
         }
