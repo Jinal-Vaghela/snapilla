@@ -421,6 +421,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updatePricingDOM(plansList) {
         if (!Array.isArray(plansList) || plansList.length === 0) return;
+        const table = document.getElementById('pricingTable');
+        if (table) {
             table.innerHTML = plansList.map(plan => {
                 const featuresList = (plan.features || []).map(f => {
                     const featText = typeof f === 'object' ? (f.feature || '') : f;

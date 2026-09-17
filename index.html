@@ -2326,15 +2326,82 @@
     <!-- Firebase SDK Scripts -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js?v=2.5"></script>
+    <script src="firebase-config.js?v=3.0"></script>
 
     <!-- Dependencies -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <script src="webgl.js?v=2.5"></script>
-    <script src="script.js?v=2.5"></script>
-    <!-- Intersection Observer for Scroll Animations -->
+    <script src="webgl.js?v=3.0"></script>
+    <script src="script.js?v=3.0"></script>
+
+    <!-- Standalone WhatsApp Booking Trigger Backup -->
     <script>
+        window.handleBookingSubmit = window.handleBookingSubmit || function(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            const name = (document.getElementById('name')?.value || '').trim();
+            const email = (document.getElementById('email')?.value || '').trim();
+            const phone = (document.getElementById('phone')?.value || '').trim();
+            const shootType = document.getElementById('shootType')?.value || 'General Studio Inquiry';
+            const date = document.getElementById('date')?.value || '';
+            const message = (document.getElementById('message')?.value || '').trim();
+
+            const leadRecord = {
+                id: 'lead_' + Date.now(),
+                name: name || 'Website Visitor',
+                email: email || 'Not provided',
+                phone: phone || 'Not provided',
+                shootType: shootType,
+                date: date || 'Flexible',
+                message: message || 'Inquired via website booking form',
+                source: 'Website Booking Form',
+                submittedAt: new Date().toLocaleString('en-IN'),
+                timestamp: Date.now()
+            };
+
+            try {
+                const existing = JSON.parse(localStorage.getItem('snapilla_bookings_leads') || '[]');
+                existing.unshift(leadRecord);
+                localStorage.setItem('snapilla_bookings_leads', JSON.stringify(existing));
+            } catch (err) {}
+
+            try {
+                if (typeof isFirebaseInitialized !== 'undefined' && isFirebaseInitialized && typeof db !== 'undefined' && db) {
+                    db.collection('bookings').doc(leadRecord.id).set(leadRecord).catch(function(){});
+                }
+            } catch(e) {}
+
+            const lines = [
+                "📸 *NEW BOOKING INQUIRY - SNAPILLA STUDIO*",
+                "━━━━━━━━━━━━━━━━━━━━━",
+                "👤 *Name:* " + (name || 'Not provided'),
+                "📧 *Email:* " + (email || 'Not provided'),
+                "📞 *Phone:* " + (phone || 'Not provided'),
+                "🎯 *Shoot Type:* " + shootType,
+                "📅 *Preferred Date:* " + (date || 'Flexible'),
+                "💬 *Details:* " + (message || 'Looking forward to booking my shoot!'),
+                "━━━━━━━━━━━━━━━━━━━━━",
+                "✨ _Sent directly via Snapilla Studio Website_"
+            ];
+            const whatsappText = encodeURIComponent(lines.join('\n'));
+            const whatsappUrl = "https://wa.me/918780286850?text=" + whatsappText;
+
+            try {
+                const waLink = document.createElement('a');
+                waLink.href = whatsappUrl;
+                waLink.target = '_blank';
+                waLink.rel = 'noopener noreferrer';
+                document.body.appendChild(waLink);
+                waLink.click();
+                setTimeout(function(){ waLink.remove(); }, 200);
+            } catch (navErr) {
+                window.location.href = whatsappUrl;
+            }
+            return false;
+        };
+
         const observerOptions = {
             threshold: 0.1
         };
@@ -2344,12 +2411,10 @@
                 if (entry.isIntersecting) {
                     const cameras = entry.target.querySelectorAll('.camera-unit');
                     cameras.forEach((camera, index) => {
-                        // Small extra delay for each camera relative to parent reveal
                         setTimeout(() => {
                             camera.classList.add('reveal');
                         }, index * 200);
                     });
-                    // Disconnect after animation trigger for performance
                     observer.unobserve(entry.target);
                 }
             });
