@@ -58,6 +58,7 @@ function initAuth() {
         if (sessionActive === 'true') {
             showApp(getAdminCredentials().email);
             loadAllContent();
+            loadBookings();
         } else {
             showLogin();
         }
@@ -78,6 +79,7 @@ function showApp(email) {
     adminApp.style.display = 'flex';
     userEmailText.textContent = email;
     sessionStorage.setItem('snapilla_admin_session', 'true');
+    loadBookings();
 }
 
 // Login Submit
@@ -126,6 +128,7 @@ if (loginForm) {
             if (matchesLocal) {
                 showApp(inputEmail);
                 loadAllContent();
+                loadBookings();
                 showToast('Welcome to Snapilla Admin Dashboard!', 'success');
             } else {
                 authError.textContent = 'Incorrect Admin ID or Password. Default: admin@snapilla.com / snapilla2026';
@@ -189,6 +192,10 @@ function switchTab(tabId) {
 
     if (tabTitles[tabId]) {
         tabTitle.textContent = tabTitles[tabId];
+    }
+
+    if (tabId === 'tab-bookings') {
+        loadBookings();
     }
 }
 
@@ -1169,8 +1176,11 @@ if (faqForm) {
 }
 
 // ----------------------------------------------------
-// 10. BOOKING INQUIRIES
+// 10. BOOKING INQUIRIES & LEAD MANAGEMENT
 // ----------------------------------------------------
+let allBookingsList = [];
+let bookingsListenerAttached = false;
+
 async function loadBookings() {
     const tbody = document.getElementById('bookingTableBody');
     const badge = document.getElementById('badgeBookingCount');
@@ -1178,57 +1188,239 @@ async function loadBookings() {
 
     if (!tbody) return;
 
+    let firestoreBookings = [];
+    let localBookings = [];
+
+    // 1. Fetch from LocalStorage leads
+    try {
+        const stored = localStorage.getItem('snapilla_bookings_leads');
+        if (stored) {
+            localBookings = JSON.parse(stored);
+            if (!Array.isArray(localBookings)) localBookings = [];
+        }
+    } catch (e) {
+        console.warn('Error reading local bookings', e);
+    }
+
+    // 2. Fetch from Firebase Firestore if available
     if (isFirebaseInitialized && db) {
         try {
             const snap = await db.collection('bookings').orderBy('timestamp', 'desc').get();
-            const bookings = [];
-            snap.forEach(doc => bookings.push({ id: doc.id, ...doc.data() }));
+            snap.forEach(doc => {
+                firestoreBookings.push({ id: doc.id, ...doc.data() });
+            });
 
-            if (badge) badge.textContent = bookings.length;
-            if (statBookings) statBookings.textContent = bookings.length;
-
-            if (bookings.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">No booking inquiries yet.</td></tr>`;
-                return;
+            // Auto-sync any local leads to Firestore that are missing
+            for (const lb of localBookings) {
+                const exists = firestoreBookings.some(fb => fb.id === lb.id || (fb.phone && fb.phone === lb.phone && fb.timestamp === lb.timestamp));
+                if (!exists && lb.id) {
+                    try {
+                        await db.collection('bookings').doc(lb.id).set({
+                            ...lb,
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                        firestoreBookings.unshift(lb);
+                    } catch (syncErr) {
+                        console.warn('Sync lead to Firestore note:', syncErr);
+                    }
+                }
             }
 
-            tbody.innerHTML = bookings.map(b => {
-                const dateStr = b.timestamp ? new Date(b.timestamp.toDate ? b.timestamp.toDate() : b.timestamp).toLocaleDateString() : 'Recent';
-                return `
-                    <tr>
-                        <td>${dateStr}</td>
-                        <td><strong>${b.name || 'Anonymous'}</strong></td>
-                        <td><span class="badge-pill badge-warning">${b.shootType || 'Photography'}</span></td>
-                        <td>${b.date || 'Flexible'}</td>
-                        <td>
-                            <div>${b.phone || ''}</div>
-                            <small style="color: var(--text-muted);">${b.email || ''}</small>
-                        </td>
-                        <td style="max-width: 250px; font-size: 0.85rem; color: var(--text-muted);">${b.message || 'No message'}</td>
-                        <td>
-                            <a href="https://wa.me/${(b.phone || '').replace(/\D/g, '')}" target="_blank" class="btn btn-primary btn-sm" title="Chat on WhatsApp">
-                                <i class="fab fa-whatsapp"></i>
-                            </a>
-                            <button class="btn btn-danger btn-sm" onclick="deleteBooking('${b.id}')"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+            // Attach real-time snapshot listener once
+            if (!bookingsListenerAttached) {
+                bookingsListenerAttached = true;
+                db.collection('bookings').onSnapshot(snapshot => {
+                    const updated = [];
+                    snapshot.forEach(d => updated.push({ id: d.id, ...d.data() }));
+                    renderBookingsTable(updated);
+                }, err => console.warn('Bookings listener note:', err));
+            }
         } catch (e) {
-            console.warn('Error loading bookings', e);
+            console.warn('Error querying Firestore bookings, fallback to local', e);
         }
     }
+
+    // Merge both sources and deduplicate by id or phone+date
+    const combinedMap = new Map();
+    [...firestoreBookings, ...localBookings].forEach(item => {
+        const key = item.id || `${item.phone}_${item.timestamp}`;
+        if (!combinedMap.has(key)) {
+            combinedMap.set(key, item);
+        }
+    });
+
+    allBookingsList = Array.from(combinedMap.values());
+    // Sort newest first
+    allBookingsList.sort((a, b) => {
+        const tA = a.timestamp?.toDate ? a.timestamp.toDate().getTime() : (typeof a.timestamp === 'number' ? a.timestamp : new Date(a.submittedAt || 0).getTime());
+        const tB = b.timestamp?.toDate ? b.timestamp.toDate().getTime() : (typeof b.timestamp === 'number' ? b.timestamp : new Date(b.submittedAt || 0).getTime());
+        return (tB || 0) - (tA || 0);
+    });
+
+    renderBookingsTable(allBookingsList);
+}
+
+function renderBookingsTable(bookings) {
+    const tbody = document.getElementById('bookingTableBody');
+    const badge = document.getElementById('badgeBookingCount');
+    const statBookings = document.getElementById('statBookings');
+
+    allBookingsList = bookings || [];
+
+    if (badge) badge.textContent = allBookingsList.length;
+    if (statBookings) statBookings.textContent = allBookingsList.length;
+
+    if (!tbody) return;
+
+    if (allBookingsList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 35px; font-size: 0.95rem;">
+            <i class="fas fa-inbox" style="font-size: 1.8rem; display: block; margin-bottom: 10px; color: #555;"></i>
+            No booking inquiries yet. When visitors submit the form or click inquiry buttons on the site, their leads will appear here in real-time.
+        </td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = allBookingsList.map((b, idx) => {
+        let dateDisplay = 'Recent';
+        if (b.submittedAt) {
+            dateDisplay = b.submittedAt;
+        } else if (b.timestamp) {
+            try {
+                const d = b.timestamp.toDate ? b.timestamp.toDate() : new Date(b.timestamp);
+                dateDisplay = d.toLocaleString('en-IN', {
+                    day: '2-digit', month: 'short', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit', hour12: true
+                });
+            } catch (err) {}
+        }
+
+        const rawPhone = (b.phone || '').replace(/\D/g, '');
+        const cleanPhone = b.phone || 'No phone';
+
+        return `
+            <tr>
+                <td style="white-space: nowrap; font-size: 0.85rem; color: var(--text-muted);">
+                    <i class="far fa-clock" style="margin-right: 4px;"></i> ${dateDisplay}
+                </td>
+                <td>
+                    <strong style="color: #fff; font-size: 0.95rem;">${b.name || 'Anonymous Visitor'}</strong>
+                </td>
+                <td>
+                    <span class="badge-pill badge-warning" style="font-weight: 700; font-size: 0.78rem;">
+                        ${b.shootType || 'Photography Inquiry'}
+                    </span>
+                </td>
+                <td style="font-size: 0.88rem; color: var(--text-main);">
+                    📅 ${b.date || 'Flexible'}
+                </td>
+                <td>
+                    <div style="font-weight: 600; color: #fff; font-size: 0.9rem;">${cleanPhone}</div>
+                    ${b.email ? `<small style="color: var(--text-muted); font-size: 0.8rem;">📧 ${b.email}</small>` : ''}
+                </td>
+                <td style="max-width: 250px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4;">
+                    ${b.message || 'Inquired via booking button'}
+                </td>
+                <td style="white-space: nowrap;">
+                    <div style="display: flex; gap: 6px;">
+                        ${rawPhone ? `
+                            <a href="https://wa.me/${rawPhone}" target="_blank" class="btn btn-primary btn-sm" title="Chat on WhatsApp" style="padding: 6px 10px;">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                            <a href="tel:${rawPhone}" class="btn btn-secondary btn-sm" title="Call Customer" style="padding: 6px 10px;">
+                                <i class="fas fa-phone"></i>
+                            </a>
+                        ` : ''}
+                        <button class="btn btn-danger btn-sm" onclick="deleteBooking('${b.id || idx}')" title="Delete lead" style="padding: 6px 10px;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join('');
 }
 
 async function deleteBooking(id) {
-    if (confirm('Delete this booking record?')) {
-        if (isFirebaseInitialized && db) {
-            await db.collection('bookings').doc(id).delete();
-            loadBookings();
-            showToast('Booking record deleted', 'info');
+    if (confirm('Are you sure you want to delete this customer inquiry?')) {
+        // 1. Delete from Firestore if active
+        if (isFirebaseInitialized && db && id) {
+            try {
+                await db.collection('bookings').doc(id).delete();
+            } catch (e) {
+                console.warn('Firestore delete note:', e);
+            }
         }
+
+        // 2. Delete from LocalStorage
+        try {
+            let local = JSON.parse(localStorage.getItem('snapilla_bookings_leads') || '[]');
+            local = local.filter((item, index) => item.id !== id && String(index) !== String(id));
+            localStorage.setItem('snapilla_bookings_leads', JSON.stringify(local));
+        } catch (e) {}
+
+        // Reload
+        await loadBookings();
+        showToast('Lead record removed', 'info');
     }
 }
+
+async function clearAllBookings() {
+    if (allBookingsList.length === 0) {
+        showToast('No leads to clear', 'info');
+        return;
+    }
+    if (confirm(`Delete all ${allBookingsList.length} booking records? This cannot be undone.`)) {
+        if (isFirebaseInitialized && db) {
+            try {
+                const snap = await db.collection('bookings').get();
+                const batch = db.batch();
+                snap.forEach(doc => batch.delete(doc.ref));
+                await batch.commit();
+            } catch (e) {
+                console.warn('Firestore batch clear error', e);
+            }
+        }
+        localStorage.removeItem('snapilla_bookings_leads');
+        allBookingsList = [];
+        renderBookingsTable([]);
+        showToast('All leads cleared', 'info');
+    }
+}
+
+function exportBookingsCSV() {
+    if (allBookingsList.length === 0) {
+        showToast('No booking leads to export!', 'error');
+        return;
+    }
+
+    const headers = ['Submitted Date', 'Customer Name', 'Email', 'Phone', 'Shoot Type', 'Preferred Date', 'Message'];
+    const rows = allBookingsList.map(b => [
+        `"${b.submittedAt || b.date || ''}"`,
+        `"${(b.name || '').replace(/"/g, '""')}"`,
+        `"${(b.email || '').replace(/"/g, '""')}"`,
+        `"${(b.phone || '').replace(/"/g, '""')}"`,
+        `"${(b.shootType || '').replace(/"/g, '""')}"`,
+        `"${(b.date || '').replace(/"/g, '""')}"`,
+        `"${(b.message || '').replace(/"/g, '""')}"`
+    ]);
+
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `Snapilla_Leads_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast('Leads exported as CSV!', 'success');
+}
+
+// Listen to storage changes across tabs
+window.addEventListener('storage', (e) => {
+    if (e.key === 'snapilla_bookings_leads') {
+        loadBookings();
+    }
+});
 
 // ----------------------------------------------------
 // 11. FIREBASE CONFIG FORM

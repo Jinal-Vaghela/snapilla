@@ -590,14 +590,22 @@
                 <!-- 13. BOOKING LEADS TAB -->
                 <section class="tab-pane" id="tab-bookings">
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header" style="flex-wrap: wrap; gap: 12px;">
                             <div>
                                 <h3 class="card-title"><i class="fas fa-inbox"></i> Customer Inquiries & Bookings</h3>
-                                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Leads captured directly from the website booking form.</p>
+                                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Real-time leads captured from website form submissions & clicks.</p>
                             </div>
-                            <button class="btn btn-secondary btn-sm" onclick="loadBookings()">
-                                <i class="fas fa-sync-alt"></i> Refresh
-                            </button>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <button class="btn btn-secondary btn-sm" onclick="loadBookings()">
+                                    <i class="fas fa-sync-alt"></i> Refresh
+                                </button>
+                                <button class="btn btn-primary btn-sm" onclick="exportBookingsCSV()">
+                                    <i class="fas fa-file-export"></i> Export CSV
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="clearAllBookings()" title="Clear all leads">
+                                    <i class="fas fa-trash-alt"></i> Clear All
+                                </button>
+                            </div>
                         </div>
                         <div class="table-responsive">
                             <table>
@@ -607,8 +615,8 @@
                                         <th>Customer</th>
                                         <th>Shoot Type</th>
                                         <th>Preferred Date</th>
-                                        <th>Contact</th>
-                                        <th>Message</th>
+                                        <th>Contact Info</th>
+                                        <th>Message / Notes</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>

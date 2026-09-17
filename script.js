@@ -79,29 +79,91 @@ document.addEventListener('DOMContentLoaded', () => {
 
     attachLightboxHandlers();
 
-    // 3. Booking Form - WhatsApp & Firestore Integration
+    // 3. Booking Form - Instant Lead Capture (Firestore & LocalStorage) & WhatsApp Integration
     const bookingForm = document.getElementById('bookingForm');
+    
+    // Function to show on-page feedback toast
+    function showBookingToast(message, isSuccess = true) {
+        let toast = document.getElementById('snapilla-booking-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'snapilla-booking-toast';
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                background: #111;
+                color: #fff;
+                padding: 16px 24px;
+                border-radius: 12px;
+                border-left: 5px solid #FF9800;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 9999;
+                font-family: 'Poppins', sans-serif;
+                font-size: 0.95rem;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                transition: all 0.4s ease;
+                transform: translateY(100px);
+                opacity: 0;
+            `;
+            document.body.appendChild(toast);
+        }
+        toast.innerHTML = `<span style="font-size: 1.3rem;">${isSuccess ? '✅' : 'ℹ️'}</span> <div><strong>${message}</strong></div>`;
+        toast.style.transform = 'translateY(0)';
+        toast.style.opacity = '1';
+        setTimeout(() => {
+            toast.style.transform = 'translateY(100px)';
+            toast.style.opacity = '0';
+        }, 5000);
+    }
+
     if (bookingForm) {
         bookingForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const name = document.getElementById('name')?.value || '';
-            const email = document.getElementById('email')?.value || '';
-            const phone = document.getElementById('phone')?.value || '';
-            const shootType = document.getElementById('shootType')?.value || '';
+            const name = (document.getElementById('name')?.value || '').trim();
+            const email = (document.getElementById('email')?.value || '').trim();
+            const phone = (document.getElementById('phone')?.value || '').trim();
+            const shootType = document.getElementById('shootType')?.value || 'General Inquiry';
             const date = document.getElementById('date')?.value || '';
-            const message = document.getElementById('message')?.value || '';
+            const message = (document.getElementById('message')?.value || '').trim();
 
-            // Save lead in Firebase Firestore if initialized
+            const leadId = 'lead_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+            const formattedDate = new Date().toLocaleString('en-IN', {
+                day: '2-digit', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit', hour12: true
+            });
+
+            const leadRecord = {
+                id: leadId,
+                name: name || 'Website Visitor',
+                email: email,
+                phone: phone,
+                shootType: shootType,
+                date: date || 'Flexible',
+                message: message || 'Inquired via website booking button',
+                source: 'Website Booking Form',
+                status: 'New Lead',
+                submittedAt: formattedDate,
+                timestamp: Date.now()
+            };
+
+            // 1. ALWAYS Save lead to LocalStorage cache immediately (never loses leads)
+            try {
+                const existingLeads = JSON.parse(localStorage.getItem('snapilla_bookings_leads') || '[]');
+                existingLeads.unshift(leadRecord);
+                localStorage.setItem('snapilla_bookings_leads', JSON.stringify(existingLeads));
+            } catch (err) {
+                console.warn('LocalStorage lead cache error:', err);
+            }
+
+            // 2. Save lead to Firebase Firestore if connected
             if (typeof isFirebaseInitialized !== 'undefined' && isFirebaseInitialized && db) {
                 try {
-                    await db.collection('bookings').add({
-                        name,
-                        email,
-                        phone,
-                        shootType,
-                        date,
-                        message,
+                    await db.collection('bookings').doc(leadId).set({
+                        ...leadRecord,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 } catch (err) {
@@ -109,15 +171,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Prepare structured WhatsApp booking message
+            // 3. Show instant confirmation to visitor
+            showBookingToast('Booking details captured! Opening WhatsApp to connect with our team...');
+
+            // 4. Prepare structured WhatsApp booking message
             const lines = [
                 "📸 *NEW BOOKING INQUIRY - SNAPILLA STUDIO*",
                 "━━━━━━━━━━━━━━━━━━━━━",
-                `👤 *Name:* ${name}`,
-                `📧 *Email:* ${email}`,
-                `📞 *Phone:* ${phone}`,
+                `👤 *Name:* ${name || 'Not provided'}`,
+                `📧 *Email:* ${email || 'Not provided'}`,
+                `📞 *Phone:* ${phone || 'Not provided'}`,
                 `🎯 *Shoot Type:* ${shootType}`,
-                `📅 *Preferred Date:* ${date}`,
+                `📅 *Preferred Date:* ${date || 'Flexible'}`,
                 `💬 *Details:* ${message || 'Looking forward to booking my shoot!'}`,
                 "━━━━━━━━━━━━━━━━━━━━━",
                 "✨ _Sent directly via Snapilla Studio Website_"
@@ -127,10 +192,54 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetPhone = (liveSettings.whatsapp_number || '918780286850').replace(/\D/g, '');
             const whatsappUrl = `https://wa.me/${targetPhone}?text=${whatsappText}`;
 
+            // Open WhatsApp in new tab
             window.open(whatsappUrl, '_blank');
             bookingForm.reset();
         });
     }
+
+    // 3B. Wire "Book Plan" & "Book Service" buttons to pre-select dropdown & scroll to form
+    function wireBookingTriggers() {
+        document.querySelectorAll('.price-btn, .btn-service-book').forEach(btn => {
+            if (btn.dataset.bookingBound) return;
+            btn.dataset.bookingBound = 'true';
+
+            btn.addEventListener('click', (e) => {
+                const card = btn.closest('.pricing-card, .service-detail-card, .camera-unit');
+                let planOrService = '';
+                if (card) {
+                    const titleEl = card.querySelector('h3');
+                    if (titleEl) planOrService = titleEl.textContent.trim();
+                }
+
+                const shootTypeSelect = document.getElementById('shootType');
+                const messageTextarea = document.getElementById('message');
+
+                if (shootTypeSelect && planOrService) {
+                    // Try to match option
+                    let matched = false;
+                    for (let i = 0; i < shootTypeSelect.options.length; i++) {
+                        if (shootTypeSelect.options[i].text.toLowerCase().includes(planOrService.toLowerCase()) ||
+                            shootTypeSelect.options[i].value.toLowerCase().includes(planOrService.toLowerCase())) {
+                            shootTypeSelect.selectedIndex = i;
+                            matched = true;
+                            break;
+                        }
+                    }
+                    if (!matched && messageTextarea) {
+                        messageTextarea.value = `Hi Snapilla Team! I am interested in booking the "${planOrService}".`;
+                    }
+                }
+
+                const nameInput = document.getElementById('name');
+                if (nameInput) {
+                    setTimeout(() => nameInput.focus(), 600);
+                }
+            });
+        });
+    }
+
+    wireBookingTriggers();
 
     // 4. Scroll reveal animation
     const observerOptions = {
