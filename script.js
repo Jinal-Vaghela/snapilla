@@ -198,13 +198,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3B. Wire "Book Plan" & "Book Service" buttons to pre-select dropdown & scroll to form
+    // 3B. Wire "Book Plan", Studio Visit & "Book Service" buttons to redirect/scroll to form
     function wireBookingTriggers() {
-        document.querySelectorAll('.price-btn, .btn-service-book').forEach(btn => {
+        // Handle all booking triggers and links pointing to #booking
+        document.querySelectorAll('.price-btn, .btn-service-book, .btn-studio-wa, #studioBookBtn, a[href="#booking"]').forEach(btn => {
             if (btn.dataset.bookingBound) return;
             btn.dataset.bookingBound = 'true';
 
             btn.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                const isStudioBtn = btn.classList.contains('btn-studio-wa') || btn.id === 'studioBookBtn';
                 const card = btn.closest('.pricing-card, .service-detail-card, .camera-unit');
                 let planOrService = '';
                 if (card) {
@@ -212,11 +216,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (titleEl) planOrService = titleEl.textContent.trim();
                 }
 
+                const bookingSection = document.getElementById('booking');
                 const shootTypeSelect = document.getElementById('shootType');
                 const messageTextarea = document.getElementById('message');
+                const nameInput = document.getElementById('name');
 
-                if (shootTypeSelect && planOrService) {
-                    // Try to match option
+                if (isStudioBtn) {
+                    if (messageTextarea && (!messageTextarea.value || messageTextarea.value.trim() === '')) {
+                        messageTextarea.value = "Hello Snapilla Studio! I would like to book an appointment / photography session at your studio.";
+                    }
+                } else if (planOrService && shootTypeSelect) {
                     let matched = false;
                     for (let i = 0; i < shootTypeSelect.options.length; i++) {
                         if (shootTypeSelect.options[i].text.toLowerCase().includes(planOrService.toLowerCase()) ||
@@ -226,14 +235,23 @@ document.addEventListener('DOMContentLoaded', () => {
                             break;
                         }
                     }
-                    if (!matched && messageTextarea) {
+                    if (!matched && messageTextarea && (!messageTextarea.value || messageTextarea.value.trim() === '')) {
                         messageTextarea.value = `Hi Snapilla Team! I am interested in booking the "${planOrService}".`;
                     }
                 }
 
-                const nameInput = document.getElementById('name');
+                // Smooth scroll to booking form
+                if (bookingSection) {
+                    bookingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+
+                // Focus name input after scroll completes
                 if (nameInput) {
-                    setTimeout(() => nameInput.focus(), 600);
+                    setTimeout(() => {
+                        nameInput.focus();
+                        nameInput.classList.add('highlight-pulse');
+                        setTimeout(() => nameInput.classList.remove('highlight-pulse'), 1200);
+                    }, 500);
                 }
             });
         });
@@ -380,8 +398,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updatePricingDOM(plansList) {
         if (!Array.isArray(plansList) || plansList.length === 0) return;
-        const table = document.getElementById('pricingTable');
-        if (table) {
             table.innerHTML = plansList.map(plan => {
                 const featuresList = (plan.features || []).map(f => {
                     const featText = typeof f === 'object' ? (f.feature || '') : f;
@@ -404,6 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
             }).join('');
+            wireBookingTriggers();
         }
     }
 
