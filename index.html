@@ -2091,22 +2091,22 @@
         <h2 class="section-title">📅 Book Your Photoshoot</h2>
         <p class="section-subtitle">Let’s Plan Your Perfect Shoot — Tell us what you're looking for and our team will help you plan your session.</p>
         <div class="booking-container">
-            <form id="bookingForm">
+            <form id="bookingForm" novalidate>
                 <div class="form-group">
                     <label for="name">Full Name</label>
-                    <input type="text" id="name" placeholder="Enter your full name" required>
+                    <input type="text" id="name" placeholder="Enter your full name">
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="Enter your email address" required>
+                    <input type="email" id="email" placeholder="Enter your email address">
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone Number / WhatsApp</label>
-                    <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                    <input type="tel" id="phone" placeholder="Enter your phone number">
                 </div>
                 <div class="form-group">
                     <label for="shootType">Select Service</label>
-                    <select id="shootType" required>
+                    <select id="shootType">
                         <option value="" disabled selected>Select photography service</option>
                         <option value="Baby Shoot">👶 Baby Shoot (Newborn, Milestones, Cake Smash)</option>
                         <option value="Product Shoot">🛍️ Product Shoot (E-commerce, Fashion, Jewelry)</option>
@@ -2122,13 +2122,13 @@
                 </div>
                 <div class="form-group">
                     <label for="date">Preferred Date</label>
-                    <input type="date" id="date" required>
+                    <input type="date" id="date">
                 </div>
                 <div class="form-group">
                     <label for="message">Tell Us About Your Shoot & Requirements</label>
                     <textarea id="message" placeholder="Share your outfit ideas, concepts, themes, or questions with us..."></textarea>
                 </div>
-                <button type="submit" class="btn-burn" style="width: 100%;">🚀 Send Enquiry & Connect via WhatsApp</button>
+                <button type="submit" id="btnSubmitBooking" class="btn-burn" style="width: 100%; cursor: pointer;">🚀 Send Enquiry & Connect via WhatsApp</button>
             </form>
         </div>
     </section>

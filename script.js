@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (bookingForm) {
-        bookingForm.addEventListener('submit', async (e) => {
+        bookingForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
             const name = (document.getElementById('name')?.value || '').trim();
@@ -139,18 +139,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const leadRecord = {
                 id: leadId,
                 name: name || 'Website Visitor',
-                email: email,
-                phone: phone,
+                email: email || 'Not provided',
+                phone: phone || 'Not provided',
                 shootType: shootType,
                 date: date || 'Flexible',
-                message: message || 'Inquired via website booking button',
+                message: message || 'Inquired via website booking form',
                 source: 'Website Booking Form',
                 status: 'New Lead',
                 submittedAt: formattedDate,
                 timestamp: Date.now()
             };
 
-            // 1. ALWAYS Save lead to LocalStorage cache immediately (never loses leads)
+            // 1. Save lead to LocalStorage cache immediately
             try {
                 const existingLeads = JSON.parse(localStorage.getItem('snapilla_bookings_leads') || '[]');
                 existingLeads.unshift(leadRecord);
@@ -159,20 +159,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.warn('LocalStorage lead cache error:', err);
             }
 
-            // 2. Save lead to Firebase Firestore if connected
+            // 2. Save lead to Firebase Firestore in background (non-blocking)
             if (typeof isFirebaseInitialized !== 'undefined' && isFirebaseInitialized && db) {
-                try {
-                    await db.collection('bookings').doc(leadId).set({
-                        ...leadRecord,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                } catch (err) {
+                db.collection('bookings').doc(leadId).set({
+                    ...leadRecord,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).catch(err => {
                     console.warn('Could not save booking to Firestore', err);
-                }
+                });
             }
 
             // 3. Show instant confirmation to visitor
-            showBookingToast('Booking details captured! Opening WhatsApp to connect with our team...');
+            showBookingToast('Opening WhatsApp to connect with Snapilla Studio...');
 
             // 4. Prepare structured WhatsApp booking message
             const lines = [
@@ -188,13 +186,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 "✨ _Sent directly via Snapilla Studio Website_"
             ];
             const whatsappText = encodeURIComponent(lines.join('\n'));
-
             const targetPhone = (liveSettings.whatsapp_number || '918780286850').replace(/\D/g, '');
             const whatsappUrl = `https://wa.me/${targetPhone}?text=${whatsappText}`;
 
-            // Open WhatsApp in new tab
-            window.open(whatsappUrl, '_blank');
-            bookingForm.reset();
+            // 5. Open WhatsApp directly (reliable popup + mobile fallback)
+            try {
+                const win = window.open(whatsappUrl, '_blank');
+                if (!win || win.closed || typeof win.closed === 'undefined') {
+                    window.location.href = whatsappUrl;
+                }
+            } catch (openErr) {
+                window.location.href = whatsappUrl;
+            }
         });
     }
 
