@@ -79,9 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     attachLightboxHandlers();
 
-    // 3. Booking Form - Instant Lead Capture (Firestore & LocalStorage) & WhatsApp Integration
-    const bookingForm = document.getElementById('bookingForm');
-    
     // Function to show on-page feedback toast
     function showBookingToast(message, isSuccess = true) {
         let toast = document.getElementById('snapilla-booking-toast');
@@ -211,6 +208,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return false;
     }
+
+    // Expose globally for inline onclick backup
+    window.handleBookingSubmit = handleBookingSubmit;
 
     if (btnSubmitBooking) {
         btnSubmitBooking.addEventListener('click', handleBookingSubmit);

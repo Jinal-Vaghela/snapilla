@@ -2128,7 +2128,7 @@
                     <label for="message">Tell Us About Your Shoot & Requirements</label>
                     <textarea id="message" placeholder="Share your outfit ideas, concepts, themes, or questions with us..."></textarea>
                 </div>
-                <button type="button" id="btnSubmitBooking" class="btn-burn" style="width: 100%; cursor: pointer;">🚀 Send Enquiry & Connect via WhatsApp</button>
+                <button type="button" id="btnSubmitBooking" onclick="if(window.handleBookingSubmit) window.handleBookingSubmit(event);" class="btn-burn" style="width: 100%; cursor: pointer;">🚀 Send Enquiry & Connect via WhatsApp</button>
             </form>
         </div>
     </section>
