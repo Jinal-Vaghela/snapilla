@@ -24,8 +24,8 @@ function getAdminCredentials() {
         if (stored) return JSON.parse(stored);
     } catch (e) {}
     return {
-        email: "admin@snapilla.com",
-        password: "snapilla2026"
+        email: "snapillastudio@gmail.com",
+        password: "Snapilla@2410"
     };
 }
 
