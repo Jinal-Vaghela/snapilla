@@ -429,7 +429,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function updateServicesDOM(servicesList) {
+    function updateServicesDOM(servicesData) {
+        if (!servicesData) return;
+        const servicesList = Array.isArray(servicesData) ? servicesData : (servicesData.items || []);
         if (!Array.isArray(servicesList) || servicesList.length === 0) return;
         const grid = document.getElementById('servicesGrid');
         if (grid) {
@@ -444,10 +446,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             `).join('');
+            observeElements();
         }
     }
 
-    function updatePortfolioDOM(photosList) {
+    function updatePortfolioDOM(photosData) {
+        if (!photosData) return;
+        const photosList = Array.isArray(photosData) ? photosData : (photosData.items || []);
         if (!Array.isArray(photosList) || photosList.length === 0) return;
         const spinner = document.getElementById('portfolioSpinner');
         if (spinner) {
@@ -696,7 +701,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Realtime Services
             db.collection('content').doc('services').onSnapshot(doc => {
-                if (doc.exists && doc.data().items) updateServicesDOM(doc.data().items);
+                if (doc.exists) {
+                    const d = doc.data();
+                    updateServicesDOM(d.items || d);
+                }
             }, err => console.warn('Services listener error', err));
 
             // Realtime Experience Steps
@@ -716,22 +724,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Realtime Portfolio
             db.collection('content').doc('portfolio').onSnapshot(doc => {
-                if (doc.exists && doc.data().items) updatePortfolioDOM(doc.data().items);
+                if (doc.exists) {
+                    const d = doc.data();
+                    updatePortfolioDOM(d.items || d);
+                }
             }, err => console.warn('Portfolio listener error', err));
 
             // Realtime Pricing
             db.collection('content').doc('pricing').onSnapshot(doc => {
-                if (doc.exists && doc.data().items) updatePricingDOM(doc.data().items);
+                if (doc.exists) {
+                    const d = doc.data();
+                    updatePricingDOM(d.items || d);
+                }
             }, err => console.warn('Pricing listener error', err));
 
             // Realtime Testimonials
             db.collection('content').doc('testimonials').onSnapshot(doc => {
-                if (doc.exists && doc.data().items) updateTestimonialsDOM(doc.data().items);
+                if (doc.exists) {
+                    const d = doc.data();
+                    updateTestimonialsDOM(d.items || d);
+                }
             }, err => console.warn('Testimonials listener error', err));
 
             // Realtime FAQs
             db.collection('content').doc('faqs').onSnapshot(doc => {
-                if (doc.exists && doc.data().items) updateFaqDOM(doc.data().items);
+                if (doc.exists) {
+                    const d = doc.data();
+                    updateFaqDOM(d.items || d);
+                }
             }, err => console.warn('FAQs listener error', err));
 
             // Realtime Final CTA

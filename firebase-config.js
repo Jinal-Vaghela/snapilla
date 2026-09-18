@@ -114,12 +114,6 @@ const SNAP_DEFAULT_DATA = {
             description: "Anniversaries, graduations, and achievements captured with elegance and emotion.",
             image: "p4.png",
             background_color: "#FF8F00"
-        },
-        {
-            title: "Studio Setup & Rental",
-            description: "Equipped studio space available for creators, influencers, and brand shoots with pro gear.",
-            image: "banner.png",
-            background_color: "#37474F"
         }
     ],
     portfolio: [

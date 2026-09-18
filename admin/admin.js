@@ -827,7 +827,7 @@ function editService(index) {
 
 async function deleteService(index) {
     if (confirm('Are you sure you want to delete this service?')) {
-        currentContent.services.splice(index, index + 1);
+        currentContent.services.splice(index, 1);
         await saveDoc('services', { items: currentContent.services });
         renderServicesView();
         updateOverviewStats();
