@@ -1284,7 +1284,15 @@ async function loadBookings() {
                 bookingsListenerAttached = true;
                 db.collection('bookings').onSnapshot(snapshot => {
                     const updated = [];
-                    snapshot.forEach(d => updated.push({ id: d.id, ...d.data() }));
+                    const seen = new Set();
+                    snapshot.forEach(d => {
+                        const data = d.data();
+                        const sig = `${(data.phone || '').trim()}_${(data.name || '').trim().toLowerCase()}_${(data.submittedAt || '').trim()}_${data.shootType || ''}`;
+                        if (!seen.has(sig)) {
+                            seen.add(sig);
+                            updated.push({ id: d.id, ...data });
+                        }
+                    });
                     renderBookingsTable(updated);
                 }, err => console.warn('Bookings listener note:', err));
             }
@@ -1293,12 +1301,12 @@ async function loadBookings() {
         }
     }
 
-    // Merge both sources and deduplicate by id or phone+date
+    // Merge both sources and deduplicate by lead signature (phone + name + submittedAt + shootType)
     const combinedMap = new Map();
     [...firestoreBookings, ...localBookings].forEach(item => {
-        const key = item.id || `${item.phone}_${item.timestamp}`;
-        if (!combinedMap.has(key)) {
-            combinedMap.set(key, item);
+        const sig = `${(item.phone || '').trim()}_${(item.name || '').trim().toLowerCase()}_${(item.submittedAt || '').trim()}_${item.shootType || ''}`;
+        if (!combinedMap.has(sig)) {
+            combinedMap.set(sig, item);
         }
     });
 

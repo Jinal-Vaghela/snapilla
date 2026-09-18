@@ -131,11 +131,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Booking Form - Instant Lead Capture & Direct WhatsApp Connection
     const bookingForm = document.getElementById('bookingForm');
     const btnSubmitBooking = document.getElementById('btnSubmitBooking');
+    let isSubmittingBooking = false;
 
     function handleBookingSubmit(e) {
         if (e) {
             e.preventDefault();
             e.stopPropagation();
+        }
+
+        // Prevent duplicate concurrent submissions
+        if (isSubmittingBooking) {
+            return false;
         }
 
         const nameEl = document.getElementById('name');
@@ -193,6 +199,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             showBookingToast('Please select a Photography Service.', false);
             return false;
+        }
+
+        // Set submit lock immediately
+        isSubmittingBooking = true;
+        if (btnSubmitBooking) {
+            btnSubmitBooking.disabled = true;
+            btnSubmitBooking.style.opacity = '0.7';
         }
 
         const leadId = 'lead_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
@@ -257,6 +270,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetPhone = rawNumber.replace(/\D/g, '') || '918780286850';
         const whatsappUrl = `https://wa.me/${targetPhone}?text=${whatsappText}`;
 
+        // Reset submit button after delay
+        setTimeout(() => {
+            isSubmittingBooking = false;
+            if (btnSubmitBooking) {
+                btnSubmitBooking.disabled = false;
+                btnSubmitBooking.style.opacity = '1';
+            }
+        }, 3000);
+
         // 5. Open WhatsApp directly via link click (unblockable by popup blockers)
         try {
             const waLink = document.createElement('a');
@@ -273,12 +295,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
     }
 
-    // Expose globally for inline onclick backup
+    // Expose globally for backup
     window.handleBookingSubmit = handleBookingSubmit;
 
-    if (btnSubmitBooking) {
-        btnSubmitBooking.addEventListener('click', handleBookingSubmit);
-    }
     if (bookingForm) {
         bookingForm.addEventListener('submit', handleBookingSubmit);
     }
