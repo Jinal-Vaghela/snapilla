@@ -5,12 +5,12 @@
  * You can get these from: Firebase Console -> Project Settings -> General -> Your apps -> Web app
  */
 const DEFAULT_FIREBASE_CONFIG = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyA54RTk_o4erW43NQzkjBSd16MOu0JhMVM",
+    authDomain: "snapilla-studio.firebaseapp.com",
+    projectId: "snapilla-studio",
+    storageBucket: "snapilla-studio.firebasestorage.app",
+    messagingSenderId: "541496035020",
+    appId: "1:541496035020:web:aa2962119b6a6422766469"
 };
 
 // Check if custom config was saved via Admin UI in localStorage
@@ -64,8 +64,6 @@ const SNAP_DEFAULT_DATA = {
         email: "snapillastudio@gmail.com",
         address: "Snapilla Studio, Ahmedabad, Gujarat, India",
         instagram_url: "https://instagram.com",
-        facebook_url: "https://facebook.com",
-        youtube_url: "https://youtube.com",
         tagline: "Where Every Moment Becomes A Memory"
     },
     services: [

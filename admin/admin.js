@@ -33,11 +33,27 @@ function saveAdminCredentials(email, password) {
     localStorage.setItem('snapilla_admin_creds', JSON.stringify({ email, password }));
 }
 
+function clearLoginInputs() {
+    const emailField = document.getElementById('loginEmail');
+    const passField = document.getElementById('loginPassword');
+    if (emailField) {
+        emailField.value = '';
+        emailField.setAttribute('readonly', 'true');
+    }
+    if (passField) {
+        passField.value = '';
+        passField.setAttribute('readonly', 'true');
+    }
+}
+
 // ----------------------------------------------------
 // 1. AUTHENTICATION HANDLING
 // ----------------------------------------------------
 function initAuth() {
     const sessionActive = sessionStorage.getItem('snapilla_admin_session');
+
+    // Always clear login inputs first
+    clearLoginInputs();
 
     if (isFirebaseInitialized && auth) {
         auth.onAuthStateChanged(user => {
@@ -72,6 +88,9 @@ function initAuth() {
 function showLogin() {
     authWrapper.style.display = 'flex';
     adminApp.style.display = 'none';
+    if (loginForm) loginForm.reset();
+    clearLoginInputs();
+    if (authError) authError.style.display = 'none';
 }
 
 function showApp(email) {
@@ -79,7 +98,35 @@ function showApp(email) {
     adminApp.style.display = 'flex';
     userEmailText.textContent = email;
     sessionStorage.setItem('snapilla_admin_session', 'true');
+    clearLoginInputs();
     loadBookings();
+}
+
+// Password Visibility Toggles
+const toggleLoginPassword = document.getElementById('toggleLoginPassword');
+const loginPasswordInput = document.getElementById('loginPassword');
+const loginEyeIcon = document.getElementById('loginEyeIcon');
+if (toggleLoginPassword && loginPasswordInput && loginEyeIcon) {
+    toggleLoginPassword.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const isPassword = loginPasswordInput.type === 'password';
+        loginPasswordInput.type = isPassword ? 'text' : 'password';
+        loginEyeIcon.className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
+    });
+}
+
+const toggleSetAdminPassword = document.getElementById('toggleSetAdminPassword');
+const setAdminPasswordInput = document.getElementById('setAdminPassword');
+const setEyeIcon = document.getElementById('setEyeIcon');
+if (toggleSetAdminPassword && setAdminPasswordInput && setEyeIcon) {
+    toggleSetAdminPassword.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const isPassword = setAdminPasswordInput.type === 'password';
+        setAdminPasswordInput.type = isPassword ? 'text' : 'password';
+        setEyeIcon.className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
+    });
 }
 
 // Login Submit
@@ -89,6 +136,12 @@ if (loginForm) {
         const inputEmail = document.getElementById('loginEmail').value.trim();
         const inputPassword = document.getElementById('loginPassword').value;
         authError.style.display = 'none';
+
+        if (!inputEmail || !inputPassword) {
+            authError.textContent = 'Please enter both Admin Email and Password.';
+            authError.style.display = 'block';
+            return;
+        }
 
         const adminCreds = getAdminCredentials();
 
@@ -114,12 +167,12 @@ if (loginForm) {
                             loadBookings();
                             showToast('Logged In Successfully', 'success');
                         } else {
-                            authError.textContent = 'Incorrect Admin ID or Password.';
+                            authError.textContent = 'Incorrect Admin ID or Password. Please try again.';
                             authError.style.display = 'block';
                         }
                     }
                 } else {
-                    authError.textContent = err.message || 'Incorrect Admin ID or Password.';
+                    authError.textContent = 'Incorrect Admin ID or Password. Please try again.';
                     authError.style.display = 'block';
                 }
             }
@@ -131,7 +184,7 @@ if (loginForm) {
                 loadBookings();
                 showToast('Welcome to Snapilla Admin Dashboard!', 'success');
             } else {
-                authError.textContent = 'Incorrect Admin ID or Password. Default: admin@snapilla.com / snapilla2026';
+                authError.textContent = 'Incorrect Admin ID or Password. Please try again.';
                 authError.style.display = 'block';
             }
         }
@@ -333,7 +386,7 @@ function updateOverviewStats() {
 // 4. SETTINGS FORM
 // ----------------------------------------------------
 function renderSettingsView() {
-    const s = currentContent.settings;
+    const s = currentContent.settings || {};
     document.getElementById('setHeroTitle').value = s.hero_title || '';
     document.getElementById('setHeroSubtitle').value = s.hero_subtitle || '';
     document.getElementById('setWhatsapp').value = s.whatsapp_number || '';
@@ -341,15 +394,13 @@ function renderSettingsView() {
     document.getElementById('setEmail').value = s.email || '';
     document.getElementById('setAddress').value = s.address || '';
     document.getElementById('setInstagram').value = s.instagram_url || '';
-    document.getElementById('setFacebook').value = s.facebook_url || '';
-    document.getElementById('setYoutube').value = s.youtube_url || '';
     document.getElementById('setTagline').value = s.tagline || '';
 
     const adminCreds = getAdminCredentials();
     const adminEmailInput = document.getElementById('setAdminEmail');
     const adminPassInput = document.getElementById('setAdminPassword');
-    if (adminEmailInput) adminEmailInput.value = adminCreds.email;
-    if (adminPassInput) adminPassInput.value = adminCreds.password;
+    if (adminEmailInput) adminEmailInput.value = adminCreds.email || '';
+    if (adminPassInput) adminPassInput.value = ''; // Always keep password field blank for security
 }
 
 const settingsForm = document.getElementById('settingsForm');
@@ -364,16 +415,18 @@ if (settingsForm) {
             email: document.getElementById('setEmail').value,
             address: document.getElementById('setAddress').value,
             instagram_url: document.getElementById('setInstagram').value,
-            facebook_url: document.getElementById('setFacebook').value,
-            youtube_url: document.getElementById('setYoutube').value,
             tagline: document.getElementById('setTagline').value
         };
 
         const newAdminEmail = document.getElementById('setAdminEmail')?.value.trim();
         const newAdminPass = document.getElementById('setAdminPassword')?.value;
-        if (newAdminEmail && newAdminPass) {
-            saveAdminCredentials(newAdminEmail, newAdminPass);
-            if (activeUser && auth && isFirebaseInitialized) {
+        const currentCreds = getAdminCredentials();
+
+        if (newAdminEmail) {
+            const passToSave = (newAdminPass && newAdminPass.trim().length > 0) ? newAdminPass : currentCreds.password;
+            saveAdminCredentials(newAdminEmail, passToSave);
+            
+            if (activeUser && auth && isFirebaseInitialized && newAdminPass && newAdminPass.trim().length > 0) {
                 try {
                     await activeUser.updatePassword(newAdminPass);
                 } catch (passErr) {

@@ -101,20 +101,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 display: flex;
                 align-items: center;
                 gap: 12px;
-                transition: all 0.4s ease;
+                transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
                 transform: translateY(100px);
                 opacity: 0;
+                max-width: 90vw;
             `;
             document.body.appendChild(toast);
         }
-        toast.innerHTML = `<span style="font-size: 1.3rem;">${isSuccess ? '✅' : 'ℹ️'}</span> <div><strong>${message}</strong></div>`;
+        toast.style.borderLeftColor = isSuccess ? '#4CAF50' : '#E53935';
+        toast.innerHTML = `<span style="font-size: 1.3rem;">${isSuccess ? '✅' : '⚠️'}</span> <div><strong>${message}</strong></div>`;
         toast.style.transform = 'translateY(0)';
         toast.style.opacity = '1';
-        setTimeout(() => {
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(() => {
             toast.style.transform = 'translateY(100px)';
             toast.style.opacity = '0';
-        }, 5000);
+        }, 4500);
     }
+
+    // Clear error styling on input
+    ['name', 'email', 'phone', 'shootType'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', () => el.classList.remove('field-error'));
+            el.addEventListener('change', () => el.classList.remove('field-error'));
+        }
+    });
 
     // 3. Booking Form - Instant Lead Capture & Direct WhatsApp Connection
     const bookingForm = document.getElementById('bookingForm');
@@ -126,12 +138,62 @@ document.addEventListener('DOMContentLoaded', () => {
             e.stopPropagation();
         }
 
-        const name = (document.getElementById('name')?.value || '').trim();
-        const email = (document.getElementById('email')?.value || '').trim();
-        const phone = (document.getElementById('phone')?.value || '').trim();
-        const shootType = document.getElementById('shootType')?.value || 'General Studio Inquiry';
-        const date = document.getElementById('date')?.value || '';
-        const message = (document.getElementById('message')?.value || '').trim();
+        const nameEl = document.getElementById('name');
+        const emailEl = document.getElementById('email');
+        const phoneEl = document.getElementById('phone');
+        const shootTypeEl = document.getElementById('shootType');
+        const dateEl = document.getElementById('date');
+        const messageEl = document.getElementById('message');
+
+        const name = (nameEl?.value || '').trim();
+        const email = (emailEl?.value || '').trim();
+        const phone = (phoneEl?.value || '').trim();
+        const shootType = (shootTypeEl?.value || '').trim();
+        const date = dateEl?.value || '';
+        const message = (messageEl?.value || '').trim();
+
+        // Remove previous error highlights
+        [nameEl, phoneEl, shootTypeEl].forEach(el => {
+            if (el) el.classList.remove('field-error');
+        });
+
+        // 1. Validation Checks
+        if (!name) {
+            if (nameEl) {
+                nameEl.classList.add('field-error');
+                nameEl.focus();
+            }
+            showBookingToast('Please enter your Full Name before submitting.', false);
+            return false;
+        }
+
+        if (!phone) {
+            if (phoneEl) {
+                phoneEl.classList.add('field-error');
+                phoneEl.focus();
+            }
+            showBookingToast('Please enter your Phone Number / WhatsApp.', false);
+            return false;
+        }
+
+        const phoneDigits = phone.replace(/\D/g, '');
+        if (phoneDigits.length < 7) {
+            if (phoneEl) {
+                phoneEl.classList.add('field-error');
+                phoneEl.focus();
+            }
+            showBookingToast('Please enter a valid Phone Number (minimum 7 digits).', false);
+            return false;
+        }
+
+        if (!shootType) {
+            if (shootTypeEl) {
+                shootTypeEl.classList.add('field-error');
+                shootTypeEl.focus();
+            }
+            showBookingToast('Please select a Photography Service.', false);
+            return false;
+        }
 
         const leadId = 'lead_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
         const formattedDate = new Date().toLocaleString('en-IN', {
@@ -141,9 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const leadRecord = {
             id: leadId,
-            name: name || 'Website Visitor',
+            name: name,
             email: email || 'Not provided',
-            phone: phone || 'Not provided',
+            phone: phone,
             shootType: shootType,
             date: date || 'Flexible',
             message: message || 'Inquired via website booking form',
@@ -175,15 +237,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // 3. Show instant confirmation toast
-        showBookingToast('Opening WhatsApp to connect with Snapilla Studio...');
+        showBookingToast('Opening WhatsApp to connect with Snapilla Studio...', true);
 
         // 4. Prepare WhatsApp booking message text
         const lines = [
             "📸 *NEW BOOKING INQUIRY - SNAPILLA STUDIO*",
             "━━━━━━━━━━━━━━━━━━━━━",
-            `👤 *Name:* ${name || 'Not provided'}`,
+            `👤 *Name:* ${name}`,
             `📧 *Email:* ${email || 'Not provided'}`,
-            `📞 *Phone:* ${phone || 'Not provided'}`,
+            `📞 *Phone:* ${phone}`,
             `🎯 *Shoot Type:* ${shootType}`,
             `📅 *Preferred Date:* ${date || 'Flexible'}`,
             `💬 *Details:* ${message || 'Looking forward to booking my shoot!'}`,
@@ -321,13 +383,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroSubtitle && data.hero_subtitle) heroSubtitle.textContent = data.hero_subtitle;
 
         const contactAddress = document.getElementById('contactAddress');
-        if (contactAddress && data.address) contactAddress.textContent = `📍 ${data.address}`;
+        if (contactAddress && data.address) contactAddress.textContent = data.address;
 
         const contactPhone = document.getElementById('contactPhone');
-        if (contactPhone && data.phone) contactPhone.textContent = `📞 ${data.phone}`;
+        if (contactPhone && data.phone) contactPhone.textContent = data.phone;
 
         const contactEmail = document.getElementById('contactEmail');
-        if (contactEmail && data.email) contactEmail.textContent = `📧 ${data.email}`;
+        if (contactEmail && data.email) contactEmail.textContent = data.email;
 
         const footerTagline = document.getElementById('footerTagline');
         if (footerTagline && data.tagline) footerTagline.textContent = `“${data.tagline}”`;
@@ -344,8 +406,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (socialContainer) {
             let html = '';
             if (data.instagram_url) html += `<a href="${data.instagram_url}" target="_blank"><i class="fab fa-instagram"></i></a>`;
-            if (data.facebook_url) html += `<a href="${data.facebook_url}" target="_blank"><i class="fab fa-facebook"></i></a>`;
-            if (data.youtube_url) html += `<a href="${data.youtube_url}" target="_blank"><i class="fab fa-youtube"></i></a>`;
             if (html) socialContainer.innerHTML = html;
         }
     }
@@ -525,6 +585,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const sunday = document.getElementById('studioHoursSunday');
         if (sunday && data.hours_sunday) sunday.textContent = data.hours_sunday;
+
+        const contactHours = document.getElementById('contactHours');
+        if (contactHours && (data.hours_weekday || data.hours_sunday)) {
+            const wk = data.hours_weekday || '10:00 AM – 8:00 PM';
+            const sun = data.hours_sunday || '10:00 AM – 6:00 PM';
+            contactHours.textContent = `Mon – Sat: ${wk} | Sun: ${sun}`;
+        }
 
         const notice = document.getElementById('studioNotice');
         if (notice && data.notice) notice.textContent = data.notice;

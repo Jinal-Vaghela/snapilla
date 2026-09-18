@@ -22,18 +22,31 @@
             <h2 class="auth-title">Admin Sign In</h2>
             <p class="auth-subtitle">Manage all content, photos & leads for Snapilla Studio</p>
 
-            <form id="loginForm">
+            <form id="loginForm" autocomplete="off" onsubmit="return false;">
+                <!-- Hidden inputs to deflect browser autofill -->
+                <input type="text" style="display:none" aria-hidden="true">
+                <input type="password" style="display:none" aria-hidden="true">
+
                 <div class="form-group" style="text-align: left;">
                     <label for="loginEmail">Admin ID / Email</label>
-                    <input type="text" id="loginEmail" placeholder="admin@snapilla.com" value="admin@snapilla.com" required>
+                    <div style="position: relative;">
+                        <input type="email" id="loginEmail" name="snap_admin_email_user" placeholder="Enter admin email" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" required style="padding-left: 40px;">
+                        <i class="fas fa-user" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem;"></i>
+                    </div>
                 </div>
                 <div class="form-group" style="text-align: left;">
                     <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••" value="snapilla2026" required>
+                    <div style="position: relative;">
+                        <input type="password" id="loginPassword" name="snap_admin_pass_user" placeholder="Enter password" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" required style="padding-left: 40px; padding-right: 42px;">
+                        <i class="fas fa-lock" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem;"></i>
+                        <button type="button" id="toggleLoginPassword" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px;">
+                            <i class="fas fa-eye" id="loginEyeIcon"></i>
+                        </button>
+                    </div>
                 </div>
                 
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px; padding: 14px;">
-                    <i class="fas fa-lock"></i> Sign In to Dashboard
+                <button type="submit" class="btn btn-primary" id="btnSubmitLogin" style="width: 100%; margin-top: 10px; padding: 14px; justify-content: center;">
+                    <i class="fas fa-shield-alt"></i> Sign In to Dashboard
                 </button>
             </form>
             
@@ -292,41 +305,38 @@
                             <div class="card-header">
                                 <h3 class="card-title"><i class="fas fa-share-alt"></i> Social Media & Footer</h3>
                             </div>
-                            <div class="grid-3">
+                            <div class="grid-2">
                                 <div class="form-group">
                                     <label for="setInstagram">Instagram Profile URL</label>
                                     <input type="url" id="setInstagram" placeholder="https://instagram.com/...">
                                 </div>
                                 <div class="form-group">
-                                    <label for="setFacebook">Facebook Page URL</label>
-                                    <input type="url" id="setFacebook" placeholder="https://facebook.com/...">
+                                    <label for="setTagline">Footer Tagline Quote</label>
+                                    <input type="text" id="setTagline" placeholder="Turning Moments Into Memories">
                                 </div>
-                                <div class="form-group">
-                                    <label for="setYoutube">YouTube Channel URL</label>
-                                    <input type="url" id="setYoutube" placeholder="https://youtube.com/...">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="setTagline">Footer Tagline Quote</label>
-                                <input type="text" id="setTagline" placeholder="Turning Moments Into Memories">
                             </div>
                         </div>
 
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title"><i class="fas fa-key"></i> Admin Access & Password</h3>
+                                <h3 class="card-title"><i class="fas fa-user-shield"></i> Admin Access & Security Credentials</h3>
                             </div>
                             <div class="grid-2">
                                 <div class="form-group">
-                                    <label for="setAdminEmail">Admin Email / ID</label>
-                                    <input type="text" id="setAdminEmail" placeholder="admin@snapilla.com">
+                                    <label for="setAdminEmail">Admin Login Email / ID</label>
+                                    <input type="email" id="setAdminEmail" placeholder="admin@snapilla.com" autocomplete="off">
                                 </div>
                                 <div class="form-group">
-                                    <label for="setAdminPassword">Admin Password</label>
-                                    <input type="password" id="setAdminPassword" placeholder="••••••••">
+                                    <label for="setAdminPassword">Change Password</label>
+                                    <div style="position: relative;">
+                                        <input type="password" id="setAdminPassword" placeholder="Enter new password (leave blank to keep current)" autocomplete="new-password" style="padding-right: 42px;">
+                                        <button type="button" id="toggleSetAdminPassword" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px;">
+                                            <i class="fas fa-eye" id="setEyeIcon"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <span class="input-hint">You can change your login email & password anytime. Default: admin@snapilla.com / snapilla2026</span>
+                            <span class="input-hint"><i class="fas fa-info-circle"></i> You can update your admin login ID or set a new custom password anytime here.</span>
                         </div>
 
                         <button type="submit" class="btn btn-primary" style="padding: 14px 30px; font-size: 1rem;">

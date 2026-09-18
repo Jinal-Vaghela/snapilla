@@ -1493,6 +1493,382 @@
         .footer-col ul li a:hover {
             color: #FFB300;
         }
+
+        /* ============================================================
+           MOBILE & RESPONSIVE REFINEMENTS (Layout Preserved)
+           ============================================================ */
+        @media (max-width: 992px) {
+            nav {
+                height: 75px;
+                padding: 0 4%;
+            }
+            .nav-toggle {
+                display: block;
+            }
+            .nav-links {
+                position: absolute;
+                top: 75px;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px);
+                flex-direction: column;
+                padding: 25px 0;
+                gap: 18px;
+                box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+                border-bottom: 3px solid var(--primary-color);
+                display: none;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            section {
+                padding: 70px 4%;
+            }
+            .final-cta-sec {
+                padding: 0 4% 70px 4% !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                height: 70px;
+                padding: 0 4%;
+            }
+            .logo-img {
+                height: 44px;
+            }
+            .logo-main {
+                font-size: 1.75rem;
+                -webkit-text-stroke: 1.2px #000;
+                letter-spacing: 1px;
+            }
+            .logo-sub {
+                font-size: 0.65rem;
+                letter-spacing: 3.5px;
+            }
+            .nav-links {
+                top: 70px;
+            }
+            .webgl-hero {
+                min-height: 620px;
+                height: auto;
+            }
+            .hero-overlay {
+                padding: 95px 15px 35px 15px;
+            }
+            .hero-content {
+                width: 96%;
+                padding: 24px 16px;
+                border-radius: 28px;
+            }
+            .hero-badge {
+                font-size: 0.72rem;
+                padding: 6px 14px;
+                letter-spacing: 0.8px;
+                line-height: 1.4;
+                margin-bottom: 14px;
+            }
+            .hero-content h1 {
+                font-size: 1.85rem;
+                -webkit-text-stroke: 1.2px #000;
+                text-shadow: 2px 2px 0px #000;
+                margin-bottom: 8px;
+            }
+            .hero-slogan {
+                font-size: 1.1rem;
+                margin-bottom: 12px;
+            }
+            .hero-desc {
+                font-size: 0.92rem;
+                line-height: 1.5;
+                margin-bottom: 20px;
+            }
+            .hero-btns {
+                flex-direction: column;
+                gap: 10px !important;
+                width: 100%;
+            }
+            .hero-btns .btn-burn {
+                width: 100%;
+                text-align: center;
+                padding: 12px 20px;
+                font-size: 0.85rem;
+            }
+            .section-title {
+                font-size: 2.1rem;
+                margin-bottom: 10px;
+            }
+            .section-subtitle {
+                font-size: 0.92rem;
+                line-height: 1.5;
+                margin-bottom: 35px;
+                padding: 0 5px;
+            }
+            section {
+                padding: 60px 4%;
+            }
+
+            /* Orbital Why-Us on Mobile */
+            .why-us-orbit {
+                width: 290px;
+                height: 290px;
+                margin: 40px auto;
+            }
+            .orbit-hub {
+                width: 92px;
+                height: 92px;
+            }
+            .orbit-hub span {
+                font-size: 0.85rem;
+                line-height: 1.2;
+            }
+            .orbit-item {
+                width: 68px;
+                height: 68px;
+            }
+            .orbit-item i {
+                font-size: 1.1rem;
+                margin-bottom: 2px;
+            }
+            .orbit-label {
+                font-size: 0.52rem;
+                max-width: 56px;
+                line-height: 1.1;
+            }
+            #whyQuote {
+                font-size: 1.25rem !important;
+                margin-top: 35px !important;
+                padding: 0 10px;
+            }
+
+            /* Services & Grids */
+            .services-detail-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                margin-top: 30px;
+            }
+            .service-detail-card {
+                padding: 25px 20px;
+                border-radius: 20px;
+            }
+            .service-detail-card h3 {
+                font-size: 1.35rem;
+            }
+            .why-pillars-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-top: 35px;
+            }
+            .why-pillar-card {
+                padding: 24px 20px;
+                border-radius: 20px;
+            }
+            .experience-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-top: 30px;
+            }
+            .experience-step-card {
+                padding: 22px 18px;
+                border-radius: 18px;
+            }
+
+            /* 3D Spinner on Mobile: scaled translation so nothing gets cut off */
+            .portfolio-stage {
+                height: 420px;
+                perspective: 900px;
+                margin-top: 25px;
+                padding: 40px 0;
+                overflow: hidden;
+            }
+            .portfolio-spinner {
+                width: 180px;
+                height: 270px;
+            }
+            .portfolio-card:nth-child(1) { transform: rotateY(0deg) translateZ(240px); }
+            .portfolio-card:nth-child(2) { transform: rotateY(45deg) translateZ(240px); }
+            .portfolio-card:nth-child(3) { transform: rotateY(90deg) translateZ(240px); }
+            .portfolio-card:nth-child(4) { transform: rotateY(135deg) translateZ(240px); }
+            .portfolio-card:nth-child(5) { transform: rotateY(180deg) translateZ(240px); }
+            .portfolio-card:nth-child(6) { transform: rotateY(225deg) translateZ(240px); }
+            .portfolio-card:nth-child(7) { transform: rotateY(270deg) translateZ(240px); }
+            .portfolio-card:nth-child(8) { transform: rotateY(315deg) translateZ(240px); }
+
+            .gallery-filters {
+                gap: 8px;
+                margin-bottom: 25px;
+            }
+            .filter-btn {
+                padding: 7px 16px;
+                font-size: 0.78rem;
+            }
+
+            /* Testimonials on Mobile */
+            .testimonial-card {
+                flex: 0 0 280px;
+                margin: 12px;
+                padding: 25px 20px;
+                border-radius: 20px;
+            }
+            .testimonial-card p {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+
+            /* Pricing on Mobile */
+            .pricing-table {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                padding: 10px 0;
+            }
+            .pricing-card {
+                padding: 35px 22px;
+                border-radius: 22px;
+                animation: none !important;
+                transform: none !important;
+            }
+            .pricing-card:hover {
+                transform: translateY(-5px) !important;
+            }
+
+            /* Booking & FAQ */
+            .booking-container {
+                width: 100%;
+            }
+            .form-group input, .form-group select, .form-group textarea {
+                font-size: 16px; /* Prevents iOS auto-zoom */
+                padding: 12px 14px;
+            }
+            .faq-card {
+                padding: 20px 18px;
+                border-radius: 16px;
+            }
+            .faq-card h4 {
+                font-size: 1.05rem;
+            }
+            .faq-card p {
+                font-size: 0.9rem;
+            }
+
+            /* Final CTA on Mobile */
+            .final-cta-card {
+                padding: 40px 20px;
+                border-radius: 26px;
+                margin-top: 30px;
+            }
+            .final-cta-card h2 {
+                font-size: 1.75rem;
+                margin-bottom: 14px;
+            }
+            .final-cta-card p {
+                font-size: 0.95rem;
+                line-height: 1.55;
+                margin-bottom: 25px;
+            }
+            .final-cta-btns {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .final-cta-btns .btn-burn {
+                width: 100%;
+                text-align: center;
+                padding: 14px 20px !important;
+                font-size: 0.95rem !important;
+            }
+
+            /* Studio Visit Box */
+            .studio-notice-box {
+                padding: 24px 18px;
+                border-radius: 22px;
+                margin-top: 30px;
+            }
+            .studio-info-col h3 {
+                font-size: 1.45rem;
+            }
+            .studio-info-col p {
+                font-size: 0.92rem;
+            }
+            .studio-btns {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn-studio-dir, .btn-studio-wa {
+                width: 100%;
+                justify-content: center;
+                padding: 12px 20px;
+            }
+
+            /* Social Follow */
+            .social-follow-grid {
+                gap: 14px;
+                margin-top: 25px;
+            }
+            .social-follow-card {
+                flex: 1 1 100%;
+                padding: 18px 20px;
+            }
+
+            /* Lightbox on mobile */
+            .lightbox-close {
+                top: 15px;
+                right: 20px;
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .logo-main {
+                font-size: 1.5rem;
+            }
+            .logo-img {
+                height: 38px;
+            }
+            .hero-content h1 {
+                font-size: 1.6rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .why-us-orbit {
+                width: 260px;
+                height: 260px;
+            }
+            .orbit-hub {
+                width: 80px;
+                height: 80px;
+            }
+            .orbit-hub span {
+                font-size: 0.75rem;
+            }
+            .orbit-item {
+                width: 60px;
+                height: 60px;
+            }
+            .orbit-item i {
+                font-size: 0.95rem;
+            }
+            .orbit-label {
+                font-size: 0.46rem;
+                max-width: 50px;
+            }
+            .portfolio-stage {
+                height: 380px;
+            }
+            .portfolio-spinner {
+                width: 160px;
+                height: 240px;
+            }
+            .portfolio-card:nth-child(1) { transform: rotateY(0deg) translateZ(210px); }
+            .portfolio-card:nth-child(2) { transform: rotateY(45deg) translateZ(210px); }
+            .portfolio-card:nth-child(3) { transform: rotateY(90deg) translateZ(210px); }
+            .portfolio-card:nth-child(4) { transform: rotateY(135deg) translateZ(210px); }
+            .portfolio-card:nth-child(5) { transform: rotateY(180deg) translateZ(210px); }
+            .portfolio-card:nth-child(6) { transform: rotateY(225deg) translateZ(210px); }
+            .portfolio-card:nth-child(7) { transform: rotateY(270deg) translateZ(210px); }
+            .portfolio-card:nth-child(8) { transform: rotateY(315deg) translateZ(210px); }
+        }
     </style>
 </head>
 <body style="position: relative; overflow-x: hidden;">
@@ -2170,80 +2546,64 @@
         </div>
     </section>
 
-    <!-- Follow Our Work Section -->
-    <section class="social-follow-sec" style="padding: 100px 5%; text-align: center; background: #fafafa;">
-        <h2 class="section-title">📱 Follow Our Work</h2>
-        <p class="section-subtitle">See More. Get Inspired. Follow Snapilla Studio for our latest photoshoots, behind-the-scenes moments, creative ideas, and new work.</p>
-        
-        <div class="social-follow-grid">
-            <a href="https://instagram.com" target="_blank" class="social-follow-card">
-                <i class="fab fa-instagram"></i>
-                <div>
-                    <h4>Instagram</h4>
-                    <p>@SnapillaStudio</p>
-                </div>
-            </a>
-            <a href="https://facebook.com" target="_blank" class="social-follow-card fb">
-                <i class="fab fa-facebook"></i>
-                <div>
-                    <h4>Facebook</h4>
-                    <p>Snapilla Studio</p>
-                </div>
-            </a>
-            <a href="https://youtube.com" target="_blank" class="social-follow-card yt">
-                <i class="fab fa-youtube"></i>
-                <div>
-                    <h4>YouTube</h4>
-                    <p>Snapilla Studio Stories</p>
-                </div>
-            </a>
-        </div>
-    </section>
-
-    <!-- Final Call to Action High-Impact Banner -->
-    <section class="final-cta-sec" style="padding: 0 5% 100px 5%; background: #fafafa;">
-        <div class="final-cta-card">
-            <h2 id="finalCtaTitle">Don’t Let Your Best Moments Become Forgotten Moments.</h2>
-            <p id="finalCtaDesc">
-                Your memories deserve more than a camera roll. Whether it’s your child’s first birthday, your wedding day, a new product launch, a modeling portfolio, or simply a moment you want to remember — <strong>Let’s capture it beautifully.</strong>
-            </p>
-            <div class="final-cta-btns">
-                <a href="#booking" class="btn-burn" style="background: #FFB300; color: #000; border: none; font-size: 1.1rem; padding: 22px 55px;">📸 Book Your Shoot Now</a>
-                <a href="https://wa.me/918780286850?text=Hello%20Snapilla%20Studio!%20I%20would%20like%20to%20inquire%20about%20booking%20a%20photoshoot%20session." target="_blank" class="btn-burn" style="background: transparent; border: 2px solid #fff; color: #fff; font-size: 1.1rem; padding: 22px 50px;">💬 Chat on WhatsApp</a>
+        <!-- Follow Our Work Section -->
+        <section class="social-follow-sec" style="padding: 100px 5%; text-align: center; background: #fafafa;">
+            <h2 class="section-title">📱 Follow Our Work</h2>
+            <p class="section-subtitle">See More. Get Inspired. Follow Snapilla Studio on Instagram for our latest photoshoots, behind-the-scenes moments, creative ideas, and new work.</p>
+            
+            <div class="social-follow-grid" style="justify-content: center; max-width: 450px;">
+                <a href="https://instagram.com" target="_blank" class="social-follow-card" style="justify-content: center;">
+                    <i class="fab fa-instagram"></i>
+                    <div>
+                        <h4>Instagram</h4>
+                        <p>@SnapillaStudio</p>
+                    </div>
+                </a>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Contact Section -->
-    <section class="contact" id="contact" style="padding: 100px 5%; background: #ffffff;">
-        <h2 class="section-title">📍 Get In Touch</h2>
-        <p class="section-subtitle">Have a question? Want to book a photoshoot? Have a creative idea? Get in touch with Snapilla Studio.</p>
-        
-        <div class="contact-grid">
-            <div class="contact-info">
-                <h3>Contact Information</h3>
-                <div class="info-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <p id="contactAddress">📍 Ahmedabad, Gujarat, India</p>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-phone"></i>
-                    <p id="contactPhone">📞 +91 87802 86850</p>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-envelope"></i>
-                    <p id="contactEmail">📧 snapillastudio@gmail.com</p>
-                </div>
-                <div class="info-item">
-                    <i class="far fa-clock"></i>
-                    <p>🕐 Mon – Sat: 10 AM – 8 PM | Sun: 10 AM – 6 PM</p>
-                </div>
-                <div class="social-links" id="socialLinks">
-                    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-                    <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+        <!-- Final Call to Action High-Impact Banner -->
+        <section class="final-cta-sec" style="padding: 0 5% 100px 5%; background: #fafafa;">
+            <div class="final-cta-card">
+                <h2 id="finalCtaTitle">Don’t Let Your Best Moments Become Forgotten Moments.</h2>
+                <p id="finalCtaDesc">
+                    Your memories deserve more than a camera roll. Whether it’s your child’s first birthday, your wedding day, a new product launch, a modeling portfolio, or simply a moment you want to remember — <strong>Let’s capture it beautifully.</strong>
+                </p>
+                <div class="final-cta-btns">
+                    <a href="#booking" class="btn-burn" style="background: #FFB300; color: #000; border: none; font-size: 1.1rem; padding: 22px 55px;">📸 Book Your Shoot Now</a>
+                    <a href="https://wa.me/918780286850?text=Hello%20Snapilla%20Studio!%20I%20would%20like%20to%20inquire%20about%20booking%20a%20photoshoot%20session." target="_blank" class="btn-burn" style="background: transparent; border: 2px solid #fff; color: #fff; font-size: 1.1rem; padding: 22px 50px;">💬 Chat on WhatsApp</a>
                 </div>
             </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact" style="padding: 100px 5%; background: #ffffff;">
+            <h2 class="section-title">📍 Get In Touch</h2>
+            <p class="section-subtitle">Have a question? Want to book a photoshoot? Have a creative idea? Get in touch with Snapilla Studio.</p>
+            
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p id="contactAddress">Snapilla Studio, Ahmedabad, Gujarat, India</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <p id="contactPhone">+91 87802 86850</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <p id="contactEmail">snapillastudio@gmail.com</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="far fa-clock"></i>
+                        <p id="contactHours">Mon – Sat: 10:00 AM – 8:00 PM | Sun: 10:00 AM – 6:00 PM</p>
+                    </div>
+                    <div class="social-links" id="socialLinks" style="justify-content: flex-start; margin-top: 25px;">
+                        <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
             <div class="map-container">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d235014.299110192!2d72.41493013511107!3d23.020158084620003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fccd11674f987f1!2sAhmedabad%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1712670000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
             </div>
@@ -2299,7 +2659,7 @@
             <div class="footer-col">
                 <h4>Studio Details</h4>
                 <p style="color: #bbb; font-size: 0.9rem; margin-bottom: 10px;">📍 Ahmedabad, Gujarat, India</p>
-                <p style="color: #bbb; font-size: 0.9rem; margin-bottom: 10px;">📞 +91 XXXXX XXXXX</p>
+                <p style="color: #bbb; font-size: 0.9rem; margin-bottom: 10px;">📞 +91 87802 86850</p>
                 <p style="color: #bbb; font-size: 0.9rem; margin-bottom: 15px;">📧 snapillastudio@gmail.com</p>
                 <p style="color: #888; font-size: 0.85rem; line-height: 1.5;">
                     Studio Sessions by Appointment. Doorstep services are not currently provided.
@@ -2341,18 +2701,45 @@
                 e.preventDefault();
                 e.stopPropagation();
             }
-            const name = (document.getElementById('name')?.value || '').trim();
-            const email = (document.getElementById('email')?.value || '').trim();
-            const phone = (document.getElementById('phone')?.value || '').trim();
-            const shootType = document.getElementById('shootType')?.value || 'General Studio Inquiry';
-            const date = document.getElementById('date')?.value || '';
-            const message = (document.getElementById('message')?.value || '').trim();
+            const nameEl = document.getElementById('name');
+            const emailEl = document.getElementById('email');
+            const phoneEl = document.getElementById('phone');
+            const shootTypeEl = document.getElementById('shootType');
+            const dateEl = document.getElementById('date');
+            const messageEl = document.getElementById('message');
+
+            const name = (nameEl?.value || '').trim();
+            const email = (emailEl?.value || '').trim();
+            const phone = (phoneEl?.value || '').trim();
+            const shootType = (shootTypeEl?.value || '').trim();
+            const date = dateEl?.value || '';
+            const message = (messageEl?.value || '').trim();
+
+            [nameEl, phoneEl, shootTypeEl].forEach(el => el && el.classList.remove('field-error'));
+
+            if (!name) {
+                if (nameEl) { nameEl.classList.add('field-error'); nameEl.focus(); }
+                if (window.showBookingToast) window.showBookingToast('Please enter your Full Name before submitting.', false);
+                return false;
+            }
+
+            if (!phone) {
+                if (phoneEl) { phoneEl.classList.add('field-error'); phoneEl.focus(); }
+                if (window.showBookingToast) window.showBookingToast('Please enter your Phone Number / WhatsApp.', false);
+                return false;
+            }
+
+            if (!shootType) {
+                if (shootTypeEl) { shootTypeEl.classList.add('field-error'); shootTypeEl.focus(); }
+                if (window.showBookingToast) window.showBookingToast('Please select a Photography Service.', false);
+                return false;
+            }
 
             const leadRecord = {
                 id: 'lead_' + Date.now(),
-                name: name || 'Website Visitor',
+                name: name,
                 email: email || 'Not provided',
-                phone: phone || 'Not provided',
+                phone: phone,
                 shootType: shootType,
                 date: date || 'Flexible',
                 message: message || 'Inquired via website booking form',
@@ -2376,9 +2763,9 @@
             const lines = [
                 "📸 *NEW BOOKING INQUIRY - SNAPILLA STUDIO*",
                 "━━━━━━━━━━━━━━━━━━━━━",
-                "👤 *Name:* " + (name || 'Not provided'),
+                "👤 *Name:* " + name,
                 "📧 *Email:* " + (email || 'Not provided'),
-                "📞 *Phone:* " + (phone || 'Not provided'),
+                "📞 *Phone:* " + phone,
                 "🎯 *Shoot Type:* " + shootType,
                 "📅 *Preferred Date:* " + (date || 'Flexible'),
                 "💬 *Details:* " + (message || 'Looking forward to booking my shoot!'),
