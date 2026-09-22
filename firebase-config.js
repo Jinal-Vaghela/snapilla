@@ -62,7 +62,7 @@ const SNAP_DEFAULT_DATA = {
         phone: "+91 87802 86850",
         whatsapp_number: "918780286850",
         email: "snapillastudio@gmail.com",
-        address: "Snapilla Studio, Ahmedabad, Gujarat, India",
+        address: "Shop No. 13/13A, Nakshatra Mall, IOC Rd, Chandkheda, Ahmedabad, Gujarat 382424",
         instagram_url: "https://instagram.com",
         tagline: "Where Every Moment Becomes A Memory"
     },
@@ -280,6 +280,7 @@ const SNAP_DEFAULT_DATA = {
         badge: "Studio-Based Photography Only",
         title: "Welcome To Snapilla Studio",
         desc: "Snapilla Studio currently operates as a dedicated studio-based photography service. Clients are warmly invited to visit our studio for photography sessions. We do not currently provide doorstep or home photography services.",
+        location: "Shop No. 13/13A, Nakshatra Mall, IOC Rd, Chandkheda, Ahmedabad, Gujarat 382424",
         hours_weekday: "10:00 AM – 8:00 PM",
         hours_sunday: "10:00 AM – 6:00 PM",
         notice: "* Appointments are highly recommended prior to visiting to ensure studio setup availability.",

@@ -428,6 +428,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const contactAddress = document.getElementById('contactAddress');
         if (contactAddress && data.address) contactAddress.textContent = data.address;
 
+        const studioNoticeAddress = document.getElementById('studioNoticeAddress');
+        if (studioNoticeAddress && data.address) studioNoticeAddress.textContent = data.address;
+
+        const mapIframe = document.getElementById('contactMapIframe');
+        if (mapIframe && data.address) {
+            mapIframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(data.address)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+        }
+
+        const studioMapsBtn = document.getElementById('studioMapsBtn');
+        if (studioMapsBtn && data.address && (!liveSettings.maps_url || liveSettings.maps_url === 'https://maps.google.com')) {
+            studioMapsBtn.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.address)}`;
+        }
+
         const contactPhone = document.getElementById('contactPhone');
         if (contactPhone && data.phone) contactPhone.textContent = data.phone;
 
@@ -720,6 +733,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const desc = document.getElementById('studioDesc');
         if (desc && data.desc) desc.innerHTML = data.desc.replace(/\n/g, '<br>');
 
+        const studioNoticeAddress = document.getElementById('studioNoticeAddress');
+        if (studioNoticeAddress) {
+            if (data.location) studioNoticeAddress.textContent = data.location;
+            else if (data.address) studioNoticeAddress.textContent = data.address;
+            else if (liveSettings && liveSettings.address) studioNoticeAddress.textContent = liveSettings.address;
+        }
+
         const weekday = document.getElementById('studioHoursWeekday');
         if (weekday && data.hours_weekday) weekday.textContent = data.hours_weekday;
 
@@ -737,7 +757,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (notice && data.notice) notice.textContent = data.notice;
 
         const mapsBtn = document.getElementById('studioMapsBtn');
-        if (mapsBtn && data.maps_url) mapsBtn.href = data.maps_url;
+        if (mapsBtn) {
+            if (data.maps_url && data.maps_url !== 'https://maps.google.com') {
+                mapsBtn.href = data.maps_url;
+            } else if (data.location || (liveSettings && liveSettings.address)) {
+                const addr = data.location || (liveSettings && liveSettings.address);
+                mapsBtn.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addr)}`;
+            }
+        }
     }
 
     function updateAboutDOM(data) {

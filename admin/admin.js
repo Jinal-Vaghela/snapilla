@@ -379,12 +379,13 @@ function updateOverviewStats() {
 // ----------------------------------------------------
 function renderSettingsView() {
     const s = currentContent.settings || {};
+    const st = currentContent.studio_info || {};
     document.getElementById('setHeroTitle').value = s.hero_title || '';
     document.getElementById('setHeroSubtitle').value = s.hero_subtitle || '';
     document.getElementById('setWhatsapp').value = s.whatsapp_number || '';
     document.getElementById('setPhone').value = s.phone || '';
     document.getElementById('setEmail').value = s.email || '';
-    document.getElementById('setAddress').value = s.address || '';
+    document.getElementById('setAddress').value = s.address || st.location || st.address || '';
     document.getElementById('setInstagram').value = s.instagram_url || '';
     document.getElementById('setTagline').value = s.tagline || '';
 
@@ -399,16 +400,23 @@ const settingsForm = document.getElementById('settingsForm');
 if (settingsForm) {
     settingsForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const newAddress = document.getElementById('setAddress').value;
         currentContent.settings = {
+            ...currentContent.settings,
             hero_title: document.getElementById('setHeroTitle').value,
             hero_subtitle: document.getElementById('setHeroSubtitle').value,
             whatsapp_number: document.getElementById('setWhatsapp').value,
             phone: document.getElementById('setPhone').value,
             email: document.getElementById('setEmail').value,
-            address: document.getElementById('setAddress').value,
+            address: newAddress,
             instagram_url: document.getElementById('setInstagram').value,
             tagline: document.getElementById('setTagline').value
         };
+
+        // Also sync to studio_info location so both collections and DOM sections are updated
+        if (!currentContent.studio_info) currentContent.studio_info = {};
+        currentContent.studio_info.location = newAddress;
+        currentContent.studio_info.address = newAddress;
 
         const newAdminEmail = document.getElementById('setAdminEmail')?.value.trim();
         const newAdminPass = document.getElementById('setAdminPassword')?.value;
@@ -428,7 +436,8 @@ if (settingsForm) {
         }
 
         await saveDoc('settings', currentContent.settings);
-        showToast('Site & Admin Settings Saved Successfully!', 'success');
+        await saveDoc('studio_info', currentContent.studio_info);
+        showToast('Settings & Contact Information Saved Successfully!', 'success');
     });
 }
 
@@ -658,9 +667,11 @@ if (stepForm) {
 // ----------------------------------------------------
 function renderStudioView() {
     const st = currentContent.studio_info || {};
+    const s = currentContent.settings || {};
     const setStudioBadge = document.getElementById('setStudioBadge');
     const setStudioTitle = document.getElementById('setStudioTitle');
     const setStudioDesc = document.getElementById('setStudioDesc');
+    const setStudioLocation = document.getElementById('setStudioLocation');
     const setStudioWeekday = document.getElementById('setStudioWeekday');
     const setStudioSunday = document.getElementById('setStudioSunday');
     const setStudioNotice = document.getElementById('setStudioNotice');
@@ -669,6 +680,7 @@ function renderStudioView() {
     if (setStudioBadge) setStudioBadge.value = st.badge || '';
     if (setStudioTitle) setStudioTitle.value = st.title || '';
     if (setStudioDesc) setStudioDesc.value = st.desc || '';
+    if (setStudioLocation) setStudioLocation.value = st.location || st.address || s.address || '';
     if (setStudioWeekday) setStudioWeekday.value = st.hours_weekday || '';
     if (setStudioSunday) setStudioSunday.value = st.hours_sunday || '';
     if (setStudioNotice) setStudioNotice.value = st.notice || '';
@@ -679,15 +691,25 @@ const studioForm = document.getElementById('studioForm');
 if (studioForm) {
     studioForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const studioLoc = document.getElementById('setStudioLocation') ? document.getElementById('setStudioLocation').value.trim() : '';
         currentContent.studio_info = {
+            ...currentContent.studio_info,
             badge: document.getElementById('setStudioBadge').value,
             title: document.getElementById('setStudioTitle').value,
             desc: document.getElementById('setStudioDesc').value,
+            location: studioLoc,
+            address: studioLoc,
             hours_weekday: document.getElementById('setStudioWeekday').value,
             hours_sunday: document.getElementById('setStudioSunday').value,
             notice: document.getElementById('setStudioNotice').value,
             maps_url: document.getElementById('setStudioMaps').value
         };
+
+        if (studioLoc) {
+            if (!currentContent.settings) currentContent.settings = {};
+            currentContent.settings.address = studioLoc;
+            await saveDoc('settings', currentContent.settings);
+        }
 
         await saveDoc('studio_info', currentContent.studio_info);
         showToast('Studio Details & Hours Saved Successfully!', 'success');
