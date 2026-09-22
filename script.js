@@ -645,6 +645,130 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function wireBookingTriggers() {
+        document.querySelectorAll('a[href="#booking"]').forEach(btn => {
+            if (btn.dataset.bookingBound) return;
+            btn.dataset.bookingBound = 'true';
+            btn.addEventListener('click', (e) => {
+                const bookingSec = document.getElementById('booking');
+                if (bookingSec) {
+                    bookingSec.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    }
+
+    const CATEGORY_META = {
+        'baby': {
+            title: 'Baby & Newborn',
+            subtitle: 'Precious giggles, cozy wraps, and milestones captured with love.',
+            icon: 'fas fa-baby',
+            defaultImg: 'baby.png',
+            morePhotos: [
+                { image: 'baby.png', title: 'Baby Milestone Portrait', desc: 'Newborn wrapped in cozy warm tones' },
+                { image: 'p3.png', title: 'Baby Cake Smash & 1st Birthday', desc: 'Joyful celebration & sweet moments' },
+                { image: 'p2.png', title: 'Baby & Family Session', desc: 'Generations welcoming a new life' },
+                { image: 'p1.png', title: 'Baby Studio Portrait', desc: 'Warm creative studio lighting' }
+            ]
+        },
+        'wedding': {
+            title: 'Wedding & Romance',
+            subtitle: 'Grand cinematic romance, emotional rituals, and timeless memories.',
+            icon: 'fas fa-ring',
+            defaultImg: 'wedding.png',
+            morePhotos: [
+                { image: 'wedding.png', title: 'Bridal & Couple Portrait', desc: 'Cinematic bridal storytelling' },
+                { image: 'p4.png', title: 'Wedding Rituals & Celebrations', desc: 'Special moments and family joy' },
+                { image: 'p1.png', title: 'Pre-Wedding Studio Session', desc: 'Editorial couple portraiture' },
+                { image: 'p2.png', title: 'Family Wedding Moments', desc: 'Cherished memories with loved ones' }
+            ]
+        },
+        'products': {
+            title: 'Product & Commercial',
+            subtitle: 'High-converting commercial visuals designed for brands, Amazon & e-commerce.',
+            icon: 'fas fa-shopping-bag',
+            defaultImg: 'product.png',
+            morePhotos: [
+                { image: 'product.png', title: 'Commercial Product Shoot', desc: 'Clean studio lighting & sharp detail' },
+                { image: 'p1.png', title: 'Editorial Brand Showcase', desc: 'Mood lighting for brand campaigns' },
+                { image: 'modeling.png', title: 'Fashion & Product Pairing', desc: 'Lifestyle catalog commercial' },
+                { image: 'p4.png', title: 'Luxury Item Photography', desc: 'Crisp texture & premium studio setup' }
+            ]
+        },
+        'models': {
+            title: 'Model & Fashion',
+            subtitle: 'High-fashion modeling portfolios, headshots, and editorial casting.',
+            icon: 'fas fa-tshirt',
+            defaultImg: 'modeling.png',
+            morePhotos: [
+                { image: 'modeling.png', title: 'Fashion Portfolio Headshot', desc: 'Editorial fashion and pose direction' },
+                { image: 'p1.png', title: 'Studio High-Fashion Portrait', desc: 'Creative studio lighting & gels' },
+                { image: 'p4.png', title: 'Lookbook & Casting Session', desc: 'Clean agency-ready portraits' },
+                { image: 'wedding.png', title: 'Bridal Model Shoot', desc: 'High-end ethnic editorial' }
+            ]
+        },
+        'portraits': {
+            title: 'Signature Portraits',
+            subtitle: 'Expressions that define who you are with creative studio mood lighting.',
+            icon: 'fas fa-user-tie',
+            defaultImg: 'p1.png',
+            morePhotos: [
+                { image: 'p1.png', title: 'Signature Studio Portrait', desc: 'Fine art dramatic mood lighting' },
+                { image: 'modeling.png', title: 'Executive Headshot', desc: 'Professional leadership portfolio' },
+                { image: 'p2.png', title: 'Candid Expression Shoot', desc: 'Natural expressions and clean frames' },
+                { image: 'p4.png', title: 'Artistic Character Frame', desc: 'Timeless luxury character portrait' }
+            ]
+        },
+        'couples': {
+            title: 'Couple Photography',
+            subtitle: 'Two people. One beautiful story. Authentic chemistry and connection.',
+            icon: 'fas fa-heart',
+            defaultImg: 'wedding.png',
+            morePhotos: [
+                { image: 'wedding.png', title: 'Romantic Couple Session', desc: 'Intimate and natural chemistry' },
+                { image: 'p1.png', title: 'Studio Couple Silhouette', desc: 'Artistic lighting & romantic poses' },
+                { image: 'p2.png', title: 'Engagement & Milestone Shoot', desc: 'Celebrating relationship milestones' },
+                { image: 'p4.png', title: 'Anniversary Studio Portrait', desc: 'Forever memories captured together' }
+            ]
+        },
+        'family': {
+            title: 'Family Photography',
+            subtitle: 'Generations together in one perfect frame. Warm, joyful, and timeless.',
+            icon: 'fas fa-users',
+            defaultImg: 'p2.png',
+            morePhotos: [
+                { image: 'p2.png', title: 'Grand Family Portrait', desc: 'Three generations united in joy' },
+                { image: 'baby.png', title: 'Parents & Newborn Session', desc: 'Tender moments of new parenthood' },
+                { image: 'p3.png', title: 'Family Birthday Celebration', desc: 'Laughter, hugs, and true connection' },
+                { image: 'p4.png', title: 'Family Holiday & Festival Shoot', desc: 'Traditional festive portraits' }
+            ]
+        },
+        'birthdays': {
+            title: 'Birthday & Cake Smash',
+            subtitle: 'Celebrate another wonderful year! Vibrant colors, props, and memories.',
+            icon: 'fas fa-birthday-cake',
+            defaultImg: 'p3.png',
+            morePhotos: [
+                { image: 'p3.png', title: '1st Birthday Cake Smash', desc: 'Messy fun, bright balloons & joy' },
+                { image: 'baby.png', title: 'Baby Milestone Birthday', desc: 'Custom themed studio backdrops' },
+                { image: 'p2.png', title: 'Family Birthday Gathering', desc: 'Celebrating another milestone year' },
+                { image: 'p4.png', title: 'Grand Milestone Jubilee', desc: 'Golden jubilee & milestone events' }
+            ]
+        },
+        'events': {
+            title: 'Events & Celebrations',
+            subtitle: 'Anniversaries, graduations, and achievements captured with emotion.',
+            icon: 'fas fa-glass-cheers',
+            defaultImg: 'p4.png',
+            morePhotos: [
+                { image: 'p4.png', title: 'Special Milestone Event', desc: 'Grand celebrations & memories' },
+                { image: 'wedding.png', title: 'Ceremonial Occasion', desc: 'Authentic traditions and rituals' },
+                { image: 'p2.png', title: 'Family Gathering Event', desc: 'Unfiltered candid moments' },
+                { image: 'p1.png', title: 'Award & Graduation Portrait', desc: 'Celebrating big life achievements' }
+            ]
+        }
+    };
+
     let livePortfolioList = (typeof SNAP_DEFAULT_DATA !== 'undefined' && SNAP_DEFAULT_DATA.portfolio) ? [...SNAP_DEFAULT_DATA.portfolio] : [
         { title: "Photography Album 1", category: "portraits", image: "p1.png", alt: "Signature Portrait Album" },
         { title: "Photography Album 2", category: "family", image: "p2.png", alt: "Family Moments Album" },
@@ -674,37 +798,142 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderFilteredPortfolio(category) {
         currentGalleryFilter = category || 'all';
+        const stage = document.getElementById('portfolioStage');
         const spinner = document.getElementById('portfolioSpinner');
+        const singleShowcase = document.getElementById('portfolioSingleShowcase');
+        const moreContainer = document.getElementById('portfolioMoreContainer');
+        const showMoreBtn = document.getElementById('galleryShowMoreBtn');
+        const moreGrid = document.getElementById('galleryMoreGrid');
+
         if (!spinner) return;
 
-        let displayItems = livePortfolioList;
-        if (currentGalleryFilter !== 'all') {
-            const normalized = currentGalleryFilter.toLowerCase().trim();
-            const filtered = livePortfolioList.filter(item => {
-                const itemCat = categorizePhoto(item);
-                return itemCat === normalized || 
-                       itemCat.startsWith(normalized.replace(/s$/, '')) || 
-                       normalized.includes(itemCat) ||
-                       itemCat.includes(normalized.replace(/s$/, ''));
-            });
+        const normalized = currentGalleryFilter.toLowerCase().trim();
 
-            if (filtered.length > 0) {
-                displayItems = filtered;
-            }
+        // 1. ALL CATEGORIES: 3D Rotating Carousel
+        if (normalized === 'all') {
+            if (stage) stage.classList.remove('is-single-mode');
+            spinner.style.display = 'block';
+            if (singleShowcase) singleShowcase.style.display = 'none';
+            if (moreContainer) moreContainer.style.display = 'none';
+            if (moreGrid) moreGrid.style.display = 'none';
+
+            const total = livePortfolioList.length;
+            const radius = window.innerWidth < 768 ? 230 : (window.innerWidth < 992 ? 350 : 500);
+            const angleStep = 360 / Math.max(total, 1);
+
+            spinner.innerHTML = livePortfolioList.map((photo, index) => {
+                const rot = index * angleStep;
+                return `
+                    <div class="portfolio-card portfolio-item" data-category="${categorizePhoto(photo)}" style="transform: rotateY(${rot}deg) translateZ(${radius}px);">
+                        <img src="${photo.image}" alt="${photo.alt || photo.title || 'Photography Album'}">
+                    </div>
+                `;
+            }).join('');
+
+            attachLightboxHandlers();
+            return;
         }
 
-        const total = displayItems.length;
-        const radius = window.innerWidth < 768 ? 230 : (window.innerWidth < 992 ? 350 : 500);
-        const angleStep = 360 / Math.max(total, 1);
+        // 2. SPECIFIC CATEGORY: Stop Rotating -> Show Single Image + Show More Button
+        if (stage) stage.classList.add('is-single-mode');
+        spinner.style.display = 'none';
 
-        spinner.innerHTML = displayItems.map((photo, index) => {
-            const rot = index * angleStep;
-            return `
-                <div class="portfolio-card" data-category="${categorizePhoto(photo)}" style="transform: rotateY(${rot}deg) translateZ(${radius}px);">
-                    <img src="${photo.image}" alt="${photo.alt || photo.title || 'Photography Album'}">
+        const meta = CATEGORY_META[normalized] || {
+            title: normalized.charAt(0).toUpperCase() + normalized.slice(1),
+            subtitle: 'Professional dedicated photography session by Snapilla Studio.',
+            icon: 'fas fa-camera',
+            defaultImg: 'p1.png',
+            morePhotos: []
+        };
+
+        // Find matching photos from live portfolio
+        const matchingLive = livePortfolioList.filter(item => {
+            const itemCat = categorizePhoto(item);
+            return itemCat === normalized || 
+                   itemCat.startsWith(normalized.replace(/s$/, '')) || 
+                   normalized.includes(itemCat) ||
+                   itemCat.includes(normalized.replace(/s$/, ''));
+        });
+
+        const featuredPhoto = matchingLive[0] || (meta.morePhotos && meta.morePhotos[0]) || {
+            image: meta.defaultImg || 'p1.png',
+            title: meta.title + ' Showcase',
+            alt: meta.title
+        };
+
+        // Populate Single Showcase Card
+        if (singleShowcase) {
+            singleShowcase.style.display = 'flex';
+            singleShowcase.innerHTML = `
+                <div class="single-showcase-card portfolio-item" data-category="${normalized}">
+                    <div class="showcase-badge"><i class="${meta.icon}"></i> ${meta.title}</div>
+                    <img src="${featuredPhoto.image}" alt="${featuredPhoto.title || meta.title}">
+                    <div class="showcase-overlay">
+                        <div class="showcase-zoom-hint"><i class="fas fa-search-plus"></i> Click to View Full Size</div>
+                        <h3>${featuredPhoto.title || (meta.title + ' Photography')}</h3>
+                        <p>${meta.subtitle}</p>
+                    </div>
                 </div>
             `;
-        }).join('');
+        }
+
+        // Prepare Show More photos pool
+        let morePhotosPool = [];
+        if (matchingLive.length > 0) {
+            morePhotosPool = matchingLive.map(item => ({
+                image: item.image,
+                title: item.title || meta.title,
+                desc: item.alt || meta.subtitle
+            }));
+        }
+        if (meta.morePhotos && meta.morePhotos.length > 0) {
+            meta.morePhotos.forEach(mp => {
+                if (!morePhotosPool.some(p => p.image === mp.image)) {
+                    morePhotosPool.push(mp);
+                }
+            });
+        }
+        if (morePhotosPool.length === 0) {
+            morePhotosPool = [
+                { image: meta.defaultImg || 'p1.png', title: meta.title, desc: meta.subtitle }
+            ];
+        }
+
+        // Configure Show More Button & Grid
+        if (moreContainer && showMoreBtn && moreGrid) {
+            moreContainer.style.display = 'block';
+            moreGrid.style.display = 'none';
+            showMoreBtn.innerHTML = `<i class="fas fa-images"></i> <span>Show More ${meta.title} Photos</span>`;
+
+            showMoreBtn.onclick = () => {
+                const isHidden = (moreGrid.style.display === 'none' || !moreGrid.style.display);
+                if (isHidden) {
+                    moreGrid.innerHTML = `
+                        ${morePhotosPool.map(p => `
+                            <div class="more-photo-card portfolio-item" data-category="${normalized}">
+                                <img src="${p.image}" alt="${p.title || meta.title}">
+                                <div class="more-photo-info">
+                                    <h4>${p.title || meta.title}</h4>
+                                    <p>${p.desc || 'Snapilla Studio'}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                        <div class="more-gallery-cta">
+                            <h4>Love Our ${meta.title} Photography?</h4>
+                            <p>Let’s craft timeless memories together at our dedicated studio.</p>
+                            <a href="#booking" class="btn-service-book" style="display: inline-block; padding: 14px 34px; font-size: 1rem;">📸 Book ${meta.title} Shoot <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    `;
+                    moreGrid.style.display = 'grid';
+                    showMoreBtn.innerHTML = `<i class="fas fa-chevron-up"></i> <span>Show Less</span>`;
+                    attachLightboxHandlers();
+                    wireBookingTriggers();
+                } else {
+                    moreGrid.style.display = 'none';
+                    showMoreBtn.innerHTML = `<i class="fas fa-images"></i> <span>Show More ${meta.title} Photos</span>`;
+                }
+            };
+        }
 
         attachLightboxHandlers();
     }

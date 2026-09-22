@@ -832,6 +832,242 @@
             to { transform: rotateY(-360deg); }
         }
 
+        /* Single Showcase Mode when Filter != 'all' */
+        .portfolio-stage.is-single-mode {
+            perspective: none;
+            height: auto;
+            min-height: 480px;
+            overflow: visible;
+            margin-top: 30px;
+            padding: 10px 0;
+        }
+
+        .portfolio-single-showcase {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInShowcase 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInShowcase {
+            from { opacity: 0; transform: translateY(20px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .single-showcase-card {
+            position: relative;
+            width: 380px;
+            height: 480px;
+            max-width: 92vw;
+            background: #fff;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.05);
+            border: 5px solid #fff;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .single-showcase-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 35px 75px rgba(0,0,0,0.25), 0 0 0 2px #FFB300;
+        }
+
+        .single-showcase-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .single-showcase-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .showcase-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(18, 18, 18, 0.85);
+            color: #FFB300;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 2;
+            border: 1px solid rgba(255, 179, 0, 0.3);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .showcase-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px 25px 22px 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 55%, transparent 100%);
+            color: #fff;
+            z-index: 2;
+            text-align: left;
+        }
+
+        .showcase-overlay h3 {
+            margin: 0 0 6px 0;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
+
+        .showcase-overlay p {
+            margin: 0 0 12px 0;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            line-height: 1.4;
+        }
+
+        .showcase-zoom-hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #FFB300;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Show More Button & Expandable Grid */
+        .portfolio-more-container {
+            margin-top: 35px;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        .btn-gallery-show-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 38px;
+            background: #111;
+            color: #fff;
+            border: 2px solid #111;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .btn-gallery-show-more:hover {
+            background: #FFB300;
+            color: #000;
+            border-color: #FFB300;
+            transform: translateY(-4px);
+            box-shadow: 0 16px 35px rgba(255, 179, 0, 0.4);
+        }
+
+        .gallery-more-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
+            margin: 40px auto 0 auto;
+            text-align: left;
+            animation: fadeInGrid 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInGrid {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .more-photo-card {
+            position: relative;
+            height: 330px;
+            border-radius: 22px;
+            overflow: hidden;
+            background: #fff;
+            border: 4px solid #fff;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .more-photo-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.18);
+            border-color: #FFB300;
+        }
+
+        .more-photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .more-photo-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .more-photo-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px 18px 15px 18px;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+            color: #fff;
+        }
+
+        .more-photo-info h4 {
+            margin: 0 0 4px 0;
+            font-size: 1.1rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .more-photo-info p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #ddd;
+        }
+
+        .more-gallery-cta {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 35px 20px;
+            background: #faf7f2;
+            border-radius: 22px;
+            border: 1.5px dashed #FFB300;
+            margin-top: 15px;
+        }
+
+        .more-gallery-cta h4 {
+            margin: 0 0 8px 0;
+            font-size: 1.3rem;
+            color: #111;
+        }
+
+        .more-gallery-cta p {
+            margin: 0 0 20px 0;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
         /* Infinite Testimonial Wall */
         .testimonial-wall {
             overflow: hidden;
@@ -2867,7 +3103,7 @@
             <button class="filter-btn" data-filter="events"><i class="fas fa-glass-cheers"></i> Events</button>
         </div>
 
-        <div class="portfolio-stage" style="position: relative; z-index: 5;">
+        <div class="portfolio-stage" id="portfolioStage" style="position: relative; z-index: 5;">
             <div class="portfolio-spinner" id="portfolioSpinner">
                 <div class="portfolio-card" data-category="portraits"><img src="p1.png" alt="Signature Portrait Album"></div>
                 <div class="portfolio-card" data-category="family"><img src="p2.png" alt="Family Moments Album"></div>
@@ -2877,6 +3113,19 @@
                 <div class="portfolio-card" data-category="wedding"><img src="wedding.png" alt="Wedding Shoot Album"></div>
                 <div class="portfolio-card" data-category="models"><img src="modeling.png" alt="Model Shoot Album"></div>
                 <div class="portfolio-card" data-category="products"><img src="product.png" alt="Product Shoot Album"></div>
+            </div>
+            <div class="portfolio-single-showcase" id="portfolioSingleShowcase" style="display: none;">
+                <!-- Single featured image populated dynamically -->
+            </div>
+        </div>
+
+        <!-- Show More Expandable Gallery -->
+        <div class="portfolio-more-container" id="portfolioMoreContainer" style="display: none;">
+            <button class="btn-gallery-show-more" id="galleryShowMoreBtn">
+                <i class="fas fa-images"></i> <span>Show More Photos</span>
+            </button>
+            <div class="gallery-more-grid" id="galleryMoreGrid" style="display: none;">
+                <!-- Additional category photos & booking CTA -->
             </div>
         </div>
     </section>
