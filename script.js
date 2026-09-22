@@ -415,6 +415,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
     // 5. DYNAMIC DATA HYDRATION (FIREBASE & LOCAL CACHE)
     // ----------------------------------------------------
+    function getEmbedMapUrl(val) {
+        if (!val) return 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3669.5719489442154!2d72.5721459!3d23.1127604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8301a637aa8d%3A0x7caac65cdfe4f745!2sSnapilla%20Studio%20%7C%20Baby%20Shoot%20In%20Ahmedabad!5e0!3m2!1sen!2sin!4v1712670000000!5m2!1sen!2sin';
+        if (val.includes('maps.google.com/maps/embed') || val.includes('google.com/maps/embed')) {
+            return val;
+        }
+        if (val.includes('aFs4f4PSaPtn3VUT9') || val.toLowerCase().includes('snapilla') || val.toLowerCase().includes('nakshatra')) {
+            return 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3669.5719489442154!2d72.5721459!3d23.1127604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8301a637aa8d%3A0x7caac65cdfe4f745!2sSnapilla%20Studio%20%7C%20Baby%20Shoot%20In%20Ahmedabad!5e0!3m2!1sen!2sin!4v1712670000000!5m2!1sen!2sin';
+        }
+        return `https://maps.google.com/maps?q=${encodeURIComponent(val)}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+    }
+
     function updateSettingsDOM(data) {
         if (!data) return;
         liveSettings = { ...liveSettings, ...data };
@@ -433,12 +444,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const mapIframe = document.getElementById('contactMapIframe');
         if (mapIframe && data.address) {
-            mapIframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(data.address)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+            mapIframe.src = getEmbedMapUrl(data.address);
         }
 
         const studioMapsBtn = document.getElementById('studioMapsBtn');
-        if (studioMapsBtn && data.address && (!liveSettings.maps_url || liveSettings.maps_url === 'https://maps.google.com')) {
-            studioMapsBtn.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.address)}`;
+        if (studioMapsBtn) {
+            if (data.maps_url && data.maps_url !== 'https://maps.google.com') {
+                studioMapsBtn.href = data.maps_url;
+            } else if (data.address && data.address !== 'Snapilla Studio, Ahmedabad, Gujarat, India') {
+                studioMapsBtn.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.address)}`;
+            } else {
+                studioMapsBtn.href = 'https://maps.app.goo.gl/aFs4f4PSaPtn3VUT9';
+            }
         }
 
         const contactPhone = document.getElementById('contactPhone');
@@ -763,6 +780,16 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (data.location || (liveSettings && liveSettings.address)) {
                 const addr = data.location || (liveSettings && liveSettings.address);
                 mapsBtn.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addr)}`;
+            } else {
+                mapsBtn.href = 'https://maps.app.goo.gl/aFs4f4PSaPtn3VUT9';
+            }
+        }
+
+        const mapIframe = document.getElementById('contactMapIframe');
+        if (mapIframe) {
+            const mapSrcTarget = data.maps_url || data.location || (liveSettings && liveSettings.address);
+            if (mapSrcTarget) {
+                mapIframe.src = getEmbedMapUrl(mapSrcTarget);
             }
         }
     }

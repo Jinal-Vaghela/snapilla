@@ -284,7 +284,7 @@ const SNAP_DEFAULT_DATA = {
         hours_weekday: "10:00 AM – 8:00 PM",
         hours_sunday: "10:00 AM – 6:00 PM",
         notice: "* Appointments are highly recommended prior to visiting to ensure studio setup availability.",
-        maps_url: "https://maps.google.com"
+        maps_url: "https://maps.app.goo.gl/aFs4f4PSaPtn3VUT9"
     },
     about_us: {
         title: "Who We Are",
