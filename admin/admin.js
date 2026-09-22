@@ -716,7 +716,7 @@ if (studioForm) {
         };
 
         if (!currentContent.settings) currentContent.settings = {};
-        if (studioLoc) currentContent.settings.address = studioLoc;
+        currentContent.settings.address = studioLoc;
         currentContent.settings.maps_url = mapsUrl;
 
         await saveDoc('studio_info', currentContent.studio_info);

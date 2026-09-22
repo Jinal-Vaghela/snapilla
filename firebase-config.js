@@ -63,6 +63,7 @@ const SNAP_DEFAULT_DATA = {
         whatsapp_number: "918780286850",
         email: "snapillastudio@gmail.com",
         address: "Shop No. 13/13A, Nakshatra Mall, IOC Rd, Chandkheda, Ahmedabad, Gujarat 382424",
+        maps_url: "https://maps.app.goo.gl/Q7nne6Sem5Vc5PM66",
         instagram_url: "https://instagram.com",
         tagline: "Where Every Moment Becomes A Memory"
     },
@@ -284,7 +285,7 @@ const SNAP_DEFAULT_DATA = {
         hours_weekday: "10:00 AM – 8:00 PM",
         hours_sunday: "10:00 AM – 6:00 PM",
         notice: "* Appointments are highly recommended prior to visiting to ensure studio setup availability.",
-        maps_url: "https://maps.app.goo.gl/aFs4f4PSaPtn3VUT9"
+        maps_url: "https://maps.app.goo.gl/Q7nne6Sem5Vc5PM66"
     },
     about_us: {
         title: "Who We Are",

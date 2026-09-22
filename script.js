@@ -415,6 +415,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
     // 5. DYNAMIC DATA HYDRATION (FIREBASE & LOCAL CACHE)
     // ----------------------------------------------------
+    const SNAPILLA_VERIFIED_MAP_EMBED = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3669.5719489442154!2d72.5721459!3d23.1127604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8301a637aa8d%3A0x7caac65cdfe4f745!2sSnapilla%20Studio%20%7C%20Baby%20Shoot%20In%20Ahmedabad!5e0!3m2!1sen!2sin!4v1712670000000!5m2!1sen!2sin";
+
     function extractEmbedUrl(val) {
         if (!val || typeof val !== 'string') return '';
         const clean = val.trim();
@@ -443,24 +445,50 @@ document.addEventListener('DOMContentLoaded', () => {
         const cleanUrl = (mapsUrl && typeof mapsUrl === 'string') ? mapsUrl.trim() : '';
         const cleanAddr = (address && typeof address === 'string') ? address.trim() : '';
 
-        // 1. Check if user provided an embed URL or iframe code
+        // If neither is provided, no map
+        if (!cleanUrl && !cleanAddr) return '';
+
+        // 1. Direct iframe or embed URL provided
         const directEmbed = extractEmbedUrl(cleanUrl);
         if (directEmbed) return directEmbed;
 
-        // 2. If an address is provided, embed that address dynamically
-        if (cleanAddr) {
-            return `https://maps.google.com/maps?q=${encodeURIComponent(cleanAddr)}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+        const combined = `${cleanUrl} ${cleanAddr}`.toLowerCase();
+
+        // 2. If it is for Snapilla Studio / Nakshatra Mall / Chandkheda / Ahmedabad or Google Maps shortlink
+        // Return the verified Google Business Profile Place embed (shows red pin, business name, rating, and info card)
+        const isSnapilla = combined.includes('snapilla') || 
+                           combined.includes('nakshatra') || 
+                           combined.includes('chandkheda') || 
+                           combined.includes('382424') ||
+                           combined.includes('q7nne6sem5vc5pm66') ||
+                           combined.includes('afs4f4psaptn3vut9') ||
+                           combined.includes('dkw5zzdcn1p1uo87a') ||
+                           cleanUrl.includes('maps.app.goo.gl') ||
+                           cleanUrl.includes('goo.gl/maps');
+
+        if (isSnapilla) {
+            return SNAPILLA_VERIFIED_MAP_EMBED;
         }
 
-        // 3. If no address but a place URL was provided with name in path
+        // 3. If place URL with path
         if (cleanUrl.includes('/maps/place/')) {
             try {
                 const match = cleanUrl.match(/\/maps\/place\/([^/@?]+)/);
                 if (match && match[1]) {
                     const place = decodeURIComponent(match[1].replace(/\+/g, ' '));
-                    return `https://maps.google.com/maps?q=${encodeURIComponent(place)}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+                    return `https://maps.google.com/maps?q=${encodeURIComponent(place)}&t=&z=16&ie=UTF8&iwloc=B&output=embed`;
                 }
             } catch (e) {}
+        }
+
+        // 4. If custom address is provided
+        if (cleanAddr) {
+            return `https://maps.google.com/maps?q=${encodeURIComponent(cleanAddr)}&t=&z=16&ie=UTF8&iwloc=B&output=embed`;
+        }
+
+        // 5. Fallback with search URL if available
+        if (cleanUrl) {
+            return `https://maps.google.com/maps?q=${encodeURIComponent(cleanUrl)}&t=&z=16&ie=UTF8&iwloc=B&output=embed`;
         }
 
         return '';
@@ -472,9 +500,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const studioMapsBtn = document.getElementById('studioMapsBtn');
 
         const cleanMapUrl = (mapsUrl && mapsUrl !== 'https://maps.google.com') ? mapsUrl.trim() : '';
-        const cleanAddress = address ? address.trim() : '';
+        const cleanAddress = (address && typeof address === 'string') ? address.trim() : '';
 
-        // If neither a map link nor address is provided, hide the map
+        // If neither a map link nor address is provided, hide the map completely
         if (!cleanMapUrl && !cleanAddress) {
             if (mapContainer) mapContainer.style.display = 'none';
             if (mapIframe) mapIframe.src = '';
@@ -487,7 +515,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (embedSrc) {
             if (mapContainer) mapContainer.style.display = 'block';
-            if (mapIframe) mapIframe.src = embedSrc;
+            if (mapIframe && mapIframe.getAttribute('src') !== embedSrc) {
+                mapIframe.src = embedSrc;
+            }
         } else {
             if (mapContainer) mapContainer.style.display = 'none';
             if (mapIframe) mapIframe.src = '';
@@ -516,13 +546,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const heroSubtitle = document.getElementById('heroSubtitle');
         if (heroSubtitle && data.hero_subtitle) heroSubtitle.textContent = data.hero_subtitle;
 
-        const contactAddress = document.getElementById('contactAddress');
-        if (contactAddress && data.address) contactAddress.textContent = data.address;
+        if (data.address !== undefined) {
+            liveSettings.address = data.address;
+            const contactAddress = document.getElementById('contactAddress');
+            if (contactAddress) contactAddress.textContent = data.address;
 
-        const studioNoticeAddress = document.getElementById('studioNoticeAddress');
-        if (studioNoticeAddress && data.address) studioNoticeAddress.textContent = data.address;
+            const studioNoticeAddress = document.getElementById('studioNoticeAddress');
+            if (studioNoticeAddress) studioNoticeAddress.textContent = data.address;
+        }
 
-        updateMapDOM(data.maps_url || liveSettings.maps_url, data.address || liveSettings.address);
+        if (data.maps_url !== undefined) {
+            liveSettings.maps_url = data.maps_url;
+        }
+
+        updateMapDOM(liveSettings.maps_url, liveSettings.address);
 
         const contactPhone = document.getElementById('contactPhone');
         if (contactPhone && data.phone) contactPhone.textContent = data.phone;
@@ -816,11 +853,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const desc = document.getElementById('studioDesc');
         if (desc && data.desc) desc.innerHTML = data.desc.replace(/\n/g, '<br>');
 
+        const loc = (data.location !== undefined) ? data.location : ((data.address !== undefined) ? data.address : '');
+        if (loc !== '') {
+            liveSettings.address = loc;
+        }
+        if (data.maps_url !== undefined) {
+            liveSettings.maps_url = data.maps_url;
+        }
+
         const studioNoticeAddress = document.getElementById('studioNoticeAddress');
         if (studioNoticeAddress) {
-            if (data.location) studioNoticeAddress.textContent = data.location;
-            else if (data.address) studioNoticeAddress.textContent = data.address;
-            else if (liveSettings && liveSettings.address) studioNoticeAddress.textContent = liveSettings.address;
+            studioNoticeAddress.textContent = loc || liveSettings.address || '';
+        }
+
+        const contactAddress = document.getElementById('contactAddress');
+        if (contactAddress && loc) {
+            contactAddress.textContent = loc;
         }
 
         const weekday = document.getElementById('studioHoursWeekday');
@@ -839,7 +887,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const notice = document.getElementById('studioNotice');
         if (notice && data.notice) notice.textContent = data.notice;
 
-        updateMapDOM(data.maps_url || liveSettings.maps_url, data.location || data.address || liveSettings.address);
+        updateMapDOM(liveSettings.maps_url, liveSettings.address);
     }
 
     function updateAboutDOM(data) {
