@@ -488,24 +488,76 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    let livePortfolioList = (typeof SNAP_DEFAULT_DATA !== 'undefined' && SNAP_DEFAULT_DATA.portfolio) ? [...SNAP_DEFAULT_DATA.portfolio] : [
+        { title: "Photography Album 1", category: "portraits", image: "p1.png", alt: "Signature Portrait Album" },
+        { title: "Photography Album 2", category: "family", image: "p2.png", alt: "Family Moments Album" },
+        { title: "Photography Album 3", category: "birthdays", image: "p3.png", alt: "Birthday Celebration Album" },
+        { title: "Photography Album 4", category: "events", image: "p4.png", alt: "Special Occasion Album" },
+        { title: "Baby Shoot Album", category: "baby", image: "baby.png", alt: "Baby & Newborn Album" },
+        { title: "Wedding Shoot Album", category: "wedding", image: "wedding.png", alt: "Wedding & Romance Album" },
+        { title: "Model Shoot Album", category: "models", image: "modeling.png", alt: "Model & Fashion Album" },
+        { title: "Product Shoot Album", category: "products", image: "product.png", alt: "Product Showcase Album" }
+    ];
+    let currentGalleryFilter = 'all';
+
+    function categorizePhoto(photo) {
+        if (photo.category) return photo.category.toLowerCase().trim();
+        const str = ((photo.title || '') + ' ' + (photo.alt || '') + ' ' + (photo.image || '')).toLowerCase();
+        if (str.includes('baby') || str.includes('newborn') || str.includes('infant') || str.includes('kid')) return 'baby';
+        if (str.includes('wedding') || str.includes('bride') || str.includes('groom') || str.includes('marriage') || str.includes('pre-wedding')) return 'wedding';
+        if (str.includes('product') || str.includes('commercial') || str.includes('brand') || str.includes('item')) return 'products';
+        if (str.includes('model') || str.includes('fashion') || str.includes('portfolio') || str.includes('lookbook')) return 'models';
+        if (str.includes('portrait') || str.includes('headshot') || str.includes('executive') || str.includes('p1')) return 'portraits';
+        if (str.includes('couple') || str.includes('romance') || str.includes('love') || str.includes('engagement')) return 'couples';
+        if (str.includes('family') || str.includes('generations') || str.includes('p2')) return 'family';
+        if (str.includes('birthday') || str.includes('cake') || str.includes('p3')) return 'birthdays';
+        if (str.includes('event') || str.includes('occasion') || str.includes('celebration') || str.includes('p4')) return 'events';
+        return 'all';
+    }
+
+    function renderFilteredPortfolio(category) {
+        currentGalleryFilter = category || 'all';
+        const spinner = document.getElementById('portfolioSpinner');
+        if (!spinner) return;
+
+        let displayItems = livePortfolioList;
+        if (currentGalleryFilter !== 'all') {
+            const normalized = currentGalleryFilter.toLowerCase().trim();
+            const filtered = livePortfolioList.filter(item => {
+                const itemCat = categorizePhoto(item);
+                return itemCat === normalized || 
+                       itemCat.startsWith(normalized.replace(/s$/, '')) || 
+                       normalized.includes(itemCat) ||
+                       itemCat.includes(normalized.replace(/s$/, ''));
+            });
+
+            if (filtered.length > 0) {
+                displayItems = filtered;
+            }
+        }
+
+        const total = displayItems.length;
+        const radius = window.innerWidth < 768 ? 230 : (window.innerWidth < 992 ? 350 : 500);
+        const angleStep = 360 / Math.max(total, 1);
+
+        spinner.innerHTML = displayItems.map((photo, index) => {
+            const rot = index * angleStep;
+            return `
+                <div class="portfolio-card" data-category="${categorizePhoto(photo)}" style="transform: rotateY(${rot}deg) translateZ(${radius}px);">
+                    <img src="${photo.image}" alt="${photo.alt || photo.title || 'Photography Album'}">
+                </div>
+            `;
+        }).join('');
+
+        attachLightboxHandlers();
+    }
+
     function updatePortfolioDOM(photosData) {
         if (!photosData) return;
         const photosList = Array.isArray(photosData) ? photosData : (photosData.items || []);
         if (!Array.isArray(photosList) || photosList.length === 0) return;
-        const spinner = document.getElementById('portfolioSpinner');
-        if (spinner) {
-            const total = photosList.length;
-            const angleStep = 360 / total;
-            spinner.innerHTML = photosList.map((photo, index) => {
-                const rot = index * angleStep;
-                return `
-                    <div class="portfolio-card" style="transform: rotateY(${rot}deg) translateZ(500px);">
-                        <img src="${photo.image}" alt="${photo.alt || photo.title || 'Photography Album'}">
-                    </div>
-                `;
-            }).join('');
-            attachLightboxHandlers();
-        }
+        livePortfolioList = photosList;
+        renderFilteredPortfolio(currentGalleryFilter);
     }
 
     function updateTestimonialsDOM(reviewsList) {
@@ -869,5 +921,69 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Gallery Submenu & Event Filter Interaction
+    function initGalleryFiltering() {
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const submenuLinks = document.querySelectorAll('.nav-submenu a[data-filter]');
+
+        function applyFilter(cat) {
+            filterBtns.forEach(btn => {
+                const btnCat = (btn.getAttribute('data-filter') || btn.textContent.trim()).toLowerCase();
+                if (btnCat === cat || (cat === 'all' && btnCat.includes('all'))) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            renderFilteredPortfolio(cat);
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const cat = (btn.getAttribute('data-filter') || btn.textContent.trim()).toLowerCase();
+                applyFilter(cat);
+            });
+        });
+
+        submenuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const filterVal = (link.getAttribute('data-filter') || 'all').toLowerCase();
+                applyFilter(filterVal);
+
+                // Smoothly scroll to portfolio gallery section
+                const portfolioSec = document.getElementById('portfolio');
+                if (portfolioSec) {
+                    portfolioSec.scrollIntoView({ behavior: 'smooth' });
+                }
+
+                // Close mobile nav if open
+                if (navLinks) navLinks.classList.remove('active');
+                if (navToggle) {
+                    const icon = navToggle.querySelector('i');
+                    if (icon) {
+                        icon.classList.add('fa-bars');
+                        icon.classList.remove('fa-times');
+                    }
+                }
+                const dropdown = link.closest('.nav-item-dropdown');
+                if (dropdown) dropdown.classList.remove('open');
+            });
+        });
+
+        // Mobile dropdown click toggle
+        const dropdownTrigger = document.querySelector('.nav-dropdown-trigger');
+        const dropdownItem = document.querySelector('.nav-item-dropdown');
+        if (dropdownTrigger && dropdownItem) {
+            dropdownTrigger.addEventListener('click', (e) => {
+                if (window.innerWidth <= 1120) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropdownItem.classList.toggle('open');
+                }
+            });
+        }
+    }
+
+    initGalleryFiltering();
     initDynamicContent();
 });

@@ -292,6 +292,117 @@
             color: var(--primary-color);
         }
 
+        /* Nav Dropdown Submenu */
+        .nav-item-dropdown {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .nav-dropdown-trigger {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .nav-dropdown-icon {
+            font-size: 0.7rem;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: #666;
+        }
+
+        .nav-item-dropdown:hover .nav-dropdown-icon,
+        .nav-item-dropdown.open .nav-dropdown-icon {
+            transform: rotate(180deg);
+            color: var(--primary-color);
+        }
+
+        .nav-submenu {
+            position: absolute;
+            top: calc(100% + 14px);
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            min-width: 250px;
+            border-radius: 18px;
+            border: 1.5px solid rgba(254, 171, 69, 0.45);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12), 0 0 25px rgba(254, 171, 69, 0.15);
+            padding: 10px 8px;
+            list-style: none;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .nav-submenu::before {
+            content: '';
+            position: absolute;
+            top: -7px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 12px;
+            height: 12px;
+            background: #ffffff;
+            border-top: 1.5px solid rgba(254, 171, 69, 0.45);
+            border-left: 1.5px solid rgba(254, 171, 69, 0.45);
+        }
+
+        .nav-item-dropdown:hover .nav-submenu,
+        .nav-item-dropdown:focus-within .nav-submenu,
+        .nav-item-dropdown.open .nav-submenu {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .nav-submenu li {
+            margin: 0;
+            width: 100%;
+        }
+
+        .nav-submenu li a {
+            display: flex !important;
+            align-items: center;
+            gap: 12px;
+            padding: 9px 15px;
+            border-radius: 12px;
+            color: #222 !important;
+            font-size: 0.8rem !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.4px !important;
+            text-transform: uppercase !important;
+            text-decoration: none;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            white-space: nowrap;
+        }
+
+        .nav-submenu li a i {
+            font-size: 0.95rem;
+            color: #FEAB45;
+            width: 18px;
+            text-align: center;
+            transition: transform 0.22s ease;
+        }
+
+        .nav-submenu li a:hover {
+            background: linear-gradient(90deg, rgba(254, 171, 69, 0.18) 0%, rgba(255, 248, 235, 0.8) 100%);
+            color: #000 !important;
+            transform: translateX(4px);
+        }
+
+        .nav-submenu li a:hover i {
+            transform: scale(1.22);
+        }
+
         .nav-toggle {
             display: none;
             background: none;
@@ -329,6 +440,39 @@
             }
             .nav-links.active {
                 display: flex;
+            }
+            .nav-item-dropdown {
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+            }
+            .nav-dropdown-trigger {
+                justify-content: center;
+                width: 100%;
+                padding: 6px 0;
+            }
+            .nav-submenu {
+                position: static;
+                transform: none !important;
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                box-shadow: none;
+                background: #FAF7F2;
+                border: 1px solid rgba(254, 171, 69, 0.35);
+                border-radius: 14px;
+                margin: 8px 20px 0 20px;
+                max-height: 0;
+                overflow: hidden;
+                padding: 0 10px;
+                transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease;
+            }
+            .nav-submenu::before {
+                display: none;
+            }
+            .nav-item-dropdown.open .nav-submenu {
+                max-height: 520px;
+                padding: 10px;
             }
         }
 
@@ -1890,7 +2034,23 @@
             <li><a href="#services">Services</a></li>
             <li><a href="#experience">Experience</a></li>
             <li><a href="#studio">Studio</a></li>
-            <li><a href="#portfolio">Gallery</a></li>
+            <li class="nav-item-dropdown">
+                <a href="#portfolio" class="nav-dropdown-trigger" id="galleryNavTrigger">
+                    Gallery <i class="fas fa-chevron-down nav-dropdown-icon"></i>
+                </a>
+                <ul class="nav-submenu" id="gallerySubmenu">
+                    <li><a href="#portfolio" data-filter="all"><i class="fas fa-th-large"></i> All Shoots</a></li>
+                    <li><a href="#portfolio" data-filter="baby"><i class="fas fa-baby"></i> Baby Shoots</a></li>
+                    <li><a href="#portfolio" data-filter="wedding"><i class="fas fa-ring"></i> Wedding & Pre-Wedding</a></li>
+                    <li><a href="#portfolio" data-filter="products"><i class="fas fa-shopping-bag"></i> Product Photography</a></li>
+                    <li><a href="#portfolio" data-filter="models"><i class="fas fa-tshirt"></i> Modeling & Fashion</a></li>
+                    <li><a href="#portfolio" data-filter="portraits"><i class="fas fa-user-tie"></i> Portrait Sessions</a></li>
+                    <li><a href="#portfolio" data-filter="couples"><i class="fas fa-heart"></i> Couple Romance</a></li>
+                    <li><a href="#portfolio" data-filter="family"><i class="fas fa-users"></i> Family Moments</a></li>
+                    <li><a href="#portfolio" data-filter="birthdays"><i class="fas fa-birthday-cake"></i> Birthday Celebrations</a></li>
+                    <li><a href="#portfolio" data-filter="events"><i class="fas fa-glass-cheers"></i> Special Occasions</a></li>
+                </ul>
+            </li>
             <li><a href="#pricing">Pricing</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li><a href="#booking" class="btn-burn" style="padding: 8px 20px; font-size: 0.8rem;">Book Shoot</a></li>
@@ -2332,26 +2492,28 @@
         <p class="section-subtitle">A Collection of Moments — Explore our photography work across baby, wedding, products, models, portraits, couples, family, and events.</p>
         
         <div class="gallery-filters" style="position: relative; z-index: 5;">
-            <button class="filter-btn active">All</button>
-            <button class="filter-btn">Baby</button>
-            <button class="filter-btn">Wedding</button>
-            <button class="filter-btn">Products</button>
-            <button class="filter-btn">Models</button>
-            <button class="filter-btn">Portraits</button>
-            <button class="filter-btn">Couples</button>
-            <button class="filter-btn">Family</button>
+            <button class="filter-btn active" data-filter="all"><i class="fas fa-th-large"></i> All</button>
+            <button class="filter-btn" data-filter="baby"><i class="fas fa-baby"></i> Baby</button>
+            <button class="filter-btn" data-filter="wedding"><i class="fas fa-ring"></i> Wedding</button>
+            <button class="filter-btn" data-filter="products"><i class="fas fa-shopping-bag"></i> Products</button>
+            <button class="filter-btn" data-filter="models"><i class="fas fa-tshirt"></i> Models</button>
+            <button class="filter-btn" data-filter="portraits"><i class="fas fa-user-tie"></i> Portraits</button>
+            <button class="filter-btn" data-filter="couples"><i class="fas fa-heart"></i> Couples</button>
+            <button class="filter-btn" data-filter="family"><i class="fas fa-users"></i> Family</button>
+            <button class="filter-btn" data-filter="birthdays"><i class="fas fa-birthday-cake"></i> Birthdays</button>
+            <button class="filter-btn" data-filter="events"><i class="fas fa-glass-cheers"></i> Events</button>
         </div>
 
         <div class="portfolio-stage" style="position: relative; z-index: 5;">
             <div class="portfolio-spinner" id="portfolioSpinner">
-                <div class="portfolio-card"><img src="p1.png" alt="Photography Album 1"></div>
-                <div class="portfolio-card"><img src="p2.png" alt="Photography Album 2"></div>
-                <div class="portfolio-card"><img src="p3.png" alt="Photography Album 3"></div>
-                <div class="portfolio-card"><img src="p4.png" alt="Photography Album 4"></div>
-                <div class="portfolio-card"><img src="baby.png" alt="Baby Shoot Album"></div>
-                <div class="portfolio-card"><img src="wedding.png" alt="Wedding Shoot Album"></div>
-                <div class="portfolio-card"><img src="modeling.png" alt="Model Shoot Album"></div>
-                <div class="portfolio-card"><img src="product.png" alt="Product Shoot Album"></div>
+                <div class="portfolio-card" data-category="portraits"><img src="p1.png" alt="Signature Portrait Album"></div>
+                <div class="portfolio-card" data-category="family"><img src="p2.png" alt="Family Moments Album"></div>
+                <div class="portfolio-card" data-category="birthdays"><img src="p3.png" alt="Birthday Celebration Album"></div>
+                <div class="portfolio-card" data-category="events"><img src="p4.png" alt="Special Occasion Album"></div>
+                <div class="portfolio-card" data-category="baby"><img src="baby.png" alt="Baby Shoot Album"></div>
+                <div class="portfolio-card" data-category="wedding"><img src="wedding.png" alt="Wedding Shoot Album"></div>
+                <div class="portfolio-card" data-category="models"><img src="modeling.png" alt="Model Shoot Album"></div>
+                <div class="portfolio-card" data-category="products"><img src="product.png" alt="Product Shoot Album"></div>
             </div>
         </div>
     </section>
