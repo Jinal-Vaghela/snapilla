@@ -417,12 +417,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
     function getEmbedMapUrl(val) {
         if (!val) return 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3669.5719489442154!2d72.5721459!3d23.1127604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8301a637aa8d%3A0x7caac65cdfe4f745!2sSnapilla%20Studio%20%7C%20Baby%20Shoot%20In%20Ahmedabad!5e0!3m2!1sen!2sin!4v1712670000000!5m2!1sen!2sin';
-        if (val.includes('maps.google.com/maps/embed') || val.includes('google.com/maps/embed')) {
+        if (typeof val !== 'string') return 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3669.5719489442154!2d72.5721459!3d23.1127604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8301a637aa8d%3A0x7caac65cdfe4f745!2sSnapilla%20Studio%20%7C%20Baby%20Shoot%20In%20Ahmedabad!5e0!3m2!1sen!2sin!4v1712670000000!5m2!1sen!2sin';
+        
+        // 1. If it's already an embed URL, return it
+        if (val.includes('google.com/maps/embed') || val.includes('maps.google.com/maps/embed')) {
             return val;
         }
-        if (val.includes('aFs4f4PSaPtn3VUT9') || val.toLowerCase().includes('snapilla') || val.toLowerCase().includes('nakshatra')) {
+
+        // 2. If it's any Google Maps shortlink (maps.app.goo.gl) or standard studio location, return the official Place Embed with pin
+        if (val.includes('goo.gl') || val.includes('maps.app') || val.toLowerCase().includes('snapilla') || val.toLowerCase().includes('nakshatra') || val.toLowerCase().includes('chandkheda')) {
             return 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3669.5719489442154!2d72.5721459!3d23.1127604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8301a637aa8d%3A0x7caac65cdfe4f745!2sSnapilla%20Studio%20%7C%20Baby%20Shoot%20In%20Ahmedabad!5e0!3m2!1sen!2sin!4v1712670000000!5m2!1sen!2sin';
         }
+
+        // 3. If someone entered another web URL, fallback to the official Snapilla Studio pin
+        if (val.startsWith('http://') || val.startsWith('https://')) {
+            return 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3669.5719489442154!2d72.5721459!3d23.1127604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8301a637aa8d%3A0x7caac65cdfe4f745!2sSnapilla%20Studio%20%7C%20Baby%20Shoot%20In%20Ahmedabad!5e0!3m2!1sen!2sin!4v1712670000000!5m2!1sen!2sin';
+        }
+
+        // 4. If it's a real custom address string, search for that address
         return `https://maps.google.com/maps?q=${encodeURIComponent(val)}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
     }
 
