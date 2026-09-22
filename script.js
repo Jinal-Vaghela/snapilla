@@ -415,27 +415,55 @@ document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
     // 5. DYNAMIC DATA HYDRATION (FIREBASE & LOCAL CACHE)
     // ----------------------------------------------------
-    function getEmbedMapUrl(val) {
-        if (!val) return 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3669.5719489442154!2d72.5721459!3d23.1127604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8301a637aa8d%3A0x7caac65cdfe4f745!2sSnapilla%20Studio%20%7C%20Baby%20Shoot%20In%20Ahmedabad!5e0!3m2!1sen!2sin!4v1712670000000!5m2!1sen!2sin';
-        if (typeof val !== 'string') return 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3669.5719489442154!2d72.5721459!3d23.1127604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8301a637aa8d%3A0x7caac65cdfe4f745!2sSnapilla%20Studio%20%7C%20Baby%20Shoot%20In%20Ahmedabad!5e0!3m2!1sen!2sin!4v1712670000000!5m2!1sen!2sin';
-        
-        // 1. If it's already an embed URL, return it
-        if (val.includes('google.com/maps/embed') || val.includes('maps.google.com/maps/embed')) {
-            return val;
+    function extractEmbedUrl(val) {
+        if (!val || typeof val !== 'string') return '';
+        const clean = val.trim();
+        if (!clean) return '';
+
+        // If user pasted an <iframe> code from Google Maps
+        if (clean.includes('<iframe')) {
+            const match = clean.match(/src=["']([^"']+)["']/);
+            if (match && match[1]) return match[1];
         }
 
-        // 2. If it's any Google Maps shortlink (maps.app.goo.gl) or standard studio location, return the official Place Embed with pin
-        if (val.includes('goo.gl') || val.includes('maps.app') || val.toLowerCase().includes('snapilla') || val.toLowerCase().includes('nakshatra') || val.toLowerCase().includes('chandkheda')) {
-            return 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3669.5719489442154!2d72.5721459!3d23.1127604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8301a637aa8d%3A0x7caac65cdfe4f745!2sSnapilla%20Studio%20%7C%20Baby%20Shoot%20In%20Ahmedabad!5e0!3m2!1sen!2sin!4v1712670000000!5m2!1sen!2sin';
+        // If user pasted a direct embed URL
+        if (clean.includes('google.com/maps/embed') || clean.includes('output=embed')) {
+            return clean;
         }
 
-        // 3. If someone entered another web URL, fallback to the official Snapilla Studio pin
-        if (val.startsWith('http://') || val.startsWith('https://')) {
-            return 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3669.5719489442154!2d72.5721459!3d23.1127604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8301a637aa8d%3A0x7caac65cdfe4f745!2sSnapilla%20Studio%20%7C%20Baby%20Shoot%20In%20Ahmedabad!5e0!3m2!1sen!2sin!4v1712670000000!5m2!1sen!2sin';
+        // If user pasted pb=!1m...
+        if (clean.includes('pb=!1m')) {
+            return clean.startsWith('http') ? clean : `https://www.google.com/maps/embed?pb=${clean}`;
         }
 
-        // 4. If it's a real custom address string, search for that address
-        return `https://maps.google.com/maps?q=${encodeURIComponent(val)}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+        return '';
+    }
+
+    function getEmbedMapUrl(mapsUrl, address) {
+        const cleanUrl = (mapsUrl && typeof mapsUrl === 'string') ? mapsUrl.trim() : '';
+        const cleanAddr = (address && typeof address === 'string') ? address.trim() : '';
+
+        // 1. Check if user provided an embed URL or iframe code
+        const directEmbed = extractEmbedUrl(cleanUrl);
+        if (directEmbed) return directEmbed;
+
+        // 2. If an address is provided, embed that address dynamically
+        if (cleanAddr) {
+            return `https://maps.google.com/maps?q=${encodeURIComponent(cleanAddr)}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+        }
+
+        // 3. If no address but a place URL was provided with name in path
+        if (cleanUrl.includes('/maps/place/')) {
+            try {
+                const match = cleanUrl.match(/\/maps\/place\/([^/@?]+)/);
+                if (match && match[1]) {
+                    const place = decodeURIComponent(match[1].replace(/\+/g, ' '));
+                    return `https://maps.google.com/maps?q=${encodeURIComponent(place)}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+                }
+            } catch (e) {}
+        }
+
+        return '';
     }
 
     function updateMapDOM(mapsUrl, address) {
@@ -446,7 +474,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cleanMapUrl = (mapsUrl && mapsUrl !== 'https://maps.google.com') ? mapsUrl.trim() : '';
         const cleanAddress = address ? address.trim() : '';
 
-        // If the user cleared both the map link and address, hide the map container
+        // If neither a map link nor address is provided, hide the map
         if (!cleanMapUrl && !cleanAddress) {
             if (mapContainer) mapContainer.style.display = 'none';
             if (mapIframe) mapIframe.src = '';
@@ -454,21 +482,27 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Otherwise show the map container and update its src & button href
-        if (mapContainer) mapContainer.style.display = 'block';
-        
-        if (studioMapsBtn) {
-            studioMapsBtn.style.display = 'inline-flex';
-            if (cleanMapUrl) {
-                studioMapsBtn.href = cleanMapUrl;
-            } else if (cleanAddress) {
-                studioMapsBtn.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanAddress)}`;
-            }
+        // Calculate dynamic embed src
+        const embedSrc = getEmbedMapUrl(cleanMapUrl, cleanAddress);
+
+        if (embedSrc) {
+            if (mapContainer) mapContainer.style.display = 'block';
+            if (mapIframe) mapIframe.src = embedSrc;
+        } else {
+            if (mapContainer) mapContainer.style.display = 'none';
+            if (mapIframe) mapIframe.src = '';
         }
 
-        if (mapIframe) {
-            const target = cleanMapUrl || cleanAddress;
-            mapIframe.src = getEmbedMapUrl(target);
+        if (studioMapsBtn) {
+            if (cleanMapUrl) {
+                studioMapsBtn.style.display = 'inline-flex';
+                studioMapsBtn.href = cleanMapUrl;
+            } else if (cleanAddress) {
+                studioMapsBtn.style.display = 'inline-flex';
+                studioMapsBtn.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanAddress)}`;
+            } else {
+                studioMapsBtn.style.display = 'none';
+            }
         }
     }
 
