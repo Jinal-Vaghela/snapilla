@@ -41,6 +41,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Hero Section Floating Elements Mouse Parallax
+    const heroSec = document.querySelector('.webgl-hero');
+    const floatItems = document.querySelectorAll('.hero-floating-elements .floating-item');
+    if (heroSec && floatItems.length > 0) {
+        heroSec.addEventListener('mousemove', (e) => {
+            const rect = heroSec.getBoundingClientRect();
+            const relX = (e.clientX - rect.left) / rect.width - 0.5;
+            const relY = (e.clientY - rect.top) / rect.height - 0.5;
+
+            floatItems.forEach((item, idx) => {
+                const depth = (idx % 3 + 1) * 14;
+                const moveX = -relX * depth;
+                const moveY = -relY * depth;
+                item.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+
+        heroSec.addEventListener('mouseleave', () => {
+            floatItems.forEach(item => {
+                item.style.transform = '';
+            });
+        });
+    }
+
     // 2. Lightbox Gallery Setup
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
