@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" fill="none">
+  <!-- Soft gold gradient definitions -->
+  <defs>
+    <linearGradient id="goldStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E5C178"/>
+      <stop offset="45%" stop-color="#C69446"/>
+      <stop offset="80%" stop-color="#DEB362"/>
+      <stop offset="100%" stop-color="#AA772C"/>
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#D4A359" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Group with subtle drop shadow filter -->
+  <g filter="url(#softGlow)" stroke="url(#goldStroke)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    
+    <!-- Main Center Peony Blossom -->
+    <!-- Center Core & Inner Petals -->
+    <path d="M145 155 C140 145, 150 135, 160 140 C170 145, 175 160, 165 170 C155 180, 145 175, 145 155 Z" stroke-width="1.6"/>
+    <path d="M152 142 C158 132, 172 136, 175 148 C178 160, 168 168, 160 166"/>
+    <path d="M140 148 C132 140, 142 128, 155 130 C162 131, 166 138, 164 145"/>
+    <path d="M138 160 C128 155, 130 142, 140 138"/>
+    
+    <!-- Mid Petal Layer -->
+    <path d="M130 145 C118 135, 125 118, 145 118 C158 118, 172 125, 178 136 C188 150, 185 168, 175 180 C165 192, 145 195, 132 188 C120 180, 115 162, 125 150"/>
+    <path d="M142 118 C150 106, 170 108, 182 120 C194 132, 196 150, 188 165"/>
+    <path d="M125 130 C110 120, 112 102, 128 98 C145 94, 160 102, 168 112"/>
+    <path d="M178 128 C192 118, 208 126, 210 142 C212 158, 202 172, 188 180"/>
+    
+    <!-- Outer Petal Flourishes with Fine Stipple Hatching -->
+    <path d="M120 168 C105 170, 96 186, 108 202 C120 218, 142 225, 162 220 C182 215, 198 198, 195 180"/>
+    <path d="M135 192 C140 208, 155 220, 172 216 C188 212, 198 196, 194 182"/>
+    <path d="M110 185 C92 192, 90 215, 105 230 C122 245, 148 246, 170 238 C195 228, 215 205, 212 178 C210 160, 198 146, 186 142"/>
+    <path d="M165 225 C178 238, 198 236, 210 222 C222 208, 224 188, 216 172"/>
+    <path d="M102 152 C85 145, 80 125, 95 110 C110 95, 130 92, 145 102"/>
+    
+    <!-- Fine Hatch Lines on Main Flower (Hand-drawn look) -->
+    <path d="M148 162 L150 172" stroke-width="1.1"/>
+    <path d="M154 163 L158 174" stroke-width="1.1"/>
+    <path d="M160 162 L166 172" stroke-width="1.1"/>
+    <path d="M136 175 C140 182, 146 186, 152 188" stroke-width="1.1"/>
+    <path d="M142 180 C146 188, 152 192, 160 194" stroke-width="1.1"/>
+    <path d="M125 198 C132 208, 142 215, 154 218" stroke-width="1.1"/>
+    <path d="M130 205 C138 214, 148 220, 160 222" stroke-width="1.1"/>
+    <path d="M178 192 C184 185, 188 175, 190 165" stroke-width="1.1"/>
+    <path d="M185 198 C192 190, 196 180, 198 170" stroke-width="1.1"/>
+
+    <!-- Upper Peony Bud Blossom -->
+    <path d="M195 75 C190 62, 202 48, 218 52 C232 56, 238 72, 228 85 C218 98, 200 95, 195 75 Z" stroke-width="1.5"/>
+    <path d="M205 60 C212 50, 226 54, 230 65 C232 75, 224 82, 216 80" stroke-width="1.3"/>
+    <path d="M192 68 C182 60, 188 45, 202 42 C215 40, 228 46, 235 56"/>
+    <path d="M188 80 C175 75, 178 92, 192 98 C206 104, 222 100, 228 88"/>
+    <path d="M210 88 C215 98, 228 105, 240 98 C250 90, 248 75, 238 68"/>
+
+    <!-- Delicate Botanical Leaves & Foliage -->
+    <!-- Top Left Leaves -->
+    <path d="M95 105 C75 90, 60 65, 68 40 C75 58, 92 78, 105 85 C112 90, 105 100, 95 105 Z" fill="#E5C178" fill-opacity="0.08"/>
+    <path d="M68 40 C80 62, 95 82, 105 85" stroke-width="1.2"/>
+    <path d="M80 60 C85 62, 92 60, 96 55" stroke-width="1"/>
+    <path d="M88 72 C94 74, 100 70, 104 65" stroke-width="1"/>
+
+    <path d="M85 70 C60 52, 45 28, 52 10 C60 28, 78 45, 90 52 Z" fill="#E5C178" fill-opacity="0.06"/>
+    <path d="M52 10 C62 30, 78 45, 90 52" stroke-width="1.2"/>
+
+    <path d="M110 75 C98 55, 95 30, 110 12 C115 32, 122 52, 125 65 Z" fill="#E5C178" fill-opacity="0.06"/>
+    <path d="M110 12 C112 35, 120 52, 125 65" stroke-width="1.2"/>
+
+    <!-- Branch Stems -->
+    <path d="M45 15 C60 45, 85 85, 120 135" stroke-width="2"/>
+    <path d="M82 82 C70 105, 55 135, 48 165" stroke-width="1.6"/>
+    <path d="M120 135 C110 170, 95 210, 85 250 C78 275, 72 295, 65 315" stroke-width="2.2"/>
+    <path d="M155 225 C145 255, 130 285, 115 315" stroke-width="1.8"/>
+
+    <!-- Bottom Left Leaves -->
+    <path d="M48 165 C32 155, 20 138, 25 120 C32 135, 45 150, 55 155 Z" fill="#E5C178" fill-opacity="0.08"/>
+    <path d="M78 215 C55 205, 38 185, 42 165 C52 182, 70 198, 82 205 Z" fill="#E5C178" fill-opacity="0.08"/>
+    <path d="M42 165 C55 185, 72 200, 82 205" stroke-width="1.2"/>
+
+    <path d="M85 250 C65 245, 48 230, 52 210 C62 225, 78 238, 90 242 Z" fill="#E5C178" fill-opacity="0.08"/>
+    <path d="M105 275 C85 272, 68 258, 70 238 C80 252, 95 264, 108 268 Z" fill="#E5C178" fill-opacity="0.08"/>
+    <path d="M70 238 C82 254, 98 265, 108 268" stroke-width="1.2"/>
+
+    <!-- Bottom Broad Foliage Leaf -->
+    <path d="M165 240 C155 265, 158 292, 175 310 C182 285, 180 260, 172 238 Z" fill="#E5C178" fill-opacity="0.08"/>
+    <path d="M175 310 C178 285, 175 260, 172 238" stroke-width="1.2"/>
+    <path d="M174 290 C168 285, 164 278, 162 270" stroke-width="1"/>
+    <path d="M176 275 C182 270, 185 262, 186 255" stroke-width="1"/>
+
+    <!-- Right Side Leaves -->
+    <path d="M225 180 C248 178, 270 188, 282 205 C265 205, 245 198, 230 190 Z" fill="#E5C178" fill-opacity="0.08"/>
+    <path d="M282 205 C265 202, 245 195, 230 190" stroke-width="1.2"/>
+    
+    <path d="M210 142 C232 135, 255 138, 270 152 C255 155, 235 152, 220 148 Z" fill="#E5C178" fill-opacity="0.08"/>
+
+    <!-- Delicate Golden Stipple Dots & Speckles (Matching Reference Image) -->
+    <circle cx="115" cy="45" r="1.5" fill="#D4A359"/>
+    <circle cx="128" cy="38" r="1" fill="#C59341"/>
+    <circle cx="140" cy="52" r="1.8" fill="#E5C178"/>
+    <circle cx="152" cy="42" r="1" fill="#D4A359"/>
+    <circle cx="165" cy="62" r="1.5" fill="#AA772C"/>
+    <circle cx="178" cy="48" r="1.2" fill="#D4A359"/>
+    <circle cx="185" cy="35" r="2" fill="#E5C178"/>
+    <circle cx="198" cy="28" r="1.2" fill="#C59341"/>
+
+    <circle cx="75" cy="115" r="1.4" fill="#D4A359"/>
+    <circle cx="62" cy="132" r="1" fill="#AA772C"/>
+    <circle cx="55" cy="105" r="1.6" fill="#E5C178"/>
+    <circle cx="42" cy="85" r="1.2" fill="#D4A359"/>
+
+    <circle cx="215" cy="115" r="1.5" fill="#D4A359"/>
+    <circle cx="235" cy="125" r="1" fill="#E5C178"/>
+    <circle cx="248" cy="110" r="1.8" fill="#C59341"/>
+    <circle cx="262" cy="135" r="1.2" fill="#D4A359"/>
+    <circle cx="240" cy="165" r="1.5" fill="#E5C178"/>
+    <circle cx="255" cy="180" r="1.2" fill="#C59341"/>
+    <circle cx="270" cy="195" r="1.8" fill="#AA772C"/>
+
+    <circle cx="125" cy="265" r="1.5" fill="#D4A359"/>
+    <circle cx="142" cy="278" r="1.2" fill="#E5C178"/>
+    <circle cx="155" cy="295" r="1.6" fill="#C59341"/>
+    <circle cx="190" cy="265" r="1.4" fill="#D4A359"/>
+    <circle cx="205" cy="245" r="1.2" fill="#E5C178"/>
+
+    <!-- Hand-drawn 4-Point Starburst Sparkles -->
+    <path d="M148 28 Q148 35 141 35 Q148 35 148 42 Q148 35 155 35 Q148 35 148 28 Z" fill="#E5C178"/>
+    <path d="M260 95 Q260 102 253 102 Q260 102 260 109 Q260 102 267 102 Q260 102 260 95 Z" fill="#E5C178"/>
+    <path d="M48 65 Q48 70 43 70 Q48 70 48 75 Q48 70 53 70 Q48 70 48 65 Z" fill="#E5C178"/>
+    <path d="M225 240 Q225 246 219 246 Q225 246 225 252 Q225 246 231 246 Q225 246 225 240 Z" fill="#E5C178"/>
+  </g>
+</svg>

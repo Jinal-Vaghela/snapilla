@@ -478,3 +478,302 @@ footer {
     40%, 80% { transform: translateX(6px); }
 }
 
+/* ========================================================
+   GOLDEN BOTANICAL & FLORAL LINE-ART AESTHETICS
+======================================================== */
+
+/* Section Botanical Watermarks */
+.section-botanical-wrap {
+    position: relative;
+    overflow: hidden;
+}
+
+.botanical-watermark {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.18;
+    background-image: url('assets/floral-corner-gold.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    filter: drop-shadow(0 0 8px rgba(212, 163, 89, 0.2));
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.botanical-watermark.top-left {
+    top: -40px;
+    left: -40px;
+    width: 280px;
+    height: 280px;
+}
+
+.botanical-watermark.top-right {
+    top: -40px;
+    right: -40px;
+    width: 280px;
+    height: 280px;
+    transform: scaleX(-1);
+}
+
+.botanical-watermark.bottom-left {
+    bottom: -40px;
+    left: -40px;
+    width: 260px;
+    height: 260px;
+    transform: scaleY(-1);
+}
+
+.botanical-watermark.bottom-right {
+    bottom: -40px;
+    right: -40px;
+    width: 280px;
+    height: 280px;
+    transform: scale(-1);
+}
+
+.section-botanical-wrap:hover .botanical-watermark {
+    opacity: 0.28;
+    transform: scale(1.04);
+}
+
+/* Section Header Botanical Branch Dividers */
+.botanical-divider {
+    display: block;
+    width: 220px;
+    height: 40px;
+    margin: -35px auto 35px auto;
+    background-image: url('assets/floral-branch-accent.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.85;
+    pointer-events: none;
+}
+
+/* Photo Cards & Gallery Botanical Corners (Reference Style) */
+.portfolio-card {
+    position: relative;
+    background: #FFFDF9 !important; /* Cream linen backing */
+    border: 3px solid #E5C178 !important;
+    box-shadow: 0 15px 35px rgba(200, 150, 70, 0.18) !important;
+}
+
+.portfolio-card::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: -10px;
+    width: 140px;
+    height: 140px;
+    background-image: url('assets/floral-corner-gold.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    pointer-events: none;
+    z-index: 15;
+    opacity: 0.95;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.25));
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.portfolio-card:hover::before {
+    transform: scale(1.12) translate(-2px, 2px);
+    opacity: 1;
+}
+
+.portfolio-card::after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 70px;
+    height: 70px;
+    background-image: url('assets/floral-corner-gold.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: scale(-1);
+    pointer-events: none;
+    z-index: 15;
+    opacity: 0.8;
+}
+
+/* Detailed Services Cards Botanical Border & Corner Accent */
+.service-detail-card {
+    position: relative;
+    background: #FFFFFF !important;
+    border: 2px solid #EFE4D2 !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    overflow: hidden;
+}
+
+.service-detail-card::before {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 150px;
+    height: 150px;
+    background-image: url('assets/floral-corner-gold.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: scaleX(-1);
+    opacity: 0.22;
+    pointer-events: none;
+    z-index: 2;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.service-detail-card:hover {
+    border-color: #D4A359 !important;
+    box-shadow: 0 20px 45px rgba(212, 163, 89, 0.18) !important;
+    transform: translateY(-8px);
+}
+
+.service-detail-card:hover::before {
+    opacity: 0.65;
+    transform: scaleX(-1) scale(1.08) translate(-4px, -4px);
+}
+
+/* Studio Notice Box Botanical Gold Accents */
+.studio-notice-box {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #FFFDF8 0%, #FFF4E0 100%) !important;
+    border: 2px solid #D4A359 !important;
+    box-shadow: 0 20px 50px rgba(212, 163, 89, 0.15) !important;
+}
+
+.studio-notice-box::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 220px;
+    height: 220px;
+    background-image: url('assets/floral-corner-gold.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: rotate(90deg);
+    opacity: 0.28;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.studio-notice-box::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    width: 220px;
+    height: 220px;
+    background-image: url('assets/floral-corner-gold.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: rotate(-90deg);
+    opacity: 0.28;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Why Us Pillars Floral Accent */
+.why-pillar-card {
+    position: relative;
+    border: 2px solid #F2ECE1 !important;
+    overflow: hidden;
+}
+
+.why-pillar-card::after {
+    content: '';
+    position: absolute;
+    bottom: -25px;
+    right: -25px;
+    width: 120px;
+    height: 120px;
+    background-image: url('assets/floral-corner-gold.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: scale(-1);
+    opacity: 0.12;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.why-pillar-card:hover {
+    border-color: #D4A359 !important;
+}
+
+.why-pillar-card:hover::after {
+    opacity: 0.45;
+}
+
+/* 8-Step Experience Cards Floral Accent */
+.experience-step-card {
+    position: relative;
+    border: 1.5px solid #F0E8DC !important;
+    overflow: hidden;
+}
+
+.experience-step-card::after {
+    content: '';
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 90px;
+    height: 90px;
+    background-image: url('assets/floral-corner-gold.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: rotate(90deg);
+    opacity: 0.12;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.experience-step-card:hover::after {
+    opacity: 0.45;
+}
+
+/* Final Call To Action Banner Botanical Frame */
+.final-cta-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.final-cta-card::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: -40px;
+    width: 250px;
+    height: 250px;
+    background-image: url('assets/floral-corner-gold.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.final-cta-card::after {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    right: -40px;
+    width: 250px;
+    height: 250px;
+    background-image: url('assets/floral-corner-gold.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: scale(-1);
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Lightbox Botanical Floral Corner Frame */
+.lightbox-content {
+    border: 4px solid #E5C178;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    border-radius: 12px;
+}
+
+

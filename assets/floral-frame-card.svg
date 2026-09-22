@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" fill="none">
+  <defs>
+    <linearGradient id="goldFrame" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E5C178"/>
+      <stop offset="30%" stop-color="#C69446"/>
+      <stop offset="70%" stop-color="#DEB362"/>
+      <stop offset="100%" stop-color="#9E6E28"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Double Border Lines -->
+  <rect x="14" y="14" width="372" height="472" rx="16" stroke="url(#goldFrame)" stroke-width="1.2" stroke-opacity="0.6"/>
+  <rect x="22" y="22" width="356" height="456" rx="12" stroke="url(#goldFrame)" stroke-width="0.8" stroke-dasharray="4 4" stroke-opacity="0.8"/>
+
+  <!-- Top Left Corner Botanical Flourish -->
+  <g stroke="url(#goldFrame)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Top-Left Blossom -->
+    <circle cx="36" cy="36" r="12" stroke-width="1.4" fill="#E5C178" fill-opacity="0.1"/>
+    <circle cx="36" cy="36" r="6" stroke-width="1"/>
+    <path d="M36 20 C32 26 32 30 36 32 C40 30 40 26 36 20 Z" stroke-width="1" fill="#E5C178" fill-opacity="0.2"/>
+    <path d="M36 52 C32 46 32 42 36 40 C40 42 40 46 36 52 Z" stroke-width="1" fill="#E5C178" fill-opacity="0.2"/>
+    <path d="M20 36 C26 32 30 32 32 36 C30 40 26 40 20 36 Z" stroke-width="1" fill="#E5C178" fill-opacity="0.2"/>
+    <path d="M52 36 C46 32 42 32 40 36 C42 40 46 40 52 36 Z" stroke-width="1" fill="#E5C178" fill-opacity="0.2"/>
+    <path d="M36 36 Q60 26 90 28" stroke-width="1.2"/>
+    <path d="M36 36 Q26 60 28 90" stroke-width="1.2"/>
+    <path d="M60 27 Q75 16 85 24 Q72 32 62 28 Z" stroke-width="0.8" fill="#E5C178" fill-opacity="0.1"/>
+    <path d="M27 60 Q16 75 24 85 Q32 72 28 62 Z" stroke-width="0.8" fill="#E5C178" fill-opacity="0.1"/>
+
+    <!-- Bottom-Right Corner Blossom -->
+    <circle cx="364" cy="464" r="12" stroke-width="1.4" fill="#E5C178" fill-opacity="0.1"/>
+    <circle cx="364" cy="464" r="6" stroke-width="1"/>
+    <path d="M364 448 C360 454 360 458 364 460 C368 458 368 454 364 448 Z" stroke-width="1" fill="#E5C178" fill-opacity="0.2"/>
+    <path d="M364 480 C360 474 360 470 364 468 C368 470 368 474 364 480 Z" stroke-width="1" fill="#E5C178" fill-opacity="0.2"/>
+    <path d="M348 464 C354 460 358 460 360 464 C358 468 354 468 348 464 Z" stroke-width="1" fill="#E5C178" fill-opacity="0.2"/>
+    <path d="M380 464 C374 460 370 460 368 464 C370 468 374 468 380 464 Z" stroke-width="1" fill="#E5C178" fill-opacity="0.2"/>
+    <path d="M364 464 Q340 474 310 472" stroke-width="1.2"/>
+    <path d="M364 464 Q374 440 372 410" stroke-width="1.2"/>
+    <path d="M340 473 Q325 484 315 476 Q328 468 338 472 Z" stroke-width="0.8" fill="#E5C178" fill-opacity="0.1"/>
+    <path d="M373 340 Q384 325 376 315 Q368 328 372 338 Z" stroke-width="0.8" fill="#E5C178" fill-opacity="0.1"/>
+
+    <!-- Subtle Starbursts -->
+    <path d="M364 36 Q364 40 360 40 Q364 40 364 44 Q364 40 368 40 Q364 40 364 36 Z" fill="#E5C178"/>
+    <path d="M36 464 Q36 468 32 468 Q36 468 36 472 Q36 468 40 468 Q36 468 36 464 Z" fill="#E5C178"/>
+  </g>
+</svg>

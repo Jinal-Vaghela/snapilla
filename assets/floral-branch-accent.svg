@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 120" fill="none">
+  <defs>
+    <linearGradient id="goldBranchGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#E5C178" stop-opacity="0.2"/>
+      <stop offset="25%" stop-color="#C69446"/>
+      <stop offset="50%" stop-color="#E5C178"/>
+      <stop offset="75%" stop-color="#C69446"/>
+      <stop offset="100%" stop-color="#AA772C" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+
+  <g stroke="url(#goldBranchGrad)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Main Center Stem -->
+    <path d="M40 60 Q140 40 250 60 T460 60" stroke-width="1.8"/>
+
+    <!-- Center Blossom Motif -->
+    <circle cx="250" cy="60" r="14" stroke-width="1.5" fill="#E5C178" fill-opacity="0.1"/>
+    <circle cx="250" cy="60" r="8" stroke-width="1.2"/>
+    <circle cx="250" cy="60" r="3" fill="#D4A359"/>
+    
+    <!-- Center Petals -->
+    <path d="M250 42 C244 48 244 54 250 56 C256 54 256 48 250 42 Z" stroke-width="1.2" fill="#E5C178" fill-opacity="0.15"/>
+    <path d="M250 78 C244 72 244 66 250 64 C256 66 256 72 250 78 Z" stroke-width="1.2" fill="#E5C178" fill-opacity="0.15"/>
+    <path d="M232 60 C238 54 244 54 246 60 C244 66 238 66 232 60 Z" stroke-width="1.2" fill="#E5C178" fill-opacity="0.15"/>
+    <path d="M268 60 C262 54 256 54 254 60 C256 66 262 66 268 60 Z" stroke-width="1.2" fill="#E5C178" fill-opacity="0.15"/>
+
+    <!-- Left Branch Foliage -->
+    <path d="M210 54 Q190 32 170 38 Q185 52 205 56 Z" stroke-width="1.2" fill="#E5C178" fill-opacity="0.08"/>
+    <path d="M190 32 Q185 50 205 56" stroke-width="1"/>
+    
+    <path d="M180 62 Q160 80 140 76 Q156 62 176 60 Z" stroke-width="1.2" fill="#E5C178" fill-opacity="0.08"/>
+    <path d="M160 80 Q168 64 176 60" stroke-width="1"/>
+
+    <path d="M145 50 Q125 30 108 36 Q122 48 140 54 Z" stroke-width="1.2" fill="#E5C178" fill-opacity="0.08"/>
+    <path d="M115 58 Q95 72 80 70 Q94 58 112 56 Z" stroke-width="1.2" fill="#E5C178" fill-opacity="0.08"/>
+
+    <!-- Right Branch Foliage -->
+    <path d="M290 54 Q310 32 330 38 Q315 52 295 56 Z" stroke-width="1.2" fill="#E5C178" fill-opacity="0.08"/>
+    <path d="M310 32 Q315 50 295 56" stroke-width="1"/>
+
+    <path d="M320 62 Q340 80 360 76 Q344 62 324 60 Z" stroke-width="1.2" fill="#E5C178" fill-opacity="0.08"/>
+    <path d="M340 80 Q332 64 324 60" stroke-width="1"/>
+
+    <path d="M355 50 Q375 30 392 36 Q378 48 360 54 Z" stroke-width="1.2" fill="#E5C178" fill-opacity="0.08"/>
+    <path d="M385 58 Q405 72 420 70 Q406 58 388 56 Z" stroke-width="1.2" fill="#E5C178" fill-opacity="0.08"/>
+
+    <!-- Delicate Starbursts & Stipples -->
+    <path d="M250 18 Q250 24 244 24 Q250 24 250 30 Q250 24 256 24 Q250 24 250 18 Z" fill="#E5C178"/>
+    <path d="M250 92 Q250 98 244 98 Q250 98 250 104 Q250 98 256 98 Q250 98 250 92 Z" fill="#E5C178"/>
+    
+    <circle cx="230" cy="38" r="1.2" fill="#D4A359"/>
+    <circle cx="270" cy="38" r="1.2" fill="#D4A359"/>
+    <circle cx="218" cy="78" r="1.5" fill="#E5C178"/>
+    <circle cx="282" cy="78" r="1.5" fill="#E5C178"/>
+
+    <circle cx="150" cy="35" r="1.2" fill="#C59341"/>
+    <circle cx="350" cy="35" r="1.2" fill="#C59341"/>
+    <circle cx="100" cy="45" r="1.4" fill="#E5C178"/>
+    <circle cx="400" cy="45" r="1.4" fill="#E5C178"/>
+  </g>
+</svg>

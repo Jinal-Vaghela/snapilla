@@ -18,14 +18,17 @@ const btnSeedData = document.getElementById('btnSeedData');
 const tabTitle = document.getElementById('tabTitle');
 
 // Master Admin Credentials
+const MASTER_ADMIN_EMAIL = "snapillastudio@gmail.com";
+const MASTER_ADMIN_PASSWORD = "Snapilla@2410";
+
 function getAdminCredentials() {
     try {
         const stored = localStorage.getItem('snapilla_admin_creds');
         if (stored) return JSON.parse(stored);
     } catch (e) {}
     return {
-        email: "snapillastudio@gmail.com",
-        password: "Snapilla@2410"
+        email: MASTER_ADMIN_EMAIL,
+        password: MASTER_ADMIN_PASSWORD
     };
 }
 
@@ -38,11 +41,9 @@ function clearLoginInputs() {
     const passField = document.getElementById('loginPassword');
     if (emailField) {
         emailField.value = '';
-        emailField.setAttribute('readonly', 'true');
     }
     if (passField) {
         passField.value = '';
-        passField.setAttribute('readonly', 'true');
     }
 }
 
@@ -133,8 +134,8 @@ if (toggleSetAdminPassword && setAdminPasswordInput && setEyeIcon) {
 if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const inputEmail = document.getElementById('loginEmail').value.trim();
-        const inputPassword = document.getElementById('loginPassword').value;
+        const inputEmail = (document.getElementById('loginEmail').value || '').trim();
+        const inputPassword = (document.getElementById('loginPassword').value || '').trim();
         authError.style.display = 'none';
 
         if (!inputEmail || !inputPassword) {
@@ -145,48 +146,46 @@ if (loginForm) {
 
         const adminCreds = getAdminCredentials();
 
-        // Check if input matches master admin credentials or custom credentials
-        const matchesLocal = (inputEmail.toLowerCase() === adminCreds.email.toLowerCase() && inputPassword === adminCreds.password);
+        // Check if input matches master admin credentials or stored custom credentials
+        const matchesMaster = (inputEmail.toLowerCase() === MASTER_ADMIN_EMAIL.toLowerCase() && inputPassword === MASTER_ADMIN_PASSWORD);
+        const matchesStored = (inputEmail.toLowerCase() === (adminCreds.email || '').toLowerCase() && inputPassword === adminCreds.password);
+        const matchesLocal = matchesMaster || matchesStored;
 
-        if (isFirebaseInitialized && auth) {
-            try {
-                // Try logging in with Firebase
-                await auth.signInWithEmailAndPassword(inputEmail, inputPassword);
-                showToast('Welcome back, Admin!', 'success');
-            } catch (err) {
-                // If account doesn't exist in Firebase yet but matches master credentials, create it automatically
-                if (matchesLocal || err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
+        if (matchesLocal) {
+            // Local master match verified -> sign in immediately
+            if (isFirebaseInitialized && auth) {
+                try {
+                    await auth.signInWithEmailAndPassword(inputEmail, inputPassword);
+                } catch (err) {
                     try {
                         await auth.createUserWithEmailAndPassword(inputEmail, inputPassword);
-                        showToast('Admin Account Initialized and Logged In!', 'success');
                     } catch (createErr) {
-                        // Fallback to local session login
-                        if (matchesLocal) {
-                            showApp(inputEmail);
-                            loadAllContent();
-                            loadBookings();
-                            showToast('Logged In Successfully', 'success');
-                        } else {
-                            authError.textContent = 'Incorrect Admin ID or Password. Please try again.';
-                            authError.style.display = 'block';
-                        }
+                        console.info('Firebase auth fallback to local session', createErr);
                     }
-                } else {
-                    authError.textContent = 'Incorrect Admin ID or Password. Please try again.';
-                    authError.style.display = 'block';
                 }
             }
-        } else {
-            // Standalone mode validation
-            if (matchesLocal) {
+            showApp(inputEmail);
+            loadAllContent();
+            loadBookings();
+            showToast('Welcome back, Admin!', 'success');
+            return;
+        }
+
+        // If not matching local credentials, check if user exists in Firebase Auth
+        if (isFirebaseInitialized && auth) {
+            try {
+                await auth.signInWithEmailAndPassword(inputEmail, inputPassword);
                 showApp(inputEmail);
                 loadAllContent();
                 loadBookings();
-                showToast('Welcome to Snapilla Admin Dashboard!', 'success');
-            } else {
+                showToast('Welcome back, Admin!', 'success');
+            } catch (err) {
                 authError.textContent = 'Incorrect Admin ID or Password. Please try again.';
                 authError.style.display = 'block';
             }
+        } else {
+            authError.textContent = 'Incorrect Admin ID or Password. Please try again.';
+            authError.style.display = 'block';
         }
     });
 }
@@ -260,18 +259,44 @@ sidebarLinks.forEach(link => {
 });
 
 // ----------------------------------------------------
-// 3. FIRESTORE DATA SYNC
+// 3. FIRESTORE DATA SYNC & LOCAL CACHE
 // ----------------------------------------------------
 async function loadAllContent() {
+    // 1. Read from localStorage first so user customizations are never lost
+    const localData = localStorage.getItem('snapilla_local_content');
+    if (localData) {
+        try {
+            const parsed = JSON.parse(localData);
+            currentContent = {
+                ...SNAP_DEFAULT_DATA,
+                ...parsed,
+                settings: { ...SNAP_DEFAULT_DATA.settings, ...(parsed.settings || {}) },
+                why_us: { ...SNAP_DEFAULT_DATA.why_us, ...(parsed.why_us || {}) },
+                experience: { ...SNAP_DEFAULT_DATA.experience, ...(parsed.experience || {}) },
+                studio_info: { ...SNAP_DEFAULT_DATA.studio_info, ...(parsed.studio_info || {}) },
+                about_us: { ...SNAP_DEFAULT_DATA.about_us, ...(parsed.about_us || {}) },
+                final_cta: { ...SNAP_DEFAULT_DATA.final_cta, ...(parsed.final_cta || {}) },
+                services: (parsed.services && parsed.services.length > 0) ? parsed.services : SNAP_DEFAULT_DATA.services,
+                faqs: (parsed.faqs && parsed.faqs.length > 0) ? parsed.faqs : SNAP_DEFAULT_DATA.faqs,
+                pricing: (parsed.pricing && parsed.pricing.length > 0) ? parsed.pricing : SNAP_DEFAULT_DATA.pricing,
+                portfolio: (parsed.portfolio && parsed.portfolio.length > 0) ? parsed.portfolio : SNAP_DEFAULT_DATA.portfolio,
+                testimonials: (parsed.testimonials && parsed.testimonials.length > 0) ? parsed.testimonials : SNAP_DEFAULT_DATA.testimonials
+            };
+        } catch (err) {}
+    } else {
+        currentContent = JSON.parse(JSON.stringify(SNAP_DEFAULT_DATA));
+    }
+
+    // 2. If Firebase is active, pull cloud data and merge
     if (isFirebaseInitialized && db) {
         try {
             // Settings
             const setSnap = await db.collection('content').doc('settings').get();
-            if (setSnap.exists) currentContent.settings = setSnap.data();
+            if (setSnap.exists) currentContent.settings = { ...currentContent.settings, ...setSnap.data() };
 
             // Why Us
             const whySnap = await db.collection('content').doc('why_us').get();
-            if (whySnap.exists) currentContent.why_us = whySnap.data();
+            if (whySnap.exists) currentContent.why_us = { ...currentContent.why_us, ...whySnap.data() };
 
             // Services
             const servSnap = await db.collection('content').doc('services').get();
@@ -281,15 +306,15 @@ async function loadAllContent() {
 
             // Experience
             const expSnap = await db.collection('content').doc('experience').get();
-            if (expSnap.exists) currentContent.experience = expSnap.data();
+            if (expSnap.exists) currentContent.experience = { ...currentContent.experience, ...expSnap.data() };
 
             // Studio Info
             const studSnap = await db.collection('content').doc('studio_info').get();
-            if (studSnap.exists) currentContent.studio_info = studSnap.data();
+            if (studSnap.exists) currentContent.studio_info = { ...currentContent.studio_info, ...studSnap.data() };
 
             // About Us
             const abtSnap = await db.collection('content').doc('about_us').get();
-            if (abtSnap.exists) currentContent.about_us = abtSnap.data();
+            if (abtSnap.exists) currentContent.about_us = { ...currentContent.about_us, ...abtSnap.data() };
 
             // Portfolio
             const portSnap = await db.collection('content').doc('portfolio').get();
@@ -317,44 +342,11 @@ async function loadAllContent() {
 
             // Final CTA
             const ctaSnap = await db.collection('content').doc('final_cta').get();
-            if (ctaSnap.exists) currentContent.final_cta = ctaSnap.data();
+            if (ctaSnap.exists) currentContent.final_cta = { ...currentContent.final_cta, ...ctaSnap.data() };
 
+            localStorage.setItem('snapilla_local_content', JSON.stringify(currentContent));
         } catch (e) {
-            console.warn('Error reading from Firestore, using cached/default data', e);
-        }
-    } else {
-        // Read from localStorage if stored locally in demo mode
-        const localData = localStorage.getItem('snapilla_local_content');
-        if (localData) {
-            try {
-                const parsed = JSON.parse(localData);
-                if (parsed.settings) {
-                    if (parsed.settings.whatsapp_number === '919876543210' || parsed.settings.whatsapp_number === '919000000000' || !parsed.settings.whatsapp_number) {
-                        parsed.settings.whatsapp_number = '918780286850';
-                    }
-                    if (parsed.settings.phone === '+91 98765 43210' || parsed.settings.phone === '+91 XXXXX XXXXX' || !parsed.settings.phone) {
-                        parsed.settings.phone = '+91 87802 86850';
-                    }
-                }
-                currentContent = {
-                    ...SNAP_DEFAULT_DATA,
-                    ...parsed,
-                    settings: { ...SNAP_DEFAULT_DATA.settings, ...(parsed.settings || {}) },
-                    why_us: { ...SNAP_DEFAULT_DATA.why_us, ...(parsed.why_us || {}) },
-                    experience: { ...SNAP_DEFAULT_DATA.experience, ...(parsed.experience || {}) },
-                    studio_info: { ...SNAP_DEFAULT_DATA.studio_info, ...(parsed.studio_info || {}) },
-                    about_us: { ...SNAP_DEFAULT_DATA.about_us, ...(parsed.about_us || {}) },
-                    final_cta: { ...SNAP_DEFAULT_DATA.final_cta, ...(parsed.final_cta || {}) },
-                    services: (parsed.services && parsed.services.length >= 9) ? parsed.services : SNAP_DEFAULT_DATA.services,
-                    faqs: (parsed.faqs && parsed.faqs.length >= 7) ? parsed.faqs : SNAP_DEFAULT_DATA.faqs,
-                    pricing: (parsed.pricing && parsed.pricing.length > 0) ? parsed.pricing : SNAP_DEFAULT_DATA.pricing,
-                    portfolio: (parsed.portfolio && parsed.portfolio.length > 0) ? parsed.portfolio : SNAP_DEFAULT_DATA.portfolio,
-                    testimonials: (parsed.testimonials && parsed.testimonials.length > 0) ? parsed.testimonials : SNAP_DEFAULT_DATA.testimonials
-                };
-                localStorage.setItem('snapilla_local_content', JSON.stringify(currentContent));
-            } catch (err) {}
-        } else {
-            currentContent = JSON.parse(JSON.stringify(SNAP_DEFAULT_DATA));
+            console.warn('Firestore read notice, using local cache', e);
         }
     }
 
@@ -1563,8 +1555,17 @@ async function saveDoc(docName, data) {
             showToast('Firebase write failed: ' + e.message, 'error');
         }
     }
-    // Also save in localStorage as cache/fallback
+    // Save in localStorage as cache/fallback
     localStorage.setItem('snapilla_local_content', JSON.stringify(currentContent));
+
+    // Broadcast sync across tabs in real-time
+    try {
+        if (typeof BroadcastChannel !== 'undefined') {
+            const bc = new BroadcastChannel('snapilla_sync_channel');
+            bc.postMessage({ type: 'content_updated', docName, content: currentContent });
+            bc.close();
+        }
+    } catch (e) {}
 }
 
 function getImageUrl(imgPath) {

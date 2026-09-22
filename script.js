@@ -433,6 +433,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!servicesData) return;
         const servicesList = Array.isArray(servicesData) ? servicesData : (servicesData.items || []);
         if (!Array.isArray(servicesList) || servicesList.length === 0) return;
+
+        // 1. Update Boxy Camera Units
         const grid = document.getElementById('servicesGrid');
         if (grid) {
             grid.innerHTML = servicesList.map(item => `
@@ -447,6 +449,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `).join('');
             observeElements();
+        }
+
+        // 2. Update Detailed Services Grid if present
+        const detailGrid = document.getElementById('servicesDetailGrid');
+        if (detailGrid) {
+            detailGrid.innerHTML = servicesList.map(item => {
+                const iconMap = {
+                    'baby': '👶',
+                    'product': '🛍️',
+                    'wedding': '💍',
+                    'model': '👗',
+                    'portrait': '👔',
+                    'family': '👨‍👩‍👧',
+                    'birthday': '🎂',
+                    'couple': '❤️',
+                    'creative': '🎨'
+                };
+                let icon = '📸';
+                const lowerTitle = (item.title || '').toLowerCase();
+                for (const [k, v] of Object.entries(iconMap)) {
+                    if (lowerTitle.includes(k)) { icon = v; break; }
+                }
+
+                return `
+                    <div class="service-detail-card">
+                        <div class="service-card-top">
+                            <span class="service-icon-badge">${icon}</span>
+                            <h3>${item.title}</h3>
+                            <div class="service-tagline" style="color: ${item.background_color || '#E65100'};">${item.title} Experience</div>
+                            <p class="service-desc">${item.description}</p>
+                        </div>
+                        <a href="#booking" class="btn-service-book">Book ${item.title} <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                `;
+            }).join('');
+            wireBookingTriggers();
         }
     }
 
@@ -514,6 +552,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }).join('');
 
                 const popularBadge = plan.popular ? '<div class="popular-tag">Popular</div>' : '';
+                const rawPrice = (plan.price !== undefined && plan.price !== null) ? plan.price.toString().trim() : '';
+                const displayPrice = rawPrice.startsWith('₹') ? rawPrice : `₹${rawPrice}`;
 
                 return `
                     <div class="pricing-card">
@@ -521,7 +561,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div style="font-size: 2.5rem; margin-bottom: 20px;">${plan.icon || '📸'}</div>
                         <h3 style="font-size: 1.8rem; margin-bottom: 10px;">${plan.title}</h3>
                         <p style="color: #666; font-size: 0.9rem;">${plan.subtitle || ''}</p>
-                        <div style="font-size: 2.5rem; font-weight: 800; margin: 20px 0;">${plan.price}</div>
+                        <div style="font-size: 2.5rem; font-weight: 800; margin: 20px 0;">${displayPrice}</div>
                         <ul class="pricing-list">
                             ${featuresList}
                         </ul>
@@ -584,7 +624,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (grid) {
                 grid.innerHTML = data.steps.map(s => `
                     <div class="experience-step-card">
-                        <div class="step-number">${s.number || '01'}</div>
+                        <div class="step-number">${s.step || s.number || '01'}</div>
                         <h3>${s.title}</h3>
                         <p>${s.desc}</p>
                     </div>
@@ -657,107 +697,175 @@ document.addEventListener('DOMContentLoaded', () => {
         if (desc && data.desc) desc.innerHTML = data.desc.replace(/\n/g, '<br>');
     }
 
-    // 6. Connect Real-time Listeners or fetch cached data
-    function initDynamicContent() {
-        // Check local storage cache first
-        try {
-            const localData = localStorage.getItem('snapilla_local_content');
-            if (localData) {
-                const parsed = JSON.parse(localData);
-                if (parsed.settings) {
-                    if (parsed.settings.whatsapp_number === '919876543210' || parsed.settings.whatsapp_number === '919000000000' || !parsed.settings.whatsapp_number) {
-                        parsed.settings.whatsapp_number = '918780286850';
-                    }
-                    if (parsed.settings.phone === '+91 98765 43210' || parsed.settings.phone === '+91 XXXXX XXXXX' || !parsed.settings.phone) {
-                        parsed.settings.phone = '+91 87802 86850';
-                    }
-                    localStorage.setItem('snapilla_local_content', JSON.stringify(parsed));
-                }
-                if (parsed.settings) updateSettingsDOM(parsed.settings);
-                if (parsed.why_us) updateWhyUsDOM(parsed.why_us);
-                if (parsed.services) updateServicesDOM(parsed.services);
-                if (parsed.experience) updateExperienceDOM(parsed.experience);
-                if (parsed.studio_info) updateStudioDOM(parsed.studio_info);
-                if (parsed.about_us) updateAboutDOM(parsed.about_us);
-                if (parsed.portfolio) updatePortfolioDOM(parsed.portfolio);
-                if (parsed.pricing) updatePricingDOM(parsed.pricing);
-                if (parsed.testimonials) updateTestimonialsDOM(parsed.testimonials);
-                if (parsed.faqs) updateFaqDOM(parsed.faqs);
-                if (parsed.final_cta) updateFinalCtaDOM(parsed.final_cta);
-            }
-        } catch (err) {}
+    // Master function to apply entire content state to DOM
+    function applyAllContent(parsed) {
+        if (!parsed) return;
+        if (parsed.settings) updateSettingsDOM(parsed.settings);
+        if (parsed.why_us) updateWhyUsDOM(parsed.why_us);
+        if (parsed.services) updateServicesDOM(parsed.services);
+        if (parsed.experience) updateExperienceDOM(parsed.experience);
+        if (parsed.studio_info) updateStudioDOM(parsed.studio_info);
+        if (parsed.about_us) updateAboutDOM(parsed.about_us);
+        if (parsed.portfolio) updatePortfolioDOM(parsed.portfolio);
+        if (parsed.pricing) updatePricingDOM(parsed.pricing);
+        if (parsed.testimonials) updateTestimonialsDOM(parsed.testimonials);
+        if (parsed.faqs) updateFaqDOM(parsed.faqs);
+        if (parsed.final_cta) updateFinalCtaDOM(parsed.final_cta);
+    }
 
-        // If Firebase is configured, connect real-time Firestore listeners
+    // Helper to get local cached content
+    function getStoredLocalContent() {
+        try {
+            const raw = localStorage.getItem('snapilla_local_content');
+            if (raw) return JSON.parse(raw);
+        } catch (e) {}
+        return null;
+    }
+
+    function saveLocalContentCache(key, val) {
+        try {
+            let current = getStoredLocalContent() || JSON.parse(JSON.stringify(typeof SNAP_DEFAULT_DATA !== 'undefined' ? SNAP_DEFAULT_DATA : {}));
+            current[key] = val;
+            localStorage.setItem('snapilla_local_content', JSON.stringify(current));
+        } catch (e) {}
+    }
+
+    // 6. Connect Real-time Listeners & fetch cached data
+    function initDynamicContent() {
+        // 1. Check local storage cache first and apply immediately
+        const localData = getStoredLocalContent();
+        if (localData) {
+            applyAllContent(localData);
+        } else if (typeof SNAP_DEFAULT_DATA !== 'undefined') {
+            applyAllContent(SNAP_DEFAULT_DATA);
+        }
+
+        // 2. Real-time Cross-Tab Synchronization (Live update without refresh!)
+        try {
+            if (typeof BroadcastChannel !== 'undefined') {
+                const bc = new BroadcastChannel('snapilla_sync_channel');
+                bc.onmessage = (event) => {
+                    if (event.data && event.data.content) {
+                        applyAllContent(event.data.content);
+                    }
+                };
+            }
+        } catch (e) {}
+
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'snapilla_local_content' && e.newValue) {
+                try {
+                    const updated = JSON.parse(e.newValue);
+                    applyAllContent(updated);
+                } catch (err) {}
+            }
+        });
+
+        // 3. If Firebase is configured, connect real-time Firestore listeners
         if (typeof isFirebaseInitialized !== 'undefined' && isFirebaseInitialized && db) {
             // Realtime Settings
             db.collection('content').doc('settings').onSnapshot(doc => {
-                if (doc.exists) updateSettingsDOM(doc.data());
-            }, err => console.warn('Settings listener error', err));
+                if (doc.exists) {
+                    const d = doc.data();
+                    updateSettingsDOM(d);
+                    saveLocalContentCache('settings', d);
+                }
+            }, err => console.warn('Settings listener note', err));
 
             // Realtime Why Us
             db.collection('content').doc('why_us').onSnapshot(doc => {
-                if (doc.exists) updateWhyUsDOM(doc.data());
-            }, err => console.warn('Why Us listener error', err));
+                if (doc.exists) {
+                    const d = doc.data();
+                    updateWhyUsDOM(d);
+                    saveLocalContentCache('why_us', d);
+                }
+            }, err => console.warn('Why Us listener note', err));
 
             // Realtime Services
             db.collection('content').doc('services').onSnapshot(doc => {
                 if (doc.exists) {
                     const d = doc.data();
-                    updateServicesDOM(d.items || d);
+                    const items = d.items || d;
+                    updateServicesDOM(items);
+                    saveLocalContentCache('services', items);
                 }
-            }, err => console.warn('Services listener error', err));
+            }, err => console.warn('Services listener note', err));
 
             // Realtime Experience Steps
             db.collection('content').doc('experience').onSnapshot(doc => {
-                if (doc.exists) updateExperienceDOM(doc.data());
-            }, err => console.warn('Experience listener error', err));
+                if (doc.exists) {
+                    const d = doc.data();
+                    updateExperienceDOM(d);
+                    saveLocalContentCache('experience', d);
+                }
+            }, err => console.warn('Experience listener note', err));
 
             // Realtime Studio Info
             db.collection('content').doc('studio_info').onSnapshot(doc => {
-                if (doc.exists) updateStudioDOM(doc.data());
-            }, err => console.warn('Studio listener error', err));
+                if (doc.exists) {
+                    const d = doc.data();
+                    updateStudioDOM(d);
+                    saveLocalContentCache('studio_info', d);
+                }
+            }, err => console.warn('Studio listener note', err));
 
             // Realtime About Us
             db.collection('content').doc('about_us').onSnapshot(doc => {
-                if (doc.exists) updateAboutDOM(doc.data());
-            }, err => console.warn('About Us listener error', err));
+                if (doc.exists) {
+                    const d = doc.data();
+                    updateAboutDOM(d);
+                    saveLocalContentCache('about_us', d);
+                }
+            }, err => console.warn('About Us listener note', err));
 
             // Realtime Portfolio
             db.collection('content').doc('portfolio').onSnapshot(doc => {
                 if (doc.exists) {
                     const d = doc.data();
-                    updatePortfolioDOM(d.items || d);
+                    const items = d.items || d;
+                    updatePortfolioDOM(items);
+                    saveLocalContentCache('portfolio', items);
                 }
-            }, err => console.warn('Portfolio listener error', err));
+            }, err => console.warn('Portfolio listener note', err));
 
             // Realtime Pricing
             db.collection('content').doc('pricing').onSnapshot(doc => {
                 if (doc.exists) {
                     const d = doc.data();
-                    updatePricingDOM(d.items || d);
+                    const items = d.items || d;
+                    updatePricingDOM(items);
+                    saveLocalContentCache('pricing', items);
                 }
-            }, err => console.warn('Pricing listener error', err));
+            }, err => console.warn('Pricing listener note', err));
 
             // Realtime Testimonials
             db.collection('content').doc('testimonials').onSnapshot(doc => {
                 if (doc.exists) {
                     const d = doc.data();
-                    updateTestimonialsDOM(d.items || d);
+                    const items = d.items || d;
+                    updateTestimonialsDOM(items);
+                    saveLocalContentCache('testimonials', items);
                 }
-            }, err => console.warn('Testimonials listener error', err));
+            }, err => console.warn('Testimonials listener note', err));
 
             // Realtime FAQs
             db.collection('content').doc('faqs').onSnapshot(doc => {
                 if (doc.exists) {
                     const d = doc.data();
-                    updateFaqDOM(d.items || d);
+                    const items = d.items || d;
+                    updateFaqDOM(items);
+                    saveLocalContentCache('faqs', items);
                 }
-            }, err => console.warn('FAQs listener error', err));
+            }, err => console.warn('FAQs listener note', err));
 
             // Realtime Final CTA
             db.collection('content').doc('final_cta').onSnapshot(doc => {
-                if (doc.exists) updateFinalCtaDOM(doc.data());
-            }, err => console.warn('Final CTA listener error', err));
+                if (doc.exists) {
+                    const d = doc.data();
+                    updateFinalCtaDOM(d);
+                    saveLocalContentCache('final_cta', d);
+                }
+            }, err => console.warn('Final CTA listener note', err));
         }
     }
 
