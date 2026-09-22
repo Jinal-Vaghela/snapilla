@@ -77,12 +77,14 @@
     <path d="M194 16 L202 13" stroke-width="1.1"/>
 
     <!-- Sparkling Optical Flare Stars -->
+    <!-- Left Star -->
     <g transform="translate(50, 25)">
       <path d="M0 -7 L0 7 M-7 0 L7 0" stroke-width="1.2"/>
       <path d="M-4 -4 L4 4 M-4 4 L4 -4" stroke-width="0.7"/>
       <circle cx="0" cy="0" r="1.5" fill="#E5C178" stroke="none"/>
     </g>
 
+    <!-- Right Star -->
     <g transform="translate(350, 25)">
       <path d="M0 -7 L0 7 M-7 0 L7 0" stroke-width="1.2"/>
       <path d="M-4 -4 L4 4 M-4 4 L4 -4" stroke-width="0.7"/>
