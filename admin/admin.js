@@ -386,6 +386,9 @@ function renderSettingsView() {
     document.getElementById('setPhone').value = s.phone || '';
     document.getElementById('setEmail').value = s.email || '';
     document.getElementById('setAddress').value = s.address || st.location || st.address || '';
+    const mapsVal = s.maps_url || st.maps_url || '';
+    const setMapsInput = document.getElementById('setMapsUrl');
+    if (setMapsInput) setMapsInput.value = (mapsVal === 'https://maps.google.com') ? '' : mapsVal;
     document.getElementById('setInstagram').value = s.instagram_url || '';
     document.getElementById('setTagline').value = s.tagline || '';
 
@@ -400,7 +403,9 @@ const settingsForm = document.getElementById('settingsForm');
 if (settingsForm) {
     settingsForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const newAddress = document.getElementById('setAddress').value;
+        const newAddress = document.getElementById('setAddress').value.trim();
+        const newMapsUrl = document.getElementById('setMapsUrl') ? document.getElementById('setMapsUrl').value.trim() : '';
+
         currentContent.settings = {
             ...currentContent.settings,
             hero_title: document.getElementById('setHeroTitle').value,
@@ -409,14 +414,16 @@ if (settingsForm) {
             phone: document.getElementById('setPhone').value,
             email: document.getElementById('setEmail').value,
             address: newAddress,
+            maps_url: newMapsUrl,
             instagram_url: document.getElementById('setInstagram').value,
             tagline: document.getElementById('setTagline').value
         };
 
-        // Also sync to studio_info location so both collections and DOM sections are updated
+        // Also sync to studio_info location and maps_url so both collections and DOM sections are updated
         if (!currentContent.studio_info) currentContent.studio_info = {};
         currentContent.studio_info.location = newAddress;
         currentContent.studio_info.address = newAddress;
+        currentContent.studio_info.maps_url = newMapsUrl;
 
         const newAdminEmail = document.getElementById('setAdminEmail')?.value.trim();
         const newAdminPass = document.getElementById('setAdminPassword')?.value;
@@ -684,7 +691,8 @@ function renderStudioView() {
     if (setStudioWeekday) setStudioWeekday.value = st.hours_weekday || '';
     if (setStudioSunday) setStudioSunday.value = st.hours_sunday || '';
     if (setStudioNotice) setStudioNotice.value = st.notice || '';
-    if (setStudioMaps) setStudioMaps.value = st.maps_url || '';
+    const mapsVal = st.maps_url || s.maps_url || '';
+    if (setStudioMaps) setStudioMaps.value = (mapsVal === 'https://maps.google.com') ? '' : mapsVal;
 }
 
 const studioForm = document.getElementById('studioForm');
@@ -692,6 +700,8 @@ if (studioForm) {
     studioForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const studioLoc = document.getElementById('setStudioLocation') ? document.getElementById('setStudioLocation').value.trim() : '';
+        const mapsUrl = document.getElementById('setStudioMaps') ? document.getElementById('setStudioMaps').value.trim() : '';
+
         currentContent.studio_info = {
             ...currentContent.studio_info,
             badge: document.getElementById('setStudioBadge').value,
@@ -702,16 +712,15 @@ if (studioForm) {
             hours_weekday: document.getElementById('setStudioWeekday').value,
             hours_sunday: document.getElementById('setStudioSunday').value,
             notice: document.getElementById('setStudioNotice').value,
-            maps_url: document.getElementById('setStudioMaps').value
+            maps_url: mapsUrl
         };
 
-        if (studioLoc) {
-            if (!currentContent.settings) currentContent.settings = {};
-            currentContent.settings.address = studioLoc;
-            await saveDoc('settings', currentContent.settings);
-        }
+        if (!currentContent.settings) currentContent.settings = {};
+        if (studioLoc) currentContent.settings.address = studioLoc;
+        currentContent.settings.maps_url = mapsUrl;
 
         await saveDoc('studio_info', currentContent.studio_info);
+        await saveDoc('settings', currentContent.settings);
         showToast('Studio Details & Hours Saved Successfully!', 'success');
     });
 }

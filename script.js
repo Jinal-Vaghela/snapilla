@@ -438,6 +438,40 @@ document.addEventListener('DOMContentLoaded', () => {
         return `https://maps.google.com/maps?q=${encodeURIComponent(val)}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
     }
 
+    function updateMapDOM(mapsUrl, address) {
+        const mapContainer = document.querySelector('.map-container');
+        const mapIframe = document.getElementById('contactMapIframe');
+        const studioMapsBtn = document.getElementById('studioMapsBtn');
+
+        const cleanMapUrl = (mapsUrl && mapsUrl !== 'https://maps.google.com') ? mapsUrl.trim() : '';
+        const cleanAddress = address ? address.trim() : '';
+
+        // If the user cleared both the map link and address, hide the map container
+        if (!cleanMapUrl && !cleanAddress) {
+            if (mapContainer) mapContainer.style.display = 'none';
+            if (mapIframe) mapIframe.src = '';
+            if (studioMapsBtn) studioMapsBtn.style.display = 'none';
+            return;
+        }
+
+        // Otherwise show the map container and update its src & button href
+        if (mapContainer) mapContainer.style.display = 'block';
+        
+        if (studioMapsBtn) {
+            studioMapsBtn.style.display = 'inline-flex';
+            if (cleanMapUrl) {
+                studioMapsBtn.href = cleanMapUrl;
+            } else if (cleanAddress) {
+                studioMapsBtn.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanAddress)}`;
+            }
+        }
+
+        if (mapIframe) {
+            const target = cleanMapUrl || cleanAddress;
+            mapIframe.src = getEmbedMapUrl(target);
+        }
+    }
+
     function updateSettingsDOM(data) {
         if (!data) return;
         liveSettings = { ...liveSettings, ...data };
@@ -454,21 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const studioNoticeAddress = document.getElementById('studioNoticeAddress');
         if (studioNoticeAddress && data.address) studioNoticeAddress.textContent = data.address;
 
-        const mapIframe = document.getElementById('contactMapIframe');
-        if (mapIframe && data.address) {
-            mapIframe.src = getEmbedMapUrl(data.address);
-        }
-
-        const studioMapsBtn = document.getElementById('studioMapsBtn');
-        if (studioMapsBtn) {
-            if (data.maps_url && data.maps_url !== 'https://maps.google.com') {
-                studioMapsBtn.href = data.maps_url;
-            } else if (data.address && data.address !== 'Snapilla Studio, Ahmedabad, Gujarat, India') {
-                studioMapsBtn.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.address)}`;
-            } else {
-                studioMapsBtn.href = 'https://maps.app.goo.gl/aFs4f4PSaPtn3VUT9';
-            }
-        }
+        updateMapDOM(data.maps_url || liveSettings.maps_url, data.address || liveSettings.address);
 
         const contactPhone = document.getElementById('contactPhone');
         if (contactPhone && data.phone) contactPhone.textContent = data.phone;
@@ -785,25 +805,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const notice = document.getElementById('studioNotice');
         if (notice && data.notice) notice.textContent = data.notice;
 
-        const mapsBtn = document.getElementById('studioMapsBtn');
-        if (mapsBtn) {
-            if (data.maps_url && data.maps_url !== 'https://maps.google.com') {
-                mapsBtn.href = data.maps_url;
-            } else if (data.location || (liveSettings && liveSettings.address)) {
-                const addr = data.location || (liveSettings && liveSettings.address);
-                mapsBtn.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addr)}`;
-            } else {
-                mapsBtn.href = 'https://maps.app.goo.gl/aFs4f4PSaPtn3VUT9';
-            }
-        }
-
-        const mapIframe = document.getElementById('contactMapIframe');
-        if (mapIframe) {
-            const mapSrcTarget = data.maps_url || data.location || (liveSettings && liveSettings.address);
-            if (mapSrcTarget) {
-                mapIframe.src = getEmbedMapUrl(mapSrcTarget);
-            }
-        }
+        updateMapDOM(data.maps_url || liveSettings.maps_url, data.location || data.address || liveSettings.address);
     }
 
     function updateAboutDOM(data) {
