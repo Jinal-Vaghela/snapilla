@@ -253,31 +253,36 @@
 
         /* 1. Luxury Glass Snapshot Cards */
         .luxury-photo-card {
-            background: rgba(255, 255, 255, 0.88);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1.5px solid rgba(229, 193, 120, 0.65);
-            border-radius: 18px;
-            padding: 8px;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.16), 0 0 25px rgba(254, 171, 69, 0.18);
-            width: 130px;
+            border: 2px solid rgba(254, 171, 69, 0.65);
+            border-radius: 16px;
+            padding: 6px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16), 0 0 20px rgba(254, 171, 69, 0.2);
+            width: 135px;
             box-sizing: border-box;
             cursor: pointer;
             position: relative;
+            display: block;
+            text-decoration: none;
+            overflow: hidden;
         }
 
         .luxury-photo-card .photo-img-wrap {
             width: 100%;
-            height: 140px;
-            border-radius: 12px;
+            height: 125px;
+            border-radius: 11px;
             overflow: hidden;
             position: relative;
+            background: #111;
         }
 
         .luxury-photo-card .photo-img-wrap img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
             transition: transform 0.6s ease;
         }
 
@@ -286,18 +291,17 @@
         }
 
         .luxury-photo-card .photo-footer {
-            padding: 8px 4px 2px 4px;
+            padding: 6px 4px 2px 4px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
         .luxury-photo-card .photo-label {
-            font-size: 0.68rem;
-            font-weight: 700;
+            font-size: 0.72rem;
+            font-weight: 800;
             color: #111;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
+            letter-spacing: 0.4px;
             font-family: var(--font-body);
         }
 
@@ -311,12 +315,12 @@
 
         /* 2. Photography Story Category Floating Badges */
         .hero-cat-floating-badge {
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.94);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             border: 1.5px solid rgba(254, 171, 69, 0.65);
             border-radius: 50px;
-            padding: 9px 18px;
+            padding: 7px 16px 7px 8px;
             box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15), 0 0 20px rgba(254, 171, 69, 0.18);
             display: inline-flex;
             align-items: center;
@@ -324,6 +328,17 @@
             cursor: pointer;
             text-decoration: none;
             transition: all 0.35s ease;
+        }
+
+        .hero-cat-floating-badge .cat-thumb {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1.5px solid #FEAB45;
+            box-shadow: 0 0 8px rgba(254, 171, 69, 0.4);
+            flex-shrink: 0;
+            display: block;
         }
 
         .hero-cat-floating-badge:hover {
@@ -2589,21 +2604,23 @@
         <div class="hero-overlay">
             <!-- Floating Photography Story Categories (Interactive & Elegant) -->
             <div class="hero-floating-elements" aria-hidden="true">
-                <!-- 1. Top-Left: Wedding & Pre-Wedding -->
+                <!-- 1. Top-Left: Wedding Snapshot Photo Card -->
                 <div class="floating-item pos-top-left">
-                    <a href="#services" class="hero-cat-floating-badge">
-                        <span class="cat-icon">💍</span>
-                        <div class="cat-meta">
-                            <span class="cat-title">Weddings</span>
-                            <span class="cat-sub">Grand Romance</span>
+                    <a href="#services" class="luxury-photo-card" style="transform: rotate(-3deg);">
+                        <div class="photo-img-wrap">
+                            <img src="wedding.png" alt="Wedding Shoot">
+                        </div>
+                        <div class="photo-footer">
+                            <span class="photo-label">💍 Weddings</span>
+                            <span class="photo-gold-dot"></span>
                         </div>
                     </a>
                 </div>
 
-                <!-- 2. Middle-Left: Baby Shoots -->
+                <!-- 2. Middle-Left: Baby Shoots Photo Capsule -->
                 <div class="floating-item pos-mid-left">
                     <a href="#services" class="hero-cat-floating-badge">
-                        <span class="cat-icon">👶</span>
+                        <img src="baby.png" alt="Baby Shoot" class="cat-thumb">
                         <div class="cat-meta">
                             <span class="cat-title">Baby Shoots</span>
                             <span class="cat-sub">Tiny Milestones</span>
@@ -2611,10 +2628,10 @@
                     </a>
                 </div>
 
-                <!-- 3. Bottom-Left: Product Shoots -->
+                <!-- 3. Bottom-Left: Product Shoots Photo Capsule -->
                 <div class="floating-item pos-bottom-left">
                     <a href="#services" class="hero-cat-floating-badge">
-                        <span class="cat-icon">🛍️</span>
+                        <img src="product.png" alt="Product Shoot" class="cat-thumb">
                         <div class="cat-meta">
                             <span class="cat-title">Product Shoots</span>
                             <span class="cat-sub">Commercial & Ads</span>
@@ -2622,21 +2639,23 @@
                     </a>
                 </div>
 
-                <!-- 4. Top-Right: Modeling Shoot -->
+                <!-- 4. Top-Right: Modeling Snapshot Photo Card -->
                 <div class="floating-item pos-top-right">
-                    <a href="#services" class="hero-cat-floating-badge">
-                        <span class="cat-icon">👗</span>
-                        <div class="cat-meta">
-                            <span class="cat-title">Modeling</span>
-                            <span class="cat-sub">Fashion & Portfolio</span>
+                    <a href="#services" class="luxury-photo-card" style="transform: rotate(3deg);">
+                        <div class="photo-img-wrap">
+                            <img src="p1.png" alt="Modeling Shoot">
+                        </div>
+                        <div class="photo-footer">
+                            <span class="photo-label">👗 Modeling</span>
+                            <span class="photo-gold-dot"></span>
                         </div>
                     </a>
                 </div>
 
-                <!-- 5. Middle-Right: Portrait Sessions -->
+                <!-- 5. Middle-Right: Portrait Sessions Photo Capsule -->
                 <div class="floating-item pos-mid-right">
                     <a href="#services" class="hero-cat-floating-badge">
-                        <span class="cat-icon">👔</span>
+                        <img src="modeling.png" alt="Portraits" class="cat-thumb">
                         <div class="cat-meta">
                             <span class="cat-title">Portraits</span>
                             <span class="cat-sub">Studio Lighting</span>
@@ -2644,13 +2663,15 @@
                     </a>
                 </div>
 
-                <!-- 6. Bottom-Right: Family Shoots -->
+                <!-- 6. Bottom-Right: Baby Milestone Snapshot Photo Card -->
                 <div class="floating-item pos-bottom-right">
-                    <a href="#services" class="hero-cat-floating-badge">
-                        <span class="cat-icon">👨‍👩‍👧</span>
-                        <div class="cat-meta">
-                            <span class="cat-title">Family Shoots</span>
-                            <span class="cat-sub">Timeless Portraits</span>
+                    <a href="#services" class="luxury-photo-card" style="transform: rotate(-3deg);">
+                        <div class="photo-img-wrap">
+                            <img src="baby.png" alt="Baby Shoot">
+                        </div>
+                        <div class="photo-footer">
+                            <span class="photo-label">👶 Baby Shoot</span>
+                            <span class="photo-gold-dot"></span>
                         </div>
                     </a>
                 </div>
