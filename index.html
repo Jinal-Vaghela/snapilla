@@ -1334,10 +1334,10 @@
 
         .camera-unit {
             width: 100%;
-            max-width: 330px;
+            max-width: 360px;
             text-align: center;
             position: relative;
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .camera-unit.reveal {
@@ -1345,73 +1345,69 @@
         }
 
         .camera-unit:hover {
-            transform: scale(1.05) translateY(-10px) rotate(1.5deg);
+            transform: translateY(-8px) scale(1.03);
             z-index: 10;
         }
 
-        .boxy-camera-shell {
+        .camera-frame-wrapper {
             width: 100%;
-            height: 280px;
-            background: #FF9800;
-            border: 6px solid #000;
-            border-radius: 30px;
+            aspect-ratio: 1599 / 984;
             position: relative;
-            box-shadow: 10px 10px 0 #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
+            margin-bottom: 18px;
+            filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.25));
+            transition: filter 0.4s ease;
         }
 
-        .boxy-camera-shell::before {
-            content: '';
+        .camera-unit:hover .camera-frame-wrapper {
+            filter: drop-shadow(0 18px 32px rgba(212, 163, 89, 0.35)) drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+        }
+
+        .camera-body-overlay {
             position: absolute;
-            top: -18px;
-            left: 40px;
-            width: 80px;
-            height: 18px;
-            background: #000;
-            border-radius: 8px 8px 0 0;
-            box-shadow: 140px 4px 0 -4px #000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .boxy-camera-shell::after {
-            content: '';
+        .camera-screen-view {
             position: absolute;
-            top: 12px;
-            right: 30px;
-            width: 45px;
-            height: 30px;
-            background: rgba(255,255,255,0.2);
-            border: 3px solid #000;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .boxy-screen {
-            width: 88%;
-            height: 75%;
+            top: 20.83%;
+            left: 12.82%;
+            width: 58.47%;
+            height: 69.10%;
             background: #000;
-            border: 4px solid #000;
-            border-radius: 15px;
             overflow: hidden;
-            position: relative;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 3;
+            border-radius: 2px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
-        .boxy-screen img {
+        .camera-screen-view::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 45%, transparent 45%);
+            pointer-events: none;
+            z-index: 4;
+        }
+
+        .camera-screen-view img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(0.2);
-            transition: all 0.5s ease;
+            display: block;
+            transition: transform 0.5s ease;
         }
 
-        .camera-unit:hover .boxy-screen img {
-            filter: grayscale(0); transform: scale(1.1);
+        .camera-unit:hover .camera-screen-view img {
+            transform: scale(1.08);
         }
 
         .camera-info h3 {
@@ -1434,135 +1430,38 @@
             line-height: 1.45;
         }
 
-        /* Enhanced Running Cartoon Baby (No Track) */
-        .baby-run-track {
-            width: 100%;
-            height: 150px;
+        /* Running Camera Mascot Full Screen Edge-to-Edge Animation */
+        .camera-run-track {
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            height: 180px;
             background: transparent;
             position: relative;
-            margin-top: 20px;
+            margin-top: 25px;
+            margin-bottom: 25px;
             overflow: hidden;
-            border: none;
+            pointer-events: none;
         }
 
-        .cartoon-baby {
+        .camera-run-gif {
             position: absolute;
-            bottom: 30px;
-            left: -150px;
-            width: 80px;
-            height: 100px;
-            animation: runAcross 15s linear infinite, babyBounce 0.4s ease-in-out infinite alternate;
+            bottom: 10px;
+            left: 0;
+            height: 160px;
+            width: auto;
+            object-fit: contain;
+            mix-blend-mode: multiply;
+            will-change: transform;
+            animation: cameraRunAcross 12s linear infinite;
         }
 
-        .baby-head {
-            width: 55px;
-            height: 55px;
-            background: radial-gradient(circle at 30% 30%, #FFE0B2, #FFB74D);
-            border: 3px solid #000;
-            border-radius: 50%;
-            position: relative;
-            z-index: 10;
-        }
-
-        .baby-hair {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            width: 15px;
-            height: 15px;
-            border-left: 5px solid #6D4C41;
-            border-radius: 50% 0 0 50%;
-            transform: translateX(-50%) rotate(20deg);
-        }
-
-        .baby-blush {
-            width: 12px;
-            height: 6px;
-            background: rgba(255, 138, 128, 0.4);
-            border-radius: 50%;
-            position: absolute;
-            top: 28px;
-        }
-        .baby-blush.left { left: 8px; }
-        .baby-blush.right { right: 8px; }
-
-        .baby-eye {
-            width: 12px;
-            height: 12px;
-            background: #000;
-            border-radius: 50%;
-            position: absolute;
-            top: 15px;
-        }
-        .baby-eye::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 4px;
-            height: 4px;
-            background: #fff;
-            border-radius: 50%;
-        }
-        .baby-eye.left { left: 12px; }
-        .baby-eye.right { right: 12px; }
-
-        .baby-mouth {
-            width: 14px;
-            height: 7px;
-            border-bottom: 3px solid #000;
-            border-radius: 0 0 10px 10px;
-            position: absolute;
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .baby-body {
-            width: 45px;
-            height: 50px;
-            background: radial-gradient(circle at 50% 50%, #FFCDD2, #F06292);
-            border: 3px solid #000;
-            border-radius: 20px 20px 40px 40px;
-            position: absolute;
-            top: 45px;
-            left: 5px;
-            z-index: 4;
-            box-shadow: inset 0 -5px 0 rgba(0,0,0,0.1);
-        }
-
-        .baby-arm, .baby-leg {
-            position: absolute;
-            background: #FFE0B2;
-            border: 3px solid #000;
-            border-radius: 10px;
-        }
-
-        .baby-leg {
-            width: 14px;
-            height: 30px;
-            bottom: -20px;
-            transform-origin: top center;
-            background: #FFE0B2;
-            animation: legCycle 0.4s ease-in-out infinite alternate;
-        }
-
-        .baby-leg.left { left: 10px; animation-delay: -0.2s; }
-        .baby-leg.right { left: 25px; }
-
-        @keyframes runAcross {
-            0% { left: -150px; }
-            100% { left: 110%; }
-        }
-
-        @keyframes babyBounce {
-            from { transform: translateY(0) rotate(5deg); }
-            to { transform: translateY(-15px) rotate(10deg); }
-        }
-
-        @keyframes legCycle {
-            from { transform: rotate(-45deg); }
-            to { transform: rotate(45deg); }
+        @keyframes cameraRunAcross {
+            0% {
+                transform: translateX(-260px);
+            }
+            100% {
+                transform: translateX(calc(100vw + 80px));
+            }
         }
 
         @keyframes cameraThrow {
@@ -2758,50 +2657,46 @@
         <!-- Interactive Camera Preview Units -->
         <div class="camera-grid" id="servicesGrid">
             <div class="camera-unit">
-                <div class="boxy-camera-shell" style="background: #FFCA28;">
-                    <div class="boxy-screen"><img src="baby.png" alt="Baby Shoot"></div>
+                <div class="camera-frame-wrapper">
+                    <div class="camera-screen-view">
+                        <img src="baby.png" alt="Baby Shoot">
+                    </div>
+                    <img src="camera%20frame.png" class="camera-body-overlay" alt="Camera Frame">
                 </div>
                 <div class="camera-info"><h3>Baby Shoots</h3><p>Little Moments. Big Memories. Precious giggles captured forever.</p></div>
             </div>
             <div class="camera-unit">
-                <div class="boxy-camera-shell" style="background: #ECEFF1;">
-                    <div class="boxy-screen"><img src="wedding.png" alt="Wedding Shoot"></div>
+                <div class="camera-frame-wrapper">
+                    <div class="camera-screen-view">
+                        <img src="wedding.png" alt="Wedding Shoot">
+                    </div>
+                    <img src="camera%20frame.png" class="camera-body-overlay" alt="Camera Frame">
                 </div>
                 <div class="camera-info"><h3>Weddings</h3><p>Your Day. Your People. Your Story. Grand cinematic romance.</p></div>
             </div>
             <div class="camera-unit">
-                <div class="boxy-camera-shell" style="background: #FF7043;">
-                    <div class="boxy-screen"><img src="product.png" alt="Product Shoot"></div>
+                <div class="camera-frame-wrapper">
+                    <div class="camera-screen-view">
+                        <img src="product.png" alt="Product Shoot">
+                    </div>
+                    <img src="camera%20frame.png" class="camera-body-overlay" alt="Camera Frame">
                 </div>
                 <div class="camera-info"><h3>Products</h3><p>Make Your Product Impossible to Ignore. High-converting commercial visuals.</p></div>
             </div>
             <div class="camera-unit">
-                <div class="boxy-camera-shell" style="background: #263238;">
-                    <div class="boxy-screen"><img src="modeling.png" alt="Modeling Shoot"></div>
+                <div class="camera-frame-wrapper">
+                    <div class="camera-screen-view">
+                        <img src="modeling.png" alt="Modeling Shoot">
+                    </div>
+                    <img src="camera%20frame.png" class="camera-body-overlay" alt="Camera Frame">
                 </div>
                 <div class="camera-info"><h3>Modeling</h3><p>Confidence Looks Good On Camera. High-fashion portfolios.</p></div>
             </div>
         </div>
 
-        <!-- High-Detail Running Cartoon Baby Mascot -->
-        <div class="baby-run-track">
-            <div class="cartoon-baby">
-                <!-- Baby Legs (Back layer) -->
-                <div class="baby-leg left"></div>
-                <!-- Baby Body -->
-                <div class="baby-body"></div>
-                <!-- Baby Head -->
-                <div class="baby-head">
-                    <div class="baby-hair"></div>
-                    <div class="baby-blush left"></div>
-                    <div class="baby-blush right"></div>
-                    <div class="baby-eye left"></div>
-                    <div class="baby-eye right"></div>
-                    <div class="baby-mouth"></div>
-                </div>
-                <!-- Baby Legs (Front layer) -->
-                <div class="baby-leg right" style="animation-delay: -0.2s;"></div>
-            </div>
+        <!-- Running Camera Mascot Animation Track -->
+        <div class="camera-run-track">
+            <img src="Camera%20Run.gif" class="camera-run-gif" alt="Running Camera Mascot">
         </div>
 
         <!-- Comprehensive 9-Services Detailed Breakdown -->

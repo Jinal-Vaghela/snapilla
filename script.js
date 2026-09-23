@@ -591,13 +591,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const servicesList = Array.isArray(servicesData) ? servicesData : (servicesData.items || []);
         if (!Array.isArray(servicesList) || servicesList.length === 0) return;
 
-        // 1. Update Boxy Camera Units
+        // 1. Update Camera Units
         const grid = document.getElementById('servicesGrid');
         if (grid) {
             grid.innerHTML = servicesList.map(item => `
                 <div class="camera-unit reveal">
-                    <div class="boxy-camera-shell" style="background: ${item.background_color || '#FFCA28'};">
-                        <div class="boxy-screen"><img src="${item.image}" alt="${item.title}"></div>
+                    <div class="camera-frame-wrapper">
+                        <div class="camera-screen-view">
+                            <img src="${item.image}" alt="${item.title}">
+                        </div>
+                        <img src="camera%20frame.png" class="camera-body-overlay" alt="Camera Frame">
                     </div>
                     <div class="camera-info">
                         <h3>${item.title}</h3>
