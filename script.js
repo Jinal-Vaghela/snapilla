@@ -637,7 +637,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="service-card-top">
                             <span class="service-icon-badge">${icon}</span>
                             <h3>${item.title}</h3>
-                            <div class="service-tagline" style="color: ${item.background_color || '#E65100'};">${item.title} Experience</div>
+                            <div class="service-tagline">${item.title} Experience</div>
                             <p class="service-desc">${item.description}</p>
                         </div>
                         <a href="#booking" class="btn-service-book">Book ${item.title} <i class="fas fa-arrow-right"></i></a>
