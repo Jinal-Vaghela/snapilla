@@ -2238,18 +2238,60 @@
                 padding: 0 10px;
             }
 
-            /* Services & Grids */
+            /* Services & Grids Side-by-Side on Mobile */
             .services-detail-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                margin-top: 30px;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 14px;
+                margin-top: 25px;
             }
             .service-detail-card {
-                padding: 25px 20px;
-                border-radius: 20px;
+                padding: 20px 14px;
+                border-radius: 18px;
+            }
+            .service-icon-badge {
+                font-size: 1.8rem;
+                margin-bottom: 8px;
             }
             .service-detail-card h3 {
-                font-size: 1.35rem;
+                font-size: 1.05rem;
+                margin-bottom: 4px;
+                line-height: 1.25;
+            }
+            .service-tagline {
+                font-size: 0.78rem;
+                margin-bottom: 8px;
+                line-height: 1.3;
+            }
+            .service-desc {
+                font-size: 0.75rem;
+                line-height: 1.45;
+                margin-bottom: 12px;
+            }
+            .service-features-list {
+                margin: 0 0 12px 0;
+            }
+            .service-features-list li {
+                font-size: 0.72rem;
+                padding: 3px 0;
+                gap: 6px;
+                line-height: 1.3;
+            }
+            .service-features-list li i {
+                font-size: 0.72rem;
+            }
+            .service-platforms-tag {
+                padding: 6px 10px;
+                font-size: 0.72rem;
+                margin-bottom: 14px;
+                border-radius: 8px;
+            }
+            .btn-service-book {
+                padding: 9px 10px;
+                font-size: 0.72rem;
+                letter-spacing: 0.5px;
+                width: 100%;
+                text-align: center;
+                gap: 4px;
             }
             .why-pillars-grid {
                 grid-template-columns: 1fr;
