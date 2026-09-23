@@ -903,38 +903,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Configure Show More Button & Grid
-        if (moreContainer && showMoreBtn && moreGrid) {
+        if (moreContainer && showMoreBtn) {
             moreContainer.style.display = 'block';
-            moreGrid.style.display = 'none';
+            if (moreGrid) moreGrid.style.display = 'none';
             showMoreBtn.innerHTML = `<i class="fas fa-images"></i> <span>Show More ${meta.title} Photos</span>`;
 
             showMoreBtn.onclick = () => {
-                const isHidden = (moreGrid.style.display === 'none' || !moreGrid.style.display);
-                if (isHidden) {
-                    moreGrid.innerHTML = `
-                        ${morePhotosPool.map(p => `
-                            <div class="more-photo-card portfolio-item" data-category="${normalized}">
-                                <img src="${p.image}" alt="${p.title || meta.title}">
-                                <div class="more-photo-info">
-                                    <h4>${p.title || meta.title}</h4>
-                                    <p>${p.desc || 'Snapilla Studio'}</p>
-                                </div>
-                            </div>
-                        `).join('')}
-                        <div class="more-gallery-cta">
-                            <h4>Love Our ${meta.title} Photography?</h4>
-                            <p>Let’s craft timeless memories together at our dedicated studio.</p>
-                            <a href="#booking" class="btn-service-book" style="display: inline-block; padding: 14px 34px; font-size: 1rem;">📸 Book ${meta.title} Shoot <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    `;
-                    moreGrid.style.display = 'grid';
-                    showMoreBtn.innerHTML = `<i class="fas fa-chevron-up"></i> <span>Show Less</span>`;
-                    attachLightboxHandlers();
-                    wireBookingTriggers();
-                } else {
-                    moreGrid.style.display = 'none';
-                    showMoreBtn.innerHTML = `<i class="fas fa-images"></i> <span>Show More ${meta.title} Photos</span>`;
-                }
+                window.location.href = `gallery.html?category=${encodeURIComponent(normalized)}`;
             };
         }
 

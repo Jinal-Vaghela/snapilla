@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery & Memories | Snapilla Studio</title>
+    <meta name="description" content="Explore the Snapilla Studio photography gallery wall. Handcrafted memories of Baby Shoots, Weddings, Modeling, Products, Portraits, and Special Moments.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        @font-face {
+            font-family: 'Nikumaru';
+            src: url('nikumaru.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --primary-color: #FEAB45;
+            --font-logo: 'Nikumaru', 'Baloo 2', cursive;
+            --font-hand: 'Caveat', cursive;
+            --font-body: 'Outfit', sans-serif;
+            --cork-base: #c2884a;
+            --cork-dark: #99622a;
+        }
+
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: var(--font-body);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Gallery Navbar */
+        .gallery-nav {
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 2px solid rgba(254, 171, 69, 0.3);
+            padding: 15px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .gallery-nav .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .gallery-nav .logo-group img {
+            height: 46px;
+        }
+
+        .gallery-nav .logo-group .logo-title {
+            font-family: var(--font-logo);
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+
+        .gallery-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-gallery-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-home {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-home:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-book {
+            background: var(--primary-color);
+            color: #000;
+            font-weight: 800;
+            box-shadow: 0 4px 15px rgba(254, 171, 69, 0.4);
+        }
+
+        .btn-book:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(254, 171, 69, 0.6);
+        }
+
+        /* Hero / Header Intro */
+        .gallery-header {
+            text-align: center;
+            padding: 40px 5% 20px 5%;
+            background: radial-gradient(circle at top, #261b05 0%, #121212 70%);
+        }
+
+        .gallery-header h1 {
+            font-family: var(--font-logo);
+            font-size: 2.8rem;
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .gallery-header p {
+            color: #bbb;
+            font-size: 1.05rem;
+            max-width: 650px;
+            margin: 0 auto 25px auto;
+            line-height: 1.5;
+        }
+
+        /* Filter Tabs */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            max-width: 1100px;
+            margin: 0 auto 35px auto;
+            padding: 0 15px;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ddd;
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-btn:hover {
+            background: rgba(254, 171, 69, 0.2);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: #000;
+            border-color: var(--primary-color);
+            box-shadow: 0 6px 20px rgba(254, 171, 69, 0.4);
+        }
+
+        /* ========================================================
+           CORKBOARD WALL STYLING (MATCHING IMAGE 2)
+        ======================================================== */
+        .corkboard-container {
+            max-width: 1400px;
+            margin: 0 auto 80px auto;
+            padding: 0 20px;
+        }
+
+        .corkboard-frame {
+            position: relative;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.45) 100%),
+                repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 4px),
+                linear-gradient(135deg, #ba8246 0%, #a46d33 50%, #8c5722 100%);
+            border: 14px solid #5a3714;
+            border-image: linear-gradient(to bottom, #72471c, #44270b, #2b1705) 1;
+            border-radius: 12px;
+            box-shadow: 
+                0 25px 60px rgba(0,0,0,0.8),
+                inset 0 0 80px rgba(0,0,0,0.6),
+                inset 0 0 15px rgba(0,0,0,0.8);
+            padding: 60px 40px 80px 40px;
+            min-height: 700px;
+            overflow: hidden;
+        }
+
+        /* Decorative Fairy Lights Strung Across the Corkboard (Top & Swooping) */
+        .fairy-lights-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .fairy-wire-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .bulb-glow {
+            animation: bulbPulse 2.8s ease-in-out infinite alternate;
+            transform-origin: center;
+        }
+
+        .bulb-glow:nth-child(even) {
+            animation-duration: 2.2s;
+            animation-delay: -1.1s;
+        }
+
+        .bulb-glow:nth-child(3n) {
+            animation-duration: 3.4s;
+            animation-delay: -0.7s;
+        }
+
+        @keyframes bulbPulse {
+            0% {
+                opacity: 0.72;
+                filter: drop-shadow(0 0 6px rgba(255, 200, 70, 0.8)) drop-shadow(0 0 16px rgba(254, 171, 69, 0.4));
+            }
+            100% {
+                opacity: 1;
+                filter: drop-shadow(0 0 14px rgba(255, 235, 130, 1)) drop-shadow(0 0 32px rgba(254, 171, 69, 0.85));
+            }
+        }
+
+        /* ========================================================
+           POLAROID PINBOARD GRID & CARDS
+        ======================================================== */
+        .pinboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 40px 30px;
+            position: relative;
+            z-index: 5;
+            margin-top: 25px;
+        }
+
+        /* Polaroid Photo Card */
+        .polaroid-card {
+            background: #ffffff;
+            border-radius: 4px;
+            padding: 14px 14px 22px 14px;
+            box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.45),
+                0 4px 10px rgba(0, 0, 0, 0.25);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, z-index 0s;
+            display: flex;
+            flex-direction: column;
+            user-select: none;
+        }
+
+        /* Alternating Natural Pinboard Tilts */
+        .polaroid-card:nth-child(6n+1) { transform: rotate(-3.5deg); }
+        .polaroid-card:nth-child(6n+2) { transform: rotate(2.8deg); }
+        .polaroid-card:nth-child(6n+3) { transform: rotate(-2deg); }
+        .polaroid-card:nth-child(6n+4) { transform: rotate(4.2deg); }
+        .polaroid-card:nth-child(6n+5) { transform: rotate(-4deg); }
+        .polaroid-card:nth-child(6n+6) { transform: rotate(2deg); }
+
+        .polaroid-card:hover {
+            transform: scale(1.08) rotate(0deg) translateY(-10px) !important;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.65),
+                0 0 25px rgba(254, 171, 69, 0.35);
+            z-index: 50;
+        }
+
+        /* 3D Push Pin on Top */
+        .push-pin {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            z-index: 20;
+            box-shadow: 0 6px 8px rgba(0,0,0,0.5), inset 0 -2px 4px rgba(0,0,0,0.4);
+        }
+
+        .push-pin::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 3px;
+            width: 5px;
+            height: 5px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 50%;
+        }
+
+        /* Varied Push Pin Colors */
+        .pin-red { background: radial-gradient(circle at 35% 35%, #ff5252, #b71c1c); }
+        .pin-gold { background: radial-gradient(circle at 35% 35%, #ffd54f, #ff8f00); }
+        .pin-blue { background: radial-gradient(circle at 35% 35%, #4fc3f7, #0277bd); }
+        .pin-green { background: radial-gradient(circle at 35% 35%, #81c784, #2e7d32); }
+        .pin-silver { background: radial-gradient(circle at 35% 35%, #e0e0e0, #757575); }
+
+        /* Polaroid Photo Image Wrap */
+        .polaroid-img-wrap {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            background: #1a1a1a;
+            position: relative;
+            border-radius: 2px;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.3);
+        }
+
+        .polaroid-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .polaroid-card:hover .polaroid-img-wrap img {
+            transform: scale(1.06);
+        }
+
+        .polaroid-zoom-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .polaroid-card:hover .polaroid-zoom-overlay {
+            opacity: 1;
+        }
+
+        /* Polaroid Caption Footer */
+        .polaroid-caption {
+            padding-top: 14px;
+            text-align: center;
+        }
+
+        .polaroid-title {
+            font-family: var(--font-hand);
+            font-size: 1.45rem;
+            color: #222;
+            line-height: 1.1;
+            font-weight: 700;
+        }
+
+        .polaroid-category-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #E65100;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-top: 4px;
+            display: block;
+        }
+
+        /* ========================================================
+           PINNED MEMO & STICKY NOTES
+        ======================================================== */
+        .sticky-note {
+            background: #fff9c4;
+            padding: 24px 20px;
+            border-radius: 2px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+            position: relative;
+            color: #333;
+            font-family: var(--font-hand);
+            font-size: 1.4rem;
+            line-height: 1.35;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            user-select: none;
+            transition: transform 0.3s ease;
+        }
+
+        .sticky-note:hover {
+            transform: scale(1.05) rotate(0deg) !important;
+            z-index: 40;
+        }
+
+        .sticky-note-kraft {
+            background: #f5e0b7;
+            color: #442a0b;
+        }
+
+        .sticky-note-pink {
+            background: #ffcdd2;
+            color: #4a151b;
+        }
+
+        .tape-strip {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.55);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+            backdrop-filter: blur(1px);
+        }
+
+        /* ========================================================
+           LIGHTBOX MODAL
+        ======================================================== */
+        .lightbox-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(15px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .lightbox-container {
+            max-width: 900px;
+            width: 100%;
+            background: #181818;
+            border: 2px solid #FEAB45;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 35px rgba(254,171,69,0.3);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+            z-index: 20;
+            transition: color 0.2s;
+        }
+
+        .lightbox-close:hover {
+            color: var(--primary-color);
+        }
+
+        .lightbox-img-wrap {
+            width: 100%;
+            max-height: 65vh;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .lightbox-img-wrap img {
+            max-width: 100%;
+            max-height: 65vh;
+            object-fit: contain;
+            display: block;
+        }
+
+        .lightbox-footer {
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #1c1c1c;
+            border-top: 1px solid #2a2a2a;
+        }
+
+        .lightbox-info h3 {
+            margin: 0 0 4px 0;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            font-family: var(--font-logo);
+        }
+
+        .lightbox-info p {
+            margin: 0;
+            font-size: 0.88rem;
+            color: #aaa;
+        }
+
+        /* ========================================================
+           MOBILE RESPONSIVENESS
+        ======================================================== */
+        @media (max-width: 768px) {
+            .gallery-nav {
+                padding: 12px 4%;
+            }
+            .gallery-nav .logo-group .logo-title {
+                font-size: 1.3rem;
+            }
+            .gallery-nav .logo-group img {
+                height: 38px;
+            }
+            .btn-gallery-action {
+                padding: 8px 14px;
+                font-size: 0.78rem;
+            }
+            .gallery-header h1 {
+                font-size: 2.1rem;
+            }
+            .gallery-header p {
+                font-size: 0.9rem;
+            }
+            .corkboard-frame {
+                padding: 45px 15px 50px 15px;
+                border-width: 8px;
+                border-radius: 8px;
+            }
+            .pinboard-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 20px 12px;
+            }
+            .polaroid-card {
+                padding: 10px 10px 16px 10px;
+            }
+            .polaroid-title {
+                font-size: 1.15rem;
+            }
+            .polaroid-category-tag {
+                font-size: 0.62rem;
+            }
+            .sticky-note {
+                font-size: 1.1rem;
+                padding: 16px 12px;
+            }
+            .lightbox-footer {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+            .lightbox-footer .btn-book {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sticky Navigation -->
+    <nav class="gallery-nav">
+        <a href="index.html" class="logo-group">
+            <img src="logo.png" alt="Snapilla Studio">
+            <span class="logo-title">Snapilla</span>
+        </a>
+        <div class="gallery-nav-actions">
+            <a href="index.html" class="btn-gallery-action btn-home">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="index.html#booking" class="btn-gallery-action btn-book">
+                <i class="fas fa-calendar-alt"></i> Book Shoot
+            </a>
+        </div>
+    </nav>
+
+    <!-- Header & Category Switcher -->
+    <header class="gallery-header">
+        <h1>📸 Studio Memories & Gallery Wall</h1>
+        <p>Step inside our visual pinboard. Hand-selected moments, cinematic portraits, baby smiles, and grand celebrations captured at Snapilla Studio.</p>
+
+        <!-- Category Filter Bar -->
+        <div class="filter-bar" id="galleryFilterBar">
+            <button class="filter-btn active" data-filter="all"><i class="fas fa-th-large"></i> All Memories</button>
+            <button class="filter-btn" data-filter="wedding"><i class="fas fa-ring"></i> Weddings</button>
+            <button class="filter-btn" data-filter="baby"><i class="fas fa-baby"></i> Baby Shoots</button>
+            <button class="filter-btn" data-filter="product"><i class="fas fa-shopping-bag"></i> Products</button>
+            <button class="filter-btn" data-filter="modeling"><i class="fas fa-tshirt"></i> Modeling</button>
+            <button class="filter-btn" data-filter="portrait"><i class="fas fa-user-tie"></i> Portraits</button>
+            <button class="filter-btn" data-filter="family"><i class="fas fa-users"></i> Family</button>
+            <button class="filter-btn" data-filter="birthday"><i class="fas fa-birthday-cake"></i> Birthdays</button>
+            <button class="filter-btn" data-filter="couple"><i class="fas fa-heart"></i> Couple</button>
+        </div>
+    </header>
+
+    <!-- Main Corkboard Wall Container (Matching Image 2) -->
+    <main class="corkboard-container">
+        <div class="corkboard-frame">
+            
+            <!-- Glowing Fairy String Lights Garland across the board (Image 2 style) -->
+            <div class="fairy-lights-layer" aria-hidden="true">
+                <svg class="fairy-wire-svg" viewBox="0 0 1200 800" preserveAspectRatio="none">
+                    <!-- Top Garland Wire -->
+                    <path d="M -10,30 Q 180,95 380,35 T 780,45 T 1210,30" fill="none" stroke="#2c2214" stroke-width="3" />
+                    <!-- Diagonal Swag Wire traversing the board -->
+                    <path d="M -10,180 Q 220,290 480,240 T 920,480 T 1210,720" fill="none" stroke="#22190d" stroke-width="2.5" />
+                    
+                    <!-- Top Garland Bulbs -->
+                    <g class="bulb-glow"><circle cx="80" cy="52" r="7" fill="#FFF275" /><rect x="78" y="43" width="4" height="4" fill="#333" /></g>
+                    <g class="bulb-glow"><circle cx="210" cy="85" r="7.5" fill="#FFE57F" /><rect x="208" y="76" width="4" height="4" fill="#333" /></g>
+                    <g class="bulb-glow"><circle cx="340" cy="50" r="7" fill="#FFF9C4" /><rect x="338" y="41" width="4" height="4" fill="#333" /></g>
+                    <g class="bulb-glow"><circle cx="500" cy="40" r="8" fill="#FFE082" /><rect x="498" y="31" width="4" height="4" fill="#333" /></g>
+                    <g class="bulb-glow"><circle cx="680" cy="48" r="7" fill="#FFF275" /><rect x="678" y="39" width="4" height="4" fill="#333" /></g>
+                    <g class="bulb-glow"><circle cx="880" cy="42" r="7.5" fill="#FFE57F" /><rect x="878" y="33" width="4" height="4" fill="#333" /></g>
+                    <g class="bulb-glow"><circle cx="1060" cy="36" r="7" fill="#FFF9C4" /><rect x="1058" y="27" width="4" height="4" fill="#333" /></g>
+
+                    <!-- Swooping Swag Bulbs (Across middle & bottom matching Image 2) -->
+                    <g class="bulb-glow"><circle cx="60" cy="210" r="7.5" fill="#FFE57F" /></g>
+                    <g class="bulb-glow"><circle cx="180" cy="275" r="8" fill="#FFF275" /></g>
+                    <g class="bulb-glow"><circle cx="320" cy="275" r="7" fill="#FFF9C4" /></g>
+                    <g class="bulb-glow"><circle cx="470" cy="242" r="7.5" fill="#FFE082" /></g>
+                    <g class="bulb-glow"><circle cx="620" cy="310" r="7" fill="#FFF275" /></g>
+                    <g class="bulb-glow"><circle cx="780" cy="400" r="8" fill="#FFE57F" /></g>
+                    <g class="bulb-glow"><circle cx="940" cy="505" r="7.5" fill="#FFF9C4" /></g>
+                    <g class="bulb-glow"><circle cx="1090" cy="635" r="7" fill="#FFE082" /></g>
+                </svg>
+            </div>
+
+            <!-- Pinned Polaroid Grid (Populated dynamically & with rich defaults) -->
+            <div class="pinboard-grid" id="pinboardGrid">
+                <!-- Injected via JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Interactive Lightbox Modal -->
+    <div class="lightbox-modal" id="lightboxModal">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <div class="lightbox-container">
+            <div class="lightbox-img-wrap">
+                <img src="" alt="Enlarged Photo" id="lightboxImg">
+            </div>
+            <div class="lightbox-footer">
+                <div class="lightbox-info">
+                    <h3 id="lightboxTitle">Photo Title</h3>
+                    <p id="lightboxCategory">Category</p>
+                </div>
+                <a href="index.html#booking" class="btn-gallery-action btn-book">
+                    <i class="fas fa-calendar-check"></i> Book This Shoot Experience
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK Scripts for Live Firestore Content Synchronization -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js?v=3.2"></script>
+
+    <script>
+        // Gallery Wall Master Dataset
+        const DEFAULT_GALLERY_PHOTOS = [
+            {
+                id: 'p1',
+                title: 'Grand Wedding Romance',
+                category: 'wedding',
+                categoryLabel: 'Wedding Shoot',
+                image: 'wedding.png',
+                caption: 'Forever begins in a single frame ✨'
+            },
+            {
+                id: 'p2',
+                title: 'Cozy Baby Dreams',
+                category: 'baby',
+                categoryLabel: 'Baby Shoot',
+                image: 'baby.png',
+                caption: 'Tiny hands, big dreams 👶'
+            },
+            {
+                id: 'p3',
+                title: 'High-Fashion Editorial',
+                category: 'modeling',
+                categoryLabel: 'Modeling Shoot',
+                image: 'modeling.png',
+                caption: 'Confidence looks good on camera 👗'
+            },
+            {
+                id: 'p4',
+                title: 'Commercial Product Visual',
+                category: 'product',
+                categoryLabel: 'Product Shoot',
+                image: 'product.png',
+                caption: 'Make your product unforgettable 🛍️'
+            },
+            {
+                id: 'p5',
+                title: 'Signature Studio Portrait',
+                category: 'portrait',
+                categoryLabel: 'Portraits',
+                image: 'p1.png',
+                caption: 'Mood, lighting & character 👔'
+            },
+            {
+                id: 'p6',
+                title: 'Timeless Family Bonds',
+                category: 'family',
+                categoryLabel: 'Family Shoot',
+                image: 'p2.png',
+                caption: 'Generations together in love 👨‍👩‍👧'
+            },
+            {
+                id: 'p7',
+                title: 'First Birthday Celebration',
+                category: 'birthday',
+                categoryLabel: 'Birthday Shoot',
+                image: 'p3.png',
+                caption: 'Cake smashes & joyful laughter 🎂'
+            },
+            {
+                id: 'p8',
+                title: 'Pre-Wedding Sunset Romance',
+                category: 'wedding',
+                categoryLabel: 'Wedding Shoot',
+                image: 'p4.png',
+                caption: 'Two hearts, one story ❤️'
+            },
+            {
+                id: 'p9',
+                title: 'Creative Studio Concept',
+                category: 'couple',
+                categoryLabel: 'Couple Shoot',
+                image: 'wedding.png',
+                caption: 'Artistic couple portraits ✨'
+            },
+            {
+                id: 'p10',
+                title: 'Little Milestone Smiles',
+                category: 'baby',
+                categoryLabel: 'Baby Shoot',
+                image: 'baby.png',
+                caption: 'Pure innocence captured 🍼'
+            },
+            {
+                id: 'p11',
+                title: 'Runway Casting Portfolio',
+                category: 'modeling',
+                categoryLabel: 'Modeling Shoot',
+                image: 'modeling.png',
+                caption: 'Editorial mood lighting 🌟'
+            },
+            {
+                id: 'p12',
+                title: 'Brand Amazon Showcase',
+                category: 'product',
+                categoryLabel: 'Product Shoot',
+                image: 'product.png',
+                caption: 'Crisp commercial brilliance 📸'
+            }
+        ];
+
+        // Pinned Sticky Notes Quotes
+        const STICKY_NOTES = [
+            {
+                text: "✨ Every picture is a poem without words. Welcome to Snapilla Studio!",
+                author: "Snapilla Vision",
+                colorClass: "sticky-note-kraft",
+                pin: "pin-gold",
+                insertIndex: 3
+            },
+            {
+                text: "📍 Studio Sessions by Appointment only. Let's create magic!",
+                author: "Ahmedabad, Gujarat",
+                colorClass: "sticky-note",
+                pin: "pin-red",
+                insertIndex: 7
+            },
+            {
+                text: "👶 Children grow in days, memories last a lifetime.",
+                author: "Baby Shoot Care",
+                colorClass: "sticky-note-pink",
+                pin: "pin-blue",
+                insertIndex: 10
+            }
+        ];
+
+        const PIN_COLORS = ['pin-red', 'pin-gold', 'pin-blue', 'pin-green', 'pin-silver'];
+
+        let currentPhotos = [...DEFAULT_GALLERY_PHOTOS];
+        let currentFilter = 'all';
+
+        // Initialize Gallery on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLivePhotos();
+            checkUrlCategory();
+            setupFilters();
+            setupLightbox();
+        });
+
+        // Load Live Photos from Firestore or Local Cache
+        function loadLivePhotos() {
+            try {
+                const stored = localStorage.getItem('snapilla_local_content');
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    if (data.portfolio && Array.isArray(data.portfolio) && data.portfolio.length > 0) {
+                        currentPhotos = data.portfolio.map((item, idx) => ({
+                            id: 'live_' + idx,
+                            title: item.title || `Snapilla Memory ${idx + 1}`,
+                            category: (item.category || item.title || '').toLowerCase().includes('wed') ? 'wedding' :
+                                      (item.category || item.title || '').toLowerCase().includes('baby') ? 'baby' :
+                                      (item.category || item.title || '').toLowerCase().includes('prod') ? 'product' :
+                                      (item.category || item.title || '').toLowerCase().includes('model') ? 'modeling' :
+                                      (item.category || item.title || '').toLowerCase().includes('port') ? 'portrait' :
+                                      (item.category || item.title || '').toLowerCase().includes('fam') ? 'family' :
+                                      (item.category || item.title || '').toLowerCase().includes('birth') ? 'birthday' : 'wedding',
+                            categoryLabel: item.category || 'Studio Shoot',
+                            image: item.image || 'p1.png',
+                            caption: item.alt || 'Captured at Snapilla Studio ✨'
+                        }));
+                    }
+                }
+            } catch (e) {
+                console.log('Using default gallery set');
+            }
+            renderPinboard();
+        }
+
+        // Check URL Query Param or Hash (e.g. gallery.html?category=wedding)
+        function checkUrlCategory() {
+            const params = new URLSearchParams(window.location.search);
+            const rawCat = (params.get('category') || window.location.hash.replace('#', '') || '').toLowerCase().trim();
+            if (!rawCat) return;
+
+            let targetFilter = 'all';
+            if (rawCat.includes('wed')) targetFilter = 'wedding';
+            else if (rawCat.includes('bab')) targetFilter = 'baby';
+            else if (rawCat.includes('prod')) targetFilter = 'product';
+            else if (rawCat.includes('model')) targetFilter = 'modeling';
+            else if (rawCat.includes('port')) targetFilter = 'portrait';
+            else if (rawCat.includes('fam')) targetFilter = 'family';
+            else if (rawCat.includes('birth')) targetFilter = 'birthday';
+            else if (rawCat.includes('coupl')) targetFilter = 'couple';
+
+            const matchBtn = document.querySelector(`.filter-btn[data-filter="${targetFilter}"]`);
+            if (matchBtn) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                matchBtn.classList.add('active');
+                currentFilter = targetFilter;
+            }
+        }
+
+        // Render Pinboard Wall
+        function renderPinboard() {
+            const grid = document.getElementById('pinboardGrid');
+            grid.innerHTML = '';
+
+            const filtered = currentFilter === 'all' 
+                ? currentPhotos 
+                : currentPhotos.filter(p => p.category.includes(currentFilter) || currentFilter.includes(p.category));
+
+            let itemCounter = 0;
+
+            filtered.forEach((photo, idx) => {
+                // Check if we should insert a sticky note
+                const note = STICKY_NOTES.find(n => n.insertIndex === itemCounter);
+                if (note && currentFilter === 'all') {
+                    const noteEl = document.createElement('div');
+                    noteEl.className = `sticky-note ${note.colorClass}`;
+                    noteEl.style.transform = `rotate(${((itemCounter % 3) - 1) * 3.5}deg)`;
+                    noteEl.innerHTML = `
+                        <div class="push-pin ${note.pin}"></div>
+                        <p>${note.text}</p>
+                        <span style="font-size: 0.9rem; color: #888; margin-top: 8px;">— ${note.author}</span>
+                    `;
+                    grid.appendChild(noteEl);
+                }
+
+                const pinColor = PIN_COLORS[idx % PIN_COLORS.length];
+                const card = document.createElement('div');
+                card.className = 'polaroid-card';
+                card.dataset.id = photo.id;
+                card.innerHTML = `
+                    <div class="push-pin ${pinColor}"></div>
+                    <div class="polaroid-img-wrap">
+                        <img src="${photo.image}" alt="${photo.title}" loading="lazy">
+                        <div class="polaroid-zoom-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    <div class="polaroid-caption">
+                        <div class="polaroid-title">${photo.title}</div>
+                        <span class="polaroid-category-tag">${photo.categoryLabel}</span>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => {
+                    openLightbox(photo);
+                });
+
+                grid.appendChild(card);
+                itemCounter++;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: #fff;">
+                        <p style="font-size: 1.5rem; font-family: var(--font-logo); color: var(--primary-color);">No photos found in this category yet.</p>
+                        <p style="color: #ddd;">Try switching categories above or viewing all memories.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Filter Bar Event Listeners
+        function setupFilters() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderPinboard();
+                });
+            });
+        }
+
+        // Lightbox Handler
+        function setupLightbox() {
+            const modal = document.getElementById('lightboxModal');
+            const closeBtn = document.getElementById('lightboxClose');
+
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') modal.classList.remove('active');
+            });
+        }
+
+        function openLightbox(photo) {
+            const modal = document.getElementById('lightboxModal');
+            document.getElementById('lightboxImg').src = photo.image;
+            document.getElementById('lightboxTitle').textContent = photo.title;
+            document.getElementById('lightboxCategory').textContent = `${photo.categoryLabel} • ${photo.caption}`;
+            modal.classList.add('active');
+        }
+    </script>
+</body>
+</html>
