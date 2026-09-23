@@ -309,121 +309,95 @@
             box-shadow: 0 0 8px #FEAB45;
         }
 
-        /* 2. Professional Viewfinder HUD Pill */
-        .pro-hud-badge {
+        /* 2. Photography Story Category Floating Badges */
+        .hero-cat-floating-badge {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1.5px solid rgba(254, 171, 69, 0.65);
+            border-radius: 50px;
+            padding: 9px 18px;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15), 0 0 20px rgba(254, 171, 69, 0.18);
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: rgba(20, 20, 20, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 10px 18px;
-            border-radius: 40px;
-            border: 1px solid rgba(254, 171, 69, 0.5);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.22), 0 0 20px rgba(254, 171, 69, 0.15);
-            color: #FFFFFF;
             cursor: pointer;
+            text-decoration: none;
+            transition: all 0.35s ease;
         }
 
-        .pro-hud-badge .hud-icon {
-            font-size: 1.1rem;
-            color: #FEAB45;
+        .hero-cat-floating-badge:hover {
+            transform: scale(1.08) translateY(-4px);
+            border-color: #FEAB45;
+            box-shadow: 0 20px 45px rgba(254, 171, 69, 0.35);
         }
 
-        .pro-hud-badge .hud-specs {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.76rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: #E0E0E0;
-            text-transform: uppercase;
-        }
-
-        .pro-hud-badge .hud-tag {
-            background: rgba(254, 171, 69, 0.22);
-            color: #FEAB45;
-            padding: 2px 7px;
-            border-radius: 6px;
-            font-size: 0.65rem;
-            font-weight: 800;
-            border: 0.5px solid rgba(254, 171, 69, 0.5);
-        }
-
-        /* 3. Golden Optical Lens Ring Emblem */
-        .optical-lens-emblem {
-            width: 76px;
-            height: 76px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, #2a2a2a 0%, #111111 80%);
-            border: 2px solid #E5C178;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25), 0 0 20px rgba(229, 193, 120, 0.3), inset 0 0 12px rgba(229, 193, 120, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .optical-lens-emblem .lens-aperture-icon {
-            font-size: 1.6rem;
-            color: #FEAB45;
-            filter: drop-shadow(0 0 6px rgba(254, 171, 69, 0.5));
-            transition: transform 0.4s ease;
-        }
-
-        .optical-lens-emblem:hover .lens-aperture-icon {
-            transform: rotate(45deg);
-        }
-
-        .optical-lens-emblem .lens-text-sub {
-            font-size: 0.52rem;
-            font-weight: 800;
-            color: #E5C178;
-            letter-spacing: 1px;
-            margin-top: 2px;
-        }
-
-        /* 4. Sleek Frosted Film Frame */
-        .frosted-film-badge {
-            background: rgba(255, 255, 255, 0.90);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1.5px solid rgba(229, 193, 120, 0.5);
-            border-radius: 16px;
-            padding: 10px 16px;
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14), 0 0 20px rgba(254, 171, 69, 0.12);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-        }
-
-        .frosted-film-badge .film-icon {
+        .hero-cat-floating-badge .cat-icon {
             font-size: 1.3rem;
-            color: #FEAB45;
         }
 
-        .frosted-film-badge .film-meta {
+        .hero-cat-floating-badge .cat-meta {
             display: flex;
             flex-direction: column;
             text-align: left;
         }
 
-        .frosted-film-badge .film-title {
-            font-size: 0.82rem;
+        .hero-cat-floating-badge .cat-title {
+            font-size: 0.84rem;
             font-weight: 800;
             color: #111;
-            letter-spacing: 0.5px;
             font-family: var(--font-body);
+            letter-spacing: 0.4px;
         }
 
-        .frosted-film-badge .film-sub {
-            font-size: 0.68rem;
-            color: #777;
-            font-weight: 600;
+        .hero-cat-floating-badge .cat-sub {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-family: var(--font-logo);
+        }
+
+        /* Hero Content Story Categories Pills Ribbon */
+        .hero-categories-bar {
+            margin: 18px auto 22px auto;
+            max-width: 720px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-categories-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-cat-pill {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(0, 0, 0, 0.12);
+            color: #111;
+            padding: 7px 15px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hero-cat-pill:hover {
+            background: var(--primary-color);
+            color: #000;
+            border-color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(254, 171, 69, 0.35);
         }
 
         /* Floating Optical Shimmer & Bokeh Sparkles */
@@ -2613,65 +2587,79 @@
     <header class="webgl-hero" id="home">
         <div id="webgl-container"></div>
         <div class="hero-overlay">
-            <!-- Floating Ambient Photography Elements (Professional Studio Aesthetic) -->
+            <!-- Floating Photography Story Categories (Interactive & Elegant) -->
             <div class="hero-floating-elements" aria-hidden="true">
-                <!-- 1. Top-Left: Pro Viewfinder HUD -->
+                <!-- 1. Top-Left: Wedding & Pre-Wedding -->
                 <div class="floating-item pos-top-left">
-                    <div class="pro-hud-badge">
-                        <i class="fas fa-camera hud-icon"></i>
-                        <div class="hud-specs">
-                            <span>50mm f/1.2</span>
-                            <span class="hud-tag">4K HDR</span>
+                    <a href="#services" class="hero-cat-floating-badge">
+                        <span class="cat-icon">💍</span>
+                        <div class="cat-meta">
+                            <span class="cat-title">Weddings</span>
+                            <span class="cat-sub">Grand Romance</span>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
-                <!-- 2. Top-Right: Luxury Editorial Photo Card -->
-                <div class="floating-item pos-top-right">
-                    <div class="luxury-photo-card" style="transform: rotate(4deg);">
-                        <div class="photo-img-wrap">
-                            <img src="p1.png" alt="Editorial Portrait">
-                        </div>
-                        <div class="photo-footer">
-                            <span class="photo-label">Portrait</span>
-                            <span class="photo-gold-dot"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3. Bottom-Left: Frosted Film / Lens Badge -->
-                <div class="floating-item pos-bottom-left">
-                    <div class="frosted-film-badge">
-                        <i class="fas fa-film film-icon"></i>
-                        <div class="film-meta">
-                            <span class="film-title">Cinematic 35mm</span>
-                            <span class="film-sub">Master Color Grade</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4. Bottom-Right: Luxury Baby & Milestone Card -->
-                <div class="floating-item pos-bottom-right">
-                    <div class="luxury-photo-card" style="transform: rotate(-4deg);">
-                        <div class="photo-img-wrap">
-                            <img src="baby.png" alt="Baby Milestone">
-                        </div>
-                        <div class="photo-footer">
-                            <span class="photo-label">Studio Pro</span>
-                            <span class="photo-gold-dot"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 5. Optical Lens Emblem (Middle-Left) -->
+                <!-- 2. Middle-Left: Baby Shoots -->
                 <div class="floating-item pos-mid-left">
-                    <div class="optical-lens-emblem">
-                        <i class="fas fa-circle-notch lens-aperture-icon"></i>
-                        <span class="lens-text-sub">F/1.4 PRO</span>
-                    </div>
+                    <a href="#services" class="hero-cat-floating-badge">
+                        <span class="cat-icon">👶</span>
+                        <div class="cat-meta">
+                            <span class="cat-title">Baby Shoots</span>
+                            <span class="cat-sub">Tiny Milestones</span>
+                        </div>
+                    </a>
                 </div>
 
-                <!-- 6. Floating Sparkles and Golden Shimmer Flares -->
+                <!-- 3. Bottom-Left: Product Shoots -->
+                <div class="floating-item pos-bottom-left">
+                    <a href="#services" class="hero-cat-floating-badge">
+                        <span class="cat-icon">🛍️</span>
+                        <div class="cat-meta">
+                            <span class="cat-title">Product Shoots</span>
+                            <span class="cat-sub">Commercial & Ads</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 4. Top-Right: Modeling Card -->
+                <div class="floating-item pos-top-right">
+                    <a href="#services" class="luxury-photo-card" style="transform: rotate(4deg); text-decoration: none;">
+                        <div class="photo-img-wrap">
+                            <img src="p1.png" alt="Modeling Shoot">
+                        </div>
+                        <div class="photo-footer">
+                            <span class="photo-label">Modeling</span>
+                            <span class="photo-gold-dot"></span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 5. Middle-Right: Portrait Sessions -->
+                <div class="floating-item pos-mid-right">
+                    <a href="#services" class="hero-cat-floating-badge">
+                        <span class="cat-icon">👔</span>
+                        <div class="cat-meta">
+                            <span class="cat-title">Portraits</span>
+                            <span class="cat-sub">Studio Lighting</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 6. Bottom-Right: Baby Milestone Card -->
+                <div class="floating-item pos-bottom-right">
+                    <a href="#services" class="luxury-photo-card" style="transform: rotate(-4deg); text-decoration: none;">
+                        <div class="photo-img-wrap">
+                            <img src="baby.png" alt="Baby Shoot">
+                        </div>
+                        <div class="photo-footer">
+                            <span class="photo-label">Baby Shoot</span>
+                            <span class="photo-gold-dot"></span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 7. Floating Golden Sparkles -->
                 <div class="floating-item float-sparkle sp-1">✦</div>
                 <div class="floating-item float-sparkle sp-2">✦</div>
                 <div class="floating-item float-sparkle sp-3">✦</div>
@@ -2689,6 +2677,22 @@
                 <p id="heroSubtitle" class="hero-desc">
                     From the tiniest smiles to the biggest celebrations, Snapilla Studio captures moments that deserve to be remembered. We provide professional <strong>Baby, Product, Wedding, Model, Portrait, Family, Birthday, and Special Occasion Photography</strong> from our dedicated studio.
                 </p>
+
+                <!-- Photography Story Categories Quick Navigation -->
+                <div class="hero-categories-bar">
+                    <div class="hero-categories-list">
+                        <a href="#services" class="hero-cat-pill">👶 Baby Shoots</a>
+                        <a href="#services" class="hero-cat-pill">💍 Weddings</a>
+                        <a href="#services" class="hero-cat-pill">🛍️ Products</a>
+                        <a href="#services" class="hero-cat-pill">👗 Modeling</a>
+                        <a href="#services" class="hero-cat-pill">👔 Portraits</a>
+                        <a href="#services" class="hero-cat-pill">👨‍👩‍👧 Family</a>
+                        <a href="#services" class="hero-cat-pill">🎂 Birthdays</a>
+                        <a href="#services" class="hero-cat-pill">❤️ Couples</a>
+                        <a href="#services" class="hero-cat-pill">🎨 Creative</a>
+                    </div>
+                </div>
+
                 <div class="hero-btns" style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
                     <a href="#booking" class="btn-burn">📅 Book Your Shoot</a>
                     <a href="#portfolio" class="btn-burn" style="background: transparent; border: 2px solid #000; color: #000;">🖼️ View Our Work</a>
