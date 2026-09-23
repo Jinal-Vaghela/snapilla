@@ -249,6 +249,13 @@ function switchTab(tabId) {
     if (tabId === 'tab-bookings') {
         loadBookings();
     }
+
+    // Auto-close sidebar on mobile
+    if (window.innerWidth <= 900 && sidebar) {
+        sidebar.classList.remove('open');
+        const backdrop = document.getElementById('sidebarBackdrop');
+        if (backdrop) backdrop.classList.remove('active');
+    }
 }
 
 sidebarLinks.forEach(link => {
@@ -1652,12 +1659,24 @@ function showToast(msg, type = 'info') {
     }, 3500);
 }
 
-// Mobile sidebar toggle
+// Mobile sidebar toggle & backdrop
 const btnToggleSidebar = document.getElementById('btnToggleSidebar');
 const sidebar = document.getElementById('sidebar');
+const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
 if (btnToggleSidebar && sidebar) {
     btnToggleSidebar.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
+        const isOpen = sidebar.classList.toggle('open');
+        if (sidebarBackdrop) {
+            sidebarBackdrop.classList.toggle('active', isOpen);
+        }
+    });
+}
+
+if (sidebarBackdrop && sidebar) {
+    sidebarBackdrop.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarBackdrop.classList.remove('active');
     });
 }
 

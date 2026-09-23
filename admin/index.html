@@ -59,6 +59,9 @@
     ======================================================== -->
     <div class="admin-app" id="adminApp" style="display: none;">
         
+        <!-- Mobile Sidebar Backdrop -->
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+        
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
@@ -173,14 +176,14 @@
             <!-- Topbar -->
             <header class="topbar">
                 <div class="topbar-left">
-                    <button class="btn btn-secondary btn-icon" id="btnToggleSidebar" style="display: none;">
+                    <button class="btn btn-secondary btn-icon" id="btnToggleSidebar" aria-label="Toggle Navigation">
                         <i class="fas fa-bars"></i>
                     </button>
                     <h1 class="topbar-title" id="tabTitle">Overview & Quick Actions</h1>
                 </div>
                 <div class="topbar-right">
                     <button id="btnSeedData" class="btn btn-secondary btn-sm" title="Seed current website content into Firestore">
-                        <i class="fas fa-cloud-upload-alt"></i> Seed Default Content
+                        <i class="fas fa-cloud-upload-alt"></i> <span class="seed-text">Seed Content</span>
                     </button>
                     <div id="userBadge" style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
                         <i class="fas fa-user-circle" style="color: var(--primary); font-size: 1.2rem;"></i>

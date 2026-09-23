@@ -616,7 +616,7 @@ tr:hover td {
 }
 
 /* ========================================================
-   ANIMATIONS & RESPONSIVE
+   ANIMATIONS & RESPONSIVE DESIGN
 ======================================================== */
 @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.98); }
@@ -628,17 +628,245 @@ tr:hover td {
     to { opacity: 1; transform: translateX(0); }
 }
 
+/* Sidebar Backdrop */
+.sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 95;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-backdrop.active {
+    display: block;
+    opacity: 1;
+}
+
+#btnToggleSidebar {
+    display: none;
+}
+
+/* Tablet & Mobile Layout (< 900px) */
 @media (max-width: 900px) {
+    #btnToggleSidebar {
+        display: inline-flex !important;
+    }
     .sidebar {
         transform: translateX(-100%);
+        box-shadow: 0 0 35px rgba(0, 0, 0, 0.85);
+        z-index: 100;
+        width: 270px;
     }
     .sidebar.open {
         transform: translateX(0);
     }
     .main-wrapper {
         margin-left: 0;
+        width: 100%;
     }
-    .grid-2 {
+    .topbar {
+        padding: 0 16px;
+        height: 64px;
+    }
+    .topbar-title {
+        font-size: 1.05rem;
+        max-width: 220px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .content-area {
+        padding: 20px 16px;
+    }
+    .grid-2, .grid-3 {
         grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+}
+
+/* Mobile Phones (< 600px) */
+@media (max-width: 600px) {
+    .topbar {
+        padding: 0 12px;
+        height: 56px;
+        gap: 8px;
+    }
+    .topbar-left {
+        gap: 8px;
+        flex: 1;
+        min-width: 0;
+    }
+    .topbar-title {
+        font-size: 0.9rem;
+        font-weight: 700;
+        max-width: 135px;
+    }
+    .topbar-right {
+        gap: 6px;
+    }
+    #btnSeedData {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+    }
+    #btnSeedData .seed-text {
+        display: none;
+    }
+    #userBadge span {
+        display: none;
+    }
+    #userBadge i {
+        font-size: 1.35rem;
+    }
+
+    /* Content Area & Cards */
+    .content-area {
+        padding: 14px 10px;
+    }
+    .card {
+        padding: 16px 14px;
+        border-radius: 14px;
+        margin-bottom: 14px;
+    }
+    .card-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    .card-header .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .card-title {
+        font-size: 1.02rem;
+    }
+
+    /* Overview Welcome Card */
+    #tab-overview .card:first-child h2 {
+        font-size: 1.25rem !important;
+    }
+    #tab-overview .card:first-child p {
+        font-size: 0.82rem !important;
+        line-height: 1.45 !important;
+    }
+
+    /* 2x2 Stat Cards Grid */
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        margin-bottom: 16px !important;
+    }
+    .grid-4 .card {
+        padding: 14px 10px !important;
+        border-radius: 12px !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .grid-4 .card i {
+        font-size: 1.4rem !important;
+        margin-bottom: 6px !important;
+    }
+    .grid-4 .card h3 {
+        font-size: 1.45rem !important;
+        margin-bottom: 2px !important;
+    }
+    .grid-4 .card p {
+        font-size: 0.74rem !important;
+        text-align: center;
+    }
+
+    /* Item Cards (Services, Portfolio, Pricing, FAQs) */
+    .item-card {
+        padding: 14px;
+        border-radius: 12px;
+    }
+    .item-card-media {
+        height: 120px;
+    }
+    .item-card-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+    .item-card-actions {
+        justify-content: flex-end;
+    }
+    .item-card-actions .btn {
+        padding: 6px 10px;
+        font-size: 0.78rem;
+    }
+
+    /* Forms, Inputs & Action Buttons */
+    .form-group {
+        margin-bottom: 14px;
+    }
+    label {
+        font-size: 0.78rem;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="url"],
+    select,
+    textarea {
+        padding: 10px 12px;
+        font-size: 0.88rem;
+        border-radius: 10px;
+    }
+    .btn {
+        padding: 10px 16px;
+        font-size: 0.84rem;
+    }
+    
+    /* Modals on Mobile */
+    .modal {
+        max-width: 95vw;
+        max-height: 85vh;
+        border-radius: 16px;
+        margin: 10px;
+    }
+    .modal-header {
+        padding: 14px 16px;
+    }
+    .modal-body {
+        padding: 16px 14px;
+    }
+    .modal-footer {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .modal-footer .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Toast Notifications */
+    .toast-container {
+        bottom: 15px;
+        right: 15px;
+        left: 15px;
+    }
+    .toast {
+        min-width: unset;
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 0.84rem;
+    }
+
+    /* Table Responsiveness */
+    th, td {
+        padding: 10px 12px;
+        font-size: 0.78rem;
     }
 }
