@@ -880,36 +880,16 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
 
-        // Prepare Show More photos pool
-        let morePhotosPool = [];
-        if (matchingLive.length > 0) {
-            morePhotosPool = matchingLive.map(item => ({
-                image: item.image,
-                title: item.title || meta.title,
-                desc: item.alt || meta.subtitle
-            }));
-        }
-        if (meta.morePhotos && meta.morePhotos.length > 0) {
-            meta.morePhotos.forEach(mp => {
-                if (!morePhotosPool.some(p => p.image === mp.image)) {
-                    morePhotosPool.push(mp);
-                }
-            });
-        }
-        if (morePhotosPool.length === 0) {
-            morePhotosPool = [
-                { image: meta.defaultImg || 'p1.png', title: meta.title, desc: meta.subtitle }
-            ];
-        }
-
-        // Configure Show More Button & Grid
+        // Configure Show More Button for Direct Gallery Page Jump
         if (moreContainer && showMoreBtn) {
             moreContainer.style.display = 'block';
-            if (moreGrid) moreGrid.style.display = 'none';
+            const galleryUrl = `gallery.html?category=${encodeURIComponent(normalized)}`;
+            showMoreBtn.setAttribute('href', galleryUrl);
             showMoreBtn.innerHTML = `<i class="fas fa-images"></i> <span>Show More ${meta.title} Photos</span>`;
 
-            showMoreBtn.onclick = () => {
-                window.location.href = `gallery.html?category=${encodeURIComponent(normalized)}`;
+            showMoreBtn.onclick = (e) => {
+                e.preventDefault();
+                window.location.href = galleryUrl;
             };
         }
 
