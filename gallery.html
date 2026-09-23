@@ -50,22 +50,68 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
         }
 
-        .gallery-nav .logo-group {
+        /* Exact Logo Styling Matching Main Page */
+        .logo-container {
             display: flex;
             align-items: center;
             gap: 12px;
+            cursor: pointer;
+            flex-shrink: 0;
             text-decoration: none;
         }
 
-        .gallery-nav .logo-group img {
-            height: 46px;
+        .logo-img {
+            height: 55px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 3px 8px rgba(0,0,0,0.1));
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .gallery-nav .logo-group .logo-title {
+        .logo-container:hover .logo-img {
+            transform: scale(1.06) rotate(-2deg);
+        }
+
+        .logo-text-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0px;
+            flex-shrink: 0;
+        }
+
+        .logo-main {
             font-family: var(--font-logo);
-            font-size: 1.6rem;
-            color: var(--primary-color);
+            color: var(--primary-color) !important;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 800;
+            font-size: 2.2rem;
             line-height: 1;
+            margin: 0;
+            -webkit-text-stroke: 1.8px #000;
+            paint-order: stroke fill;
+            text-shadow: 
+                -1.5px -1.5px 0 #000,
+                 1.5px -1.5px 0 #000,
+                -1.5px  1.5px 0 #000,
+                 1.5px  1.5px 0 #000,
+                 0px    1.8px 0 #000,
+                 0px   -1.8px 0 #000,
+                 1.8px  0px   0 #000,
+                -1.8px  0px   0 #000;
+            filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 2.5px #fff);
+        }
+
+        .logo-sub {
+            font-family: var(--font-body);
+            color: #000 !important;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 5px;
+            text-align: center;
+            margin-top: 2px;
         }
 
         .gallery-nav-actions {
@@ -583,11 +629,16 @@
             .gallery-nav {
                 padding: 12px 4%;
             }
-            .gallery-nav .logo-group .logo-title {
-                font-size: 1.3rem;
+            .logo-img {
+                height: 40px;
             }
-            .gallery-nav .logo-group img {
-                height: 38px;
+            .logo-main {
+                font-size: 1.5rem;
+                -webkit-text-stroke: 1.2px #000;
+            }
+            .logo-sub {
+                font-size: 0.55rem;
+                letter-spacing: 3px;
             }
             .btn-gallery-action {
                 padding: 8px 14px;
@@ -636,9 +687,12 @@
 
     <!-- Sticky Navigation -->
     <nav class="gallery-nav">
-        <a href="index.html" class="logo-group">
-            <img src="logo.png" alt="Snapilla Studio">
-            <span class="logo-title">Snapilla</span>
+        <a href="index.html" class="logo-container">
+            <img src="logo.png" alt="Snapilla Studio" class="logo-img">
+            <div class="logo-text-group">
+                <span class="logo-main">Snapilla</span>
+                <span class="logo-sub">Studio</span>
+            </div>
         </a>
         <div class="gallery-nav-actions">
             <a href="index.html" class="btn-gallery-action btn-home">
