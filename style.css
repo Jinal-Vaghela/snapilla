@@ -886,83 +886,14 @@ footer {
 }
 
 /* ========================================================
-   GOLDEN LUXURY PHOTOGRAPHY & OPTICAL LINE-ART AESTHETICS
+   CLEAN MINIMALIST MODERN STYLING
 ======================================================== */
 
-/* Section Photography Watermarks */
-.section-photo-wrap,
-.section-botanical-wrap {
-    position: relative;
-    overflow: hidden;
-}
-
 .photo-watermark,
-.botanical-watermark {
-    position: absolute;
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.18;
-    background-image: url('assets/photo-corner-gold.svg');
-    background-repeat: no-repeat;
-    background-size: contain;
-    filter: drop-shadow(0 0 8px rgba(212, 163, 89, 0.25));
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.photo-watermark.top-left,
-.botanical-watermark.top-left {
-    top: -30px;
-    left: -30px;
-    width: 290px;
-    height: 290px;
-}
-
-.photo-watermark.top-right,
-.botanical-watermark.top-right {
-    top: -30px;
-    right: -30px;
-    width: 290px;
-    height: 290px;
-    transform: scaleX(-1);
-}
-
-.photo-watermark.bottom-left,
-.botanical-watermark.bottom-left {
-    bottom: -30px;
-    left: -30px;
-    width: 270px;
-    height: 270px;
-    transform: scaleY(-1);
-}
-
-.photo-watermark.bottom-right,
-.botanical-watermark.bottom-right {
-    bottom: -30px;
-    right: -30px;
-    width: 290px;
-    height: 290px;
-    transform: scale(-1);
-}
-
-.section-photo-wrap:hover .photo-watermark,
-.section-botanical-wrap:hover .botanical-watermark {
-    opacity: 0.32;
-    transform: scale(1.04);
-}
-
-/* Section Header Photography & Aperture Dividers */
+.botanical-watermark,
 .photo-divider,
 .botanical-divider {
-    display: block;
-    width: 240px;
-    height: 42px;
-    margin: -35px auto 35px auto;
-    background-image: url('assets/photo-divider-gold.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    opacity: 0.9;
-    pointer-events: none;
+    display: none !important;
 }
 
 /* Photo Cards & Gallery Clean Framing */
@@ -974,30 +905,13 @@ footer {
     overflow: hidden;
 }
 
-/* Detailed Services Cards Photography Corner Accent */
+/* Detailed Services Cards Clean Modern Styling */
 .service-detail-card {
     position: relative;
     background: #FFFFFF !important;
-    border: 2px solid #EFE4D2 !important;
+    border: 1.5px solid #EFE4D2 !important;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
     overflow: hidden;
-}
-
-.service-detail-card::before {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    right: -20px;
-    width: 150px;
-    height: 150px;
-    background-image: url('assets/photo-corner-gold.svg');
-    background-repeat: no-repeat;
-    background-size: contain;
-    transform: scaleX(-1);
-    opacity: 0.22;
-    pointer-events: none;
-    z-index: 2;
-    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .service-detail-card:hover {
@@ -1006,12 +920,7 @@ footer {
     transform: translateY(-8px);
 }
 
-.service-detail-card:hover::before {
-    opacity: 0.65;
-    transform: scaleX(-1) scale(1.08) translate(-4px, -4px);
-}
-
-/* Studio Notice Box Photography Gold Accents */
+/* Studio Notice Box Clean Modern Styling */
 .studio-notice-box {
     position: relative;
     overflow: hidden;
@@ -1020,131 +929,32 @@ footer {
     box-shadow: 0 20px 50px rgba(212, 163, 89, 0.15) !important;
 }
 
-.studio-notice-box::before {
-    content: '';
-    position: absolute;
-    top: -25px;
-    right: -25px;
-    width: 220px;
-    height: 220px;
-    background-image: url('assets/photo-corner-gold.svg');
-    background-repeat: no-repeat;
-    background-size: contain;
-    transform: rotate(90deg);
-    opacity: 0.28;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.studio-notice-box::after {
-    content: '';
-    position: absolute;
-    bottom: -25px;
-    left: -25px;
-    width: 220px;
-    height: 220px;
-    background-image: url('assets/photo-corner-gold.svg');
-    background-repeat: no-repeat;
-    background-size: contain;
-    transform: rotate(-90deg);
-    opacity: 0.28;
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* Why Us Pillars Photography Accent */
+/* Why Us Pillars Clean Modern Styling */
 .why-pillar-card {
     position: relative;
-    border: 2px solid #F2ECE1 !important;
+    border: 1.5px solid #F2ECE1 !important;
     overflow: hidden;
-}
-
-.why-pillar-card::after {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    right: -20px;
-    width: 120px;
-    height: 120px;
-    background-image: url('assets/photo-corner-gold.svg');
-    background-repeat: no-repeat;
-    background-size: contain;
-    transform: scale(-1);
-    opacity: 0.14;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
 }
 
 .why-pillar-card:hover {
     border-color: #D4A359 !important;
 }
 
-.why-pillar-card:hover::after {
-    opacity: 0.48;
-}
-
-/* 8-Step Experience Cards Photography Accent */
+/* 8-Step Experience Cards Clean Modern Styling */
 .experience-step-card {
     position: relative;
     border: 1.5px solid #F0E8DC !important;
     overflow: hidden;
 }
 
-.experience-step-card::after {
-    content: '';
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    width: 90px;
-    height: 90px;
-    background-image: url('assets/photo-corner-gold.svg');
-    background-repeat: no-repeat;
-    background-size: contain;
-    transform: rotate(90deg);
-    opacity: 0.14;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+.experience-step-card:hover {
+    border-color: #D4A359 !important;
 }
 
-.experience-step-card:hover::after {
-    opacity: 0.48;
-}
-
-/* Final Call To Action Banner Photography Optics Frame */
+/* Final Call To Action Banner Clean Modern Styling */
 .final-cta-card {
     position: relative;
     overflow: hidden;
-}
-
-.final-cta-card::before {
-    content: '';
-    position: absolute;
-    top: -30px;
-    left: -30px;
-    width: 250px;
-    height: 250px;
-    background-image: url('assets/photo-corner-gold.svg');
-    background-repeat: no-repeat;
-    background-size: contain;
-    opacity: 0.28;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.final-cta-card::after {
-    content: '';
-    position: absolute;
-    bottom: -30px;
-    right: -30px;
-    width: 250px;
-    height: 250px;
-    background-image: url('assets/photo-corner-gold.svg');
-    background-repeat: no-repeat;
-    background-size: contain;
-    transform: scale(-1);
-    opacity: 0.28;
-    pointer-events: none;
-    z-index: 1;
 }
 
 /* Lightbox Photography Golden Frame */
@@ -1153,5 +963,6 @@ footer {
     box-shadow: 0 20px 60px rgba(0,0,0,0.6);
     border-radius: 12px;
 }
+
 
 
