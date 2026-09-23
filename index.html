@@ -2293,14 +2293,53 @@
                 text-align: center;
                 gap: 4px;
             }
+            /* Camera Grid Side-by-Side on Mobile */
+            .camera-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 20px 12px;
+                padding: 15px 0;
+            }
+            .camera-unit {
+                max-width: 100%;
+            }
+            .camera-frame-wrapper {
+                margin-bottom: 8px;
+            }
+            .camera-info h3 {
+                font-size: 1.05rem;
+                margin-top: 6px;
+                margin-bottom: 4px;
+                -webkit-text-stroke: 0.8px #000;
+                text-shadow: 1px 1px 0 #000;
+            }
+            .camera-info p {
+                font-size: 0.72rem;
+                line-height: 1.35;
+                padding: 0 2px;
+            }
+
+            /* Why Pillars Grid Side-by-Side on Mobile */
             .why-pillars-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-                margin-top: 35px;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 14px;
+                margin-top: 25px;
             }
             .why-pillar-card {
-                padding: 24px 20px;
-                border-radius: 20px;
+                padding: 18px 14px;
+                border-radius: 18px;
+            }
+            .why-pillar-icon {
+                font-size: 1.8rem;
+                margin-bottom: 8px;
+            }
+            .why-pillar-card h3 {
+                font-size: 0.98rem;
+                margin-bottom: 6px;
+                line-height: 1.25;
+            }
+            .why-pillar-card p {
+                font-size: 0.74rem;
+                line-height: 1.4;
             }
             .experience-grid {
                 grid-template-columns: 1fr;
