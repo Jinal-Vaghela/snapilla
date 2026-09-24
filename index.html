@@ -1425,7 +1425,7 @@
             line-height: 1.45;
         }
 
-        /* Running Camera Mascot Full Screen Edge-to-Edge Animation */
+        /* Running Baby, Camera & Couple Full Screen Edge-to-Edge Animation */
         .camera-run-track {
             width: 100vw;
             margin-left: calc(-50vw + 50%);
@@ -1438,24 +1438,46 @@
             pointer-events: none;
         }
 
-        .camera-run-gif {
+        .camera-run-group {
             position: absolute;
             bottom: 10px;
             left: 0;
-            height: 160px;
+            display: inline-flex;
+            align-items: flex-end;
+            will-change: transform;
+            animation: cameraRunAcross 13s linear infinite;
+        }
+
+        .baby-run-gif,
+        .camera-run-gif,
+        .couple-run-gif {
             width: auto;
             object-fit: contain;
             mix-blend-mode: multiply;
-            will-change: transform;
-            animation: cameraRunAcross 12s linear infinite;
+            display: block;
+        }
+
+        .baby-run-gif {
+            height: 80px;
+            margin-bottom: 2px;
+            margin-right: 240px;
+        }
+
+        .camera-run-gif {
+            height: 125px;
+            margin-right: 175px;
+        }
+
+        .couple-run-gif {
+            height: 165px;
         }
 
         @keyframes cameraRunAcross {
             0% {
-                transform: translateX(-260px);
+                transform: translateX(-1150px);
             }
             100% {
-                transform: translateX(calc(100vw + 80px));
+                transform: translateX(calc(100vw + 150px));
             }
         }
 
@@ -2836,9 +2858,13 @@
             </div>
         </div>
 
-        <!-- Running Camera Mascot Animation Track -->
+        <!-- Running Baby, Camera Mascot & Couple Animation Track -->
         <div class="camera-run-track">
-            <img src="Camera%20Run.gif" class="camera-run-gif" alt="Running Camera Mascot">
+            <div class="camera-run-group">
+                <img src="baby%20run.gif" class="baby-run-gif" alt="Running Baby">
+                <img src="Camera%20Run.gif" class="camera-run-gif" alt="Running Camera Mascot">
+                <img src="couple%20run.gif" class="couple-run-gif" alt="Running Couple">
+            </div>
         </div>
 
         <!-- Comprehensive 9-Services Detailed Breakdown -->
@@ -3630,6 +3656,38 @@
         const expertiseSection = document.querySelector('.expertise-sec');
         if (expertiseSection) {
             observer.observe(expertiseSection);
+        }
+
+        // Synchronize Running Animation & GIFs from the First Frame
+        const runTrack = document.querySelector('.camera-run-track');
+        const runGroup = document.querySelector('.camera-run-group');
+        if (runTrack && runGroup) {
+            function restartRunningGifs() {
+                const imgs = runGroup.querySelectorAll('img');
+                imgs.forEach(img => {
+                    const baseSrc = img.src.split('?')[0];
+                    img.src = baseSrc + '?t=' + Date.now();
+                });
+            }
+
+            // Reset GIF to frame 1 every time the run completes a lap
+            runGroup.addEventListener('animationiteration', () => {
+                restartRunningGifs();
+            });
+
+            // Start animation & GIF from the very beginning when scrolled into view
+            const trackObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        runGroup.style.animation = 'none';
+                        void runGroup.offsetWidth; // Trigger reflow to restart CSS keyframes
+                        runGroup.style.animation = '';
+                        restartRunningGifs();
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            trackObserver.observe(runTrack);
         }
     </script>
 </body>
