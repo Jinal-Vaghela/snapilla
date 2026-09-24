@@ -1445,7 +1445,7 @@
             display: inline-flex;
             align-items: flex-end;
             will-change: transform;
-            animation: cameraRunAcross 13s linear infinite;
+            animation: cameraRunAcross 11s linear infinite;
         }
 
         .baby-run-gif,
@@ -1457,27 +1457,47 @@
             display: block;
         }
 
-        .baby-run-gif {
-            height: 80px;
-            margin-bottom: 2px;
-            margin-right: 240px;
-        }
-
         .camera-run-gif {
             height: 125px;
-            margin-right: 175px;
         }
 
         .couple-run-gif {
             height: 165px;
         }
 
+        .baby-run-gif {
+            height: 80px;
+            margin-bottom: 2px;
+        }
+
+        /* Mode 1 (First Run): Camera follows Couple (Baby hidden) */
+        .camera-run-group.mode-couple .couple-run-gif {
+            display: block;
+        }
+        .camera-run-group.mode-couple .camera-run-gif {
+            margin-right: 175px;
+        }
+        .camera-run-group.mode-couple .baby-run-gif {
+            display: none;
+        }
+
+        /* Mode 2 (Second Run): Camera follows Baby (Couple hidden) */
+        .camera-run-group.mode-baby .baby-run-gif {
+            display: block;
+        }
+        .camera-run-group.mode-baby .camera-run-gif {
+            margin-right: 240px;
+        }
+        .camera-run-group.mode-baby .couple-run-gif {
+            display: none;
+        }
+
         @keyframes cameraRunAcross {
             0% {
-                transform: translateX(-1150px);
+                transform: translateX(-650px);
             }
             100% {
-                transform: translateX(calc(100vw + 150px));
+                transform: translateX(calc(100vw + 120px));
             }
         }
 
@@ -2858,12 +2878,12 @@
             </div>
         </div>
 
-        <!-- Running Baby, Camera Mascot & Couple Animation Track -->
+        <!-- Running Camera Mascot, Couple & Baby Alternate Animation Track -->
         <div class="camera-run-track">
-            <div class="camera-run-group">
-                <img src="baby%20run.gif" class="baby-run-gif" alt="Running Baby">
+            <div class="camera-run-group mode-couple">
                 <img src="Camera%20Run.gif" class="camera-run-gif" alt="Running Camera Mascot">
                 <img src="couple%20run.gif" class="couple-run-gif" alt="Running Couple">
+                <img src="baby%20run.gif" class="baby-run-gif" alt="Running Baby">
             </div>
         </div>
 
@@ -3658,10 +3678,22 @@
             observer.observe(expertiseSection);
         }
 
-        // Synchronize Running Animation & GIFs from the First Frame
+        // Synchronize Running Animation & GIFs with Alternating Couple / Baby Runs
         const runTrack = document.querySelector('.camera-run-track');
         const runGroup = document.querySelector('.camera-run-group');
         if (runTrack && runGroup) {
+            let runCycle = 0; // 0 = Couple (first run), 1 = Baby (second run)
+
+            function updateRunMode() {
+                if (runCycle % 2 === 0) {
+                    runGroup.classList.remove('mode-baby');
+                    runGroup.classList.add('mode-couple');
+                } else {
+                    runGroup.classList.remove('mode-couple');
+                    runGroup.classList.add('mode-baby');
+                }
+            }
+
             function restartRunningGifs() {
                 const imgs = runGroup.querySelectorAll('img');
                 imgs.forEach(img => {
@@ -3670,15 +3702,19 @@
                 });
             }
 
-            // Reset GIF to frame 1 every time the run completes a lap
+            // Alternating mode & restart GIFs from frame 1 every time a lap completes off-screen
             runGroup.addEventListener('animationiteration', () => {
+                runCycle++;
+                updateRunMode();
                 restartRunningGifs();
             });
 
-            // Start animation & GIF from the very beginning when scrolled into view
+            // Start animation & GIF from the very first run (Couple) when scrolled into view
             const trackObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
+                        runCycle = 0;
+                        updateRunMode();
                         runGroup.style.animation = 'none';
                         void runGroup.offsetWidth; // Trigger reflow to restart CSS keyframes
                         runGroup.style.animation = '';
