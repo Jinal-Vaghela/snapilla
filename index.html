@@ -1445,7 +1445,6 @@
             display: inline-flex;
             align-items: flex-end;
             will-change: transform;
-            animation: cameraRunAcross 11s linear infinite;
         }
 
         .baby-run-gif,
@@ -1470,34 +1469,63 @@
             margin-bottom: 2px;
         }
 
-        /* Mode 1 (First Run): Camera follows Couple (Baby hidden) */
+        /* Mode 1 (First Run): Camera follows Couple from Left to Right */
+        .camera-run-group.mode-couple {
+            animation: cameraRunLeftToRight 11s linear infinite;
+        }
         .camera-run-group.mode-couple .couple-run-gif {
             display: block;
+            order: 2;
+            transform: none;
         }
         .camera-run-group.mode-couple .camera-run-gif {
+            display: block;
+            order: 1;
+            transform: none;
             margin-right: 175px;
+            margin-left: 0;
         }
         .camera-run-group.mode-couple .baby-run-gif {
             display: none;
         }
 
-        /* Mode 2 (Second Run): Camera follows Baby (Couple hidden) */
+        /* Mode 2 (Second Run): Camera follows Baby starting from Right side (Right to Left) */
+        .camera-run-group.mode-baby {
+            animation: cameraRunRightToLeft 11s linear infinite;
+        }
         .camera-run-group.mode-baby .baby-run-gif {
             display: block;
+            order: 1;
+            transform: scaleX(-1);
+            margin-right: 240px;
+            margin-left: 0;
         }
         .camera-run-group.mode-baby .camera-run-gif {
-            margin-right: 240px;
+            display: block;
+            order: 2;
+            transform: scaleX(-1);
+            margin-right: 0;
+            margin-left: 0;
         }
         .camera-run-group.mode-baby .couple-run-gif {
             display: none;
         }
 
-        @keyframes cameraRunAcross {
+        @keyframes cameraRunLeftToRight {
             0% {
                 transform: translateX(-650px);
             }
             100% {
                 transform: translateX(calc(100vw + 120px));
+            }
+        }
+
+        @keyframes cameraRunRightToLeft {
+            0% {
+                transform: translateX(calc(100vw + 120px));
+            }
+            100% {
+                transform: translateX(-650px);
             }
         }
 
@@ -3706,6 +3734,9 @@
             runGroup.addEventListener('animationiteration', () => {
                 runCycle++;
                 updateRunMode();
+                runGroup.style.animation = 'none';
+                void runGroup.offsetWidth; // Trigger reflow to start alternating direction immediately
+                runGroup.style.animation = '';
                 restartRunningGifs();
             });
 
