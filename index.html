@@ -1449,7 +1449,8 @@
 
         .baby-run-gif,
         .camera-run-gif,
-        .couple-run-gif {
+        .couple-run-gif,
+        .product-run-gif {
             width: auto;
             object-fit: contain;
             mix-blend-mode: multiply;
@@ -1469,6 +1470,10 @@
             margin-bottom: 2px;
         }
 
+        .product-run-gif {
+            height: 115px;
+        }
+
         /* Mode 1 (First Run): Camera follows Couple from Left to Right */
         .camera-run-group.mode-couple {
             animation: cameraRunLeftToRight 11s linear infinite;
@@ -1485,7 +1490,8 @@
             margin-right: 175px;
             margin-left: 0;
         }
-        .camera-run-group.mode-couple .baby-run-gif {
+        .camera-run-group.mode-couple .baby-run-gif,
+        .camera-run-group.mode-couple .product-run-gif {
             display: none;
         }
 
@@ -1507,7 +1513,29 @@
             margin-right: 0;
             margin-left: 0;
         }
-        .camera-run-group.mode-baby .couple-run-gif {
+        .camera-run-group.mode-baby .couple-run-gif,
+        .camera-run-group.mode-baby .product-run-gif {
+            display: none;
+        }
+
+        /* Mode 3 (Third Run): Camera follows Product from Left to Right */
+        .camera-run-group.mode-product {
+            animation: cameraRunLeftToRight 11s linear infinite;
+        }
+        .camera-run-group.mode-product .product-run-gif {
+            display: block;
+            order: 2;
+            transform: none;
+        }
+        .camera-run-group.mode-product .camera-run-gif {
+            display: block;
+            order: 1;
+            transform: none;
+            margin-right: 185px;
+            margin-left: 0;
+        }
+        .camera-run-group.mode-product .couple-run-gif,
+        .camera-run-group.mode-product .baby-run-gif {
             display: none;
         }
 
@@ -2906,12 +2934,13 @@
             </div>
         </div>
 
-        <!-- Running Camera Mascot, Couple & Baby Alternate Animation Track -->
+        <!-- Running Camera Mascot, Couple, Baby & Product Alternate Animation Track -->
         <div class="camera-run-track">
             <div class="camera-run-group mode-couple">
                 <img src="Camera%20Run.gif" class="camera-run-gif" alt="Running Camera Mascot">
                 <img src="couple%20run.gif" class="couple-run-gif" alt="Running Couple">
                 <img src="baby%20run.gif" class="baby-run-gif" alt="Running Baby">
+                <img src="product%20run.gif" class="product-run-gif" alt="Running Product">
             </div>
         </div>
 
@@ -3706,19 +3735,21 @@
             observer.observe(expertiseSection);
         }
 
-        // Synchronize Running Animation & GIFs with Alternating Couple / Baby Runs
+        // Synchronize Running Animation & GIFs with 3 Alternating Runs (Couple, Baby, Product)
         const runTrack = document.querySelector('.camera-run-track');
         const runGroup = document.querySelector('.camera-run-group');
         if (runTrack && runGroup) {
-            let runCycle = 0; // 0 = Couple (first run), 1 = Baby (second run)
+            let runCycle = 0; // 0 = Couple (L->R), 1 = Baby (R->L), 2 = Product (L->R)
 
             function updateRunMode() {
-                if (runCycle % 2 === 0) {
-                    runGroup.classList.remove('mode-baby');
+                runGroup.classList.remove('mode-couple', 'mode-baby', 'mode-product');
+                const modeIndex = runCycle % 3;
+                if (modeIndex === 0) {
                     runGroup.classList.add('mode-couple');
-                } else {
-                    runGroup.classList.remove('mode-couple');
+                } else if (modeIndex === 1) {
                     runGroup.classList.add('mode-baby');
+                } else {
+                    runGroup.classList.add('mode-product');
                 }
             }
 
