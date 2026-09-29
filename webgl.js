@@ -179,17 +179,33 @@
         }
 
         addListeners() {
+            this.isVisible = true;
+            this.isLoopRunning = false;
+
+            if ('IntersectionObserver' in window && this.container) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        this.isVisible = entry.isIntersecting;
+                        if (this.isVisible && !this.isLoopRunning) {
+                            this.animate();
+                        }
+                    });
+                }, { threshold: 0.05 });
+                observer.observe(this.container);
+            }
+
             window.addEventListener('scroll', () => {
-                if(!this.container) return;
+                if(!this.container || !this.isVisible) return;
                 const scrollY = window.scrollY;
                 const heroHeight = this.container.offsetHeight || window.innerHeight;
                 this.progress = Math.min(Math.max(scrollY / (heroHeight * 0.75), 0), 1);
-            });
+            }, { passive: true });
 
             window.addEventListener('mousemove', (e) => {
+                if(!this.isVisible) return;
                 this.targetMouse.x = e.clientX / window.innerWidth;
                 this.targetMouse.y = 1.0 - (e.clientY / window.innerHeight);
-            });
+            }, { passive: true });
 
             window.addEventListener('resize', () => {
                 if(this.renderer && this.container) {
@@ -200,10 +216,15 @@
                         this.material.uniforms.resolution.value.set(w, h);
                     }
                 }
-            });
+            }, { passive: true });
         }
 
         animate() {
+            if (!this.isVisible) {
+                this.isLoopRunning = false;
+                return;
+            }
+            this.isLoopRunning = true;
             requestAnimationFrame(() => this.animate());
             if(this.material) {
                 this.material.uniforms.progress.value += (this.progress - this.material.uniforms.progress.value) * 0.22;

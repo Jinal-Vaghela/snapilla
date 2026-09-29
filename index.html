@@ -2901,36 +2901,36 @@
             <div class="camera-unit">
                 <div class="camera-frame-wrapper">
                     <div class="camera-screen-view">
-                        <img src="baby.png" alt="Baby Shoot">
+                        <img src="baby.png" alt="Baby Shoot" loading="lazy" decoding="async">
                     </div>
-                    <img src="camera%20frame.png" class="camera-body-overlay" alt="Camera Frame">
+                    <img src="camera%20frame.png" class="camera-body-overlay" alt="Camera Frame" loading="lazy" decoding="async">
                 </div>
                 <div class="camera-info"><h3>Baby Shoots</h3><p>Little Moments. Big Memories. Precious giggles captured forever.</p></div>
             </div>
             <div class="camera-unit">
                 <div class="camera-frame-wrapper">
                     <div class="camera-screen-view">
-                        <img src="wedding.png" alt="Wedding Shoot">
+                        <img src="wedding.png" alt="Wedding Shoot" loading="lazy" decoding="async">
                     </div>
-                    <img src="camera%20frame.png" class="camera-body-overlay" alt="Camera Frame">
+                    <img src="camera%20frame.png" class="camera-body-overlay" alt="Camera Frame" loading="lazy" decoding="async">
                 </div>
                 <div class="camera-info"><h3>Weddings</h3><p>Your Day. Your People. Your Story. Grand cinematic romance.</p></div>
             </div>
             <div class="camera-unit">
                 <div class="camera-frame-wrapper">
                     <div class="camera-screen-view">
-                        <img src="product.png" alt="Product Shoot">
+                        <img src="product.png" alt="Product Shoot" loading="lazy" decoding="async">
                     </div>
-                    <img src="camera%20frame.png" class="camera-body-overlay" alt="Camera Frame">
+                    <img src="camera%20frame.png" class="camera-body-overlay" alt="Camera Frame" loading="lazy" decoding="async">
                 </div>
                 <div class="camera-info"><h3>Products</h3><p>Make Your Product Impossible to Ignore. High-converting commercial visuals.</p></div>
             </div>
             <div class="camera-unit">
                 <div class="camera-frame-wrapper">
                     <div class="camera-screen-view">
-                        <img src="modeling.png" alt="Modeling Shoot">
+                        <img src="modeling.png" alt="Modeling Shoot" loading="lazy" decoding="async">
                     </div>
-                    <img src="camera%20frame.png" class="camera-body-overlay" alt="Camera Frame">
+                    <img src="camera%20frame.png" class="camera-body-overlay" alt="Camera Frame" loading="lazy" decoding="async">
                 </div>
                 <div class="camera-info"><h3>Modeling</h3><p>Confidence Looks Good On Camera. High-fashion portfolios.</p></div>
             </div>
@@ -2939,10 +2939,10 @@
         <!-- Running Camera Mascot, Couple, Baby & Product Alternate Animation Track -->
         <div class="camera-run-track">
             <div class="camera-run-group mode-couple">
-                <img src="Camera%20Run.gif" class="camera-run-gif" alt="Running Camera Mascot">
-                <img src="couple%20run.gif" class="couple-run-gif" alt="Running Couple">
-                <img src="baby%20run.gif" class="baby-run-gif" alt="Running Baby">
-                <img src="product%20run.gif" class="product-run-gif" alt="Running Product">
+                <img src="Camera%20Run.gif" class="camera-run-gif" alt="Running Camera Mascot" loading="lazy" decoding="async">
+                <img src="couple%20run.gif" class="couple-run-gif" alt="Running Couple" loading="lazy" decoding="async">
+                <img src="baby%20run.gif" class="baby-run-gif" alt="Running Baby" loading="lazy" decoding="async">
+                <img src="product%20run.gif" class="product-run-gif" alt="Running Product" loading="lazy" decoding="async">
             </div>
         </div>
 
@@ -3238,14 +3238,14 @@
 
         <div class="portfolio-stage" id="portfolioStage" style="position: relative; z-index: 5;">
             <div class="portfolio-spinner" id="portfolioSpinner">
-                <div class="portfolio-card" data-category="portraits"><img src="p1.png" alt="Signature Portrait Album"></div>
-                <div class="portfolio-card" data-category="family"><img src="p2.png" alt="Family Moments Album"></div>
-                <div class="portfolio-card" data-category="birthdays"><img src="p3.png" alt="Birthday Celebration Album"></div>
-                <div class="portfolio-card" data-category="events"><img src="p4.png" alt="Special Occasion Album"></div>
-                <div class="portfolio-card" data-category="baby"><img src="baby.png" alt="Baby Shoot Album"></div>
-                <div class="portfolio-card" data-category="wedding"><img src="wedding.png" alt="Wedding Shoot Album"></div>
-                <div class="portfolio-card" data-category="models"><img src="modeling.png" alt="Model Shoot Album"></div>
-                <div class="portfolio-card" data-category="products"><img src="product.png" alt="Product Shoot Album"></div>
+                <div class="portfolio-card" data-category="portraits"><img src="p1.png" alt="Signature Portrait Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="family"><img src="p2.png" alt="Family Moments Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="birthdays"><img src="p3.png" alt="Birthday Celebration Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="events"><img src="p4.png" alt="Special Occasion Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="baby"><img src="baby.png" alt="Baby Shoot Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="wedding"><img src="wedding.png" alt="Wedding Shoot Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="models"><img src="modeling.png" alt="Model Shoot Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="products"><img src="product.png" alt="Product Shoot Album" loading="lazy" decoding="async"></div>
             </div>
             <div class="portfolio-single-showcase" id="portfolioSingleShowcase" style="display: none;">
                 <!-- Single featured image populated dynamically -->
@@ -3756,37 +3756,22 @@
                 }
             }
 
-            function restartRunningGifs() {
-                const imgs = runGroup.querySelectorAll('img');
-                imgs.forEach(img => {
-                    const baseSrc = img.src.split('?')[0];
-                    img.src = baseSrc + '?t=' + Date.now();
-                });
-            }
-
-            // Alternating mode & restart GIFs from frame 1 every time a lap completes off-screen
+            // Alternating mode every time a lap completes off-screen
             runGroup.addEventListener('animationiteration', () => {
                 runCycle++;
                 updateRunMode();
-                runGroup.style.animation = 'none';
-                void runGroup.offsetWidth; // Trigger reflow to start alternating direction immediately
-                runGroup.style.animation = '';
-                restartRunningGifs();
             });
 
-            // Start animation & GIF from the very first run (Couple) when scrolled into view
+            // Pause CSS animation when track is off-screen to save 100% CPU/GPU
             const trackObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        runCycle = 0;
-                        updateRunMode();
-                        runGroup.style.animation = 'none';
-                        void runGroup.offsetWidth; // Trigger reflow to restart CSS keyframes
-                        runGroup.style.animation = '';
-                        restartRunningGifs();
+                        runGroup.style.animationPlayState = 'running';
+                    } else {
+                        runGroup.style.animationPlayState = 'paused';
                     }
                 });
-            }, { threshold: 0.15 });
+            }, { threshold: 0.1 });
 
             trackObserver.observe(runTrack);
         }

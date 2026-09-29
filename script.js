@@ -10,13 +10,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.getElementById('navLinks');
 
     if (nav) {
+        let isTicking = false;
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
+            if (!isTicking) {
+                window.requestAnimationFrame(() => {
+                    if (window.scrollY > 50) {
+                        nav.classList.add('scrolled');
+                    } else {
+                        nav.classList.remove('scrolled');
+                    }
+                    isTicking = false;
+                });
+                isTicking = true;
             }
-        });
+        }, { passive: true });
     }
 
     if (navToggle && navLinks) {
@@ -41,22 +48,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Hero Section Floating Elements Mouse Parallax
+    // Hero Section Floating Elements Mouse Parallax (Throttled with rAF)
     const heroSec = document.querySelector('.webgl-hero');
     const floatItems = document.querySelectorAll('.hero-floating-elements .floating-item');
     if (heroSec && floatItems.length > 0) {
+        let mouseTicking = false;
         heroSec.addEventListener('mousemove', (e) => {
-            const rect = heroSec.getBoundingClientRect();
-            const relX = (e.clientX - rect.left) / rect.width - 0.5;
-            const relY = (e.clientY - rect.top) / rect.height - 0.5;
+            if (!mouseTicking) {
+                window.requestAnimationFrame(() => {
+                    const rect = heroSec.getBoundingClientRect();
+                    const relX = (e.clientX - rect.left) / rect.width - 0.5;
+                    const relY = (e.clientY - rect.top) / rect.height - 0.5;
 
-            floatItems.forEach((item, idx) => {
-                const depth = (idx % 3 + 1) * 14;
-                const moveX = -relX * depth;
-                const moveY = -relY * depth;
-                item.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            });
-        });
+                    floatItems.forEach((item, idx) => {
+                        const depth = (idx % 3 + 1) * 14;
+                        const moveX = -relX * depth;
+                        const moveY = -relY * depth;
+                        item.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    });
+                    mouseTicking = false;
+                });
+                mouseTicking = true;
+            }
+        }, { passive: true });
 
         heroSec.addEventListener('mouseleave', () => {
             floatItems.forEach(item => {
