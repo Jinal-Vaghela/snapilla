@@ -826,37 +826,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const normalized = currentGalleryFilter.toLowerCase().trim();
 
-        // 1. ALL CATEGORIES: 3D Rotating Carousel
-        if (normalized === 'all') {
-            if (stage) stage.classList.remove('is-single-mode');
-            spinner.style.display = 'block';
-            if (singleShowcase) singleShowcase.style.display = 'none';
-            if (moreContainer) moreContainer.style.display = 'none';
-            if (moreGrid) moreGrid.style.display = 'none';
+        // Always keep 3D Rotating Multi-Image Carousel Active
+        if (stage) stage.classList.remove('is-single-mode');
+        spinner.style.display = 'block';
+        if (singleShowcase) singleShowcase.style.display = 'none';
+        if (moreGrid) moreGrid.style.display = 'none';
 
-            const total = livePortfolioList.length;
-            const cardWidth = window.innerWidth < 768 ? 170 : (window.innerWidth < 992 ? 220 : 280);
-            const minR = Math.round((cardWidth / 2) / Math.tan(Math.PI / Math.max(total, 1))) + (window.innerWidth < 768 ? 40 : 120);
-            const radius = window.innerWidth < 768 ? Math.max(minR, 250) : (window.innerWidth < 992 ? Math.max(minR, 380) : Math.max(minR, 540));
-            const angleStep = 360 / Math.max(total, 1);
-
-            spinner.innerHTML = livePortfolioList.map((photo, index) => {
-                const rot = index * angleStep;
-                return `
-                    <div class="portfolio-card portfolio-item" data-category="${categorizePhoto(photo)}" style="transform: rotateY(${rot}deg) translateZ(${radius}px);">
-                        <img src="${photo.image}" alt="${photo.alt || photo.title || 'Photography Album'}">
-                    </div>
-                `;
-            }).join('');
-
-            attachLightboxHandlers();
-            return;
-        }
-
-        // 2. SPECIFIC CATEGORY: Stop Rotating -> Show Single Image + Show More Button
-        if (stage) stage.classList.add('is-single-mode');
-        spinner.style.display = 'none';
-
+        let displayPhotos = [];
         const meta = CATEGORY_META[normalized] || {
             title: normalized.charAt(0).toUpperCase() + normalized.slice(1),
             subtitle: 'Professional dedicated photography session by Snapilla Studio.',
@@ -865,49 +841,71 @@ document.addEventListener('DOMContentLoaded', () => {
             morePhotos: []
         };
 
-        // Find matching photos from live portfolio
-        const matchingLive = livePortfolioList.filter(item => {
-            const itemCat = categorizePhoto(item);
-            return itemCat === normalized || 
-                   itemCat.startsWith(normalized.replace(/s$/, '')) || 
-                   normalized.includes(itemCat) ||
-                   itemCat.includes(normalized.replace(/s$/, ''));
-        });
+        if (normalized === 'all') {
+            displayPhotos = [...livePortfolioList];
+            if (moreContainer) moreContainer.style.display = 'none';
+        } else {
+            // Filter photos matching this category
+            const matchingLive = livePortfolioList.filter(item => {
+                const itemCat = categorizePhoto(item);
+                return itemCat === normalized || 
+                       itemCat.startsWith(normalized.replace(/s$/, '')) || 
+                       normalized.includes(itemCat) ||
+                       itemCat.includes(normalized.replace(/s$/, ''));
+            });
 
-        const featuredPhoto = matchingLive[0] || (meta.morePhotos && meta.morePhotos[0]) || {
-            image: meta.defaultImg || 'p1.png',
-            title: meta.title + ' Showcase',
-            alt: meta.title
-        };
+            const categoryExtras = (meta.morePhotos || []).map(p => ({
+                ...p,
+                category: normalized
+            }));
 
-        // Populate Single Showcase Card
-        if (singleShowcase) {
-            singleShowcase.style.display = 'flex';
-            singleShowcase.innerHTML = `
-                <div class="single-showcase-card portfolio-item" data-category="${normalized}">
-                    <div class="showcase-badge"><i class="${meta.icon}"></i> ${meta.title}</div>
-                    <img src="${featuredPhoto.image}" alt="${featuredPhoto.title || meta.title}">
-                    <div class="showcase-overlay">
-                        <div class="showcase-zoom-hint"><i class="fas fa-search-plus"></i> Click to View Full Size</div>
-                        <h3>${featuredPhoto.title || (meta.title + ' Photography')}</h3>
-                        <p>${meta.subtitle}</p>
-                    </div>
+            displayPhotos = [...matchingLive, ...categoryExtras];
+
+            if (displayPhotos.length === 0) {
+                displayPhotos = [{
+                    image: meta.defaultImg || 'p1.png',
+                    title: meta.title + ' Showcase',
+                    alt: meta.title,
+                    category: normalized
+                }];
+            }
+
+            // Ensure we have at least 6-8 items so the 3D rotating carousel stays full and dynamic
+            while (displayPhotos.length < 6) {
+                displayPhotos = displayPhotos.concat(displayPhotos);
+            }
+            if (displayPhotos.length > 8) {
+                displayPhotos = displayPhotos.slice(0, 8);
+            }
+
+            // Configure Show More Button for Direct Gallery Page Jump
+            if (moreContainer && showMoreBtn) {
+                moreContainer.style.display = 'block';
+                const galleryUrl = `gallery.html?category=${encodeURIComponent(normalized)}`;
+                showMoreBtn.setAttribute('href', galleryUrl);
+                showMoreBtn.innerHTML = `<i class="fas fa-images"></i> <span>Explore All ${meta.title} Photos on Gallery</span>`;
+
+                showMoreBtn.onclick = (e) => {
+                    e.preventDefault();
+                    window.location.href = galleryUrl;
+                };
+            }
+        }
+
+        const total = displayPhotos.length;
+        const cardWidth = window.innerWidth < 768 ? 170 : (window.innerWidth < 992 ? 220 : 280);
+        const minR = Math.round((cardWidth / 2) / Math.tan(Math.PI / Math.max(total, 1))) + (window.innerWidth < 768 ? 40 : 120);
+        const radius = window.innerWidth < 768 ? Math.max(minR, 250) : (window.innerWidth < 992 ? Math.max(minR, 380) : Math.max(minR, 540));
+        const angleStep = 360 / Math.max(total, 1);
+
+        spinner.innerHTML = displayPhotos.map((photo, index) => {
+            const rot = index * angleStep;
+            return `
+                <div class="portfolio-card portfolio-item" data-category="${photo.category || categorizePhoto(photo)}" style="transform: rotateY(${rot}deg) translateZ(${radius}px);">
+                    <img src="${photo.image}" alt="${photo.alt || photo.title || 'Photography Album'}">
                 </div>
             `;
-        }
-
-        // Configure Show More Button for Direct Gallery Page Jump
-        if (moreContainer && showMoreBtn) {
-            moreContainer.style.display = 'block';
-            const galleryUrl = `gallery.html?category=${encodeURIComponent(normalized)}`;
-            showMoreBtn.setAttribute('href', galleryUrl);
-            showMoreBtn.innerHTML = `<i class="fas fa-images"></i> <span>Show More ${meta.title} Photos</span>`;
-
-            showMoreBtn.onclick = (e) => {
-                e.preventDefault();
-                window.location.href = galleryUrl;
-            };
-        }
+        }).join('');
 
         attachLightboxHandlers();
     }
