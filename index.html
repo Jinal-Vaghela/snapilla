@@ -828,119 +828,6 @@
             to { transform: rotateY(-360deg); }
         }
 
-        /* Single Showcase Mode when Filter != 'all' */
-        .portfolio-stage.is-single-mode {
-            perspective: none;
-            height: auto;
-            min-height: 480px;
-            overflow: visible;
-            margin-top: 30px;
-            padding: 10px 0;
-        }
-
-        .portfolio-single-showcase {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: fadeInShowcase 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes fadeInShowcase {
-            from { opacity: 0; transform: translateY(20px) scale(0.96); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .single-showcase-card {
-            position: relative;
-            width: 380px;
-            height: 480px;
-            max-width: 92vw;
-            background: #fff;
-            border-radius: 28px;
-            overflow: hidden;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.05);
-            border: 5px solid #fff;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .single-showcase-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 35px 75px rgba(0,0,0,0.25), 0 0 0 2px #FFB300;
-        }
-
-        .single-showcase-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .single-showcase-card:hover img {
-            transform: scale(1.08);
-        }
-
-        .showcase-badge {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(18, 18, 18, 0.85);
-            color: #FFB300;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 8px 18px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            z-index: 2;
-            border: 1px solid rgba(255, 179, 0, 0.3);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .showcase-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 40px 25px 22px 25px;
-            background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 55%, transparent 100%);
-            color: #fff;
-            z-index: 2;
-            text-align: left;
-        }
-
-        .showcase-overlay h3 {
-            margin: 0 0 6px 0;
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: -0.3px;
-        }
-
-        .showcase-overlay p {
-            margin: 0 0 12px 0;
-            font-size: 0.9rem;
-            color: #e0e0e0;
-            line-height: 1.4;
-        }
-
-        .showcase-zoom-hint {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #FFB300;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
         /* Show More Button & Expandable Grid */
         .portfolio-more-container {
             margin-top: 35px;
@@ -3250,9 +3137,6 @@
                 <div class="portfolio-card" data-category="models"><img src="modeling.png" alt="Model Shoot Album" loading="lazy" decoding="async"></div>
                 <div class="portfolio-card" data-category="products"><img src="product.png" alt="Product Shoot Album" loading="lazy" decoding="async"></div>
             </div>
-            <div class="portfolio-single-showcase" id="portfolioSingleShowcase" style="display: none;">
-                <!-- Single featured image populated dynamically -->
-            </div>
         </div>
 
         <!-- Direct Navigation to Corkboard Gallery Page -->
@@ -3615,13 +3499,13 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js?v=3.6"></script>
+    <script src="firebase-config.js?v=4.0"></script>
 
     <!-- Dependencies -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <script src="webgl.js?v=3.6"></script>
-    <script src="script.js?v=3.6"></script>
+    <script src="webgl.js?v=4.0"></script>
+    <script src="script.js?v=4.0"></script>
 
     <!-- Standalone WhatsApp Booking Trigger Backup -->
     <script>
