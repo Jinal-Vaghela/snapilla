@@ -813,84 +813,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'all';
     }
 
-    let currentCarouselIndex = 0;
-    let coverflowTimer = null;
-
-    function updateCoverflowPositions() {
-        const spinner = document.getElementById('portfolioSpinner');
-        if (!spinner) return;
-        const cards = spinner.querySelectorAll('.portfolio-card');
-        if (!cards || cards.length === 0) return;
-
-        const total = cards.length;
-        const isMobile = window.innerWidth < 768;
-        const isTablet = window.innerWidth < 992;
-
-        const spacing = isMobile ? 175 : (isTablet ? 260 : 360);
-        const zOffset = isMobile ? -50 : -90;
-        const tiltAngle = isMobile ? 18 : 24;
-
-        cards.forEach((card, idx) => {
-            let diff = (idx - currentCarouselIndex) % total;
-            if (diff > total / 2) diff -= total;
-            if (diff < -total / 2) diff += total;
-
-            if (diff === 0) {
-                // Center Front Card (Flat, Prominent, Fully visible)
-                card.style.transform = `translateX(0px) translateZ(40px) scale(1.05) rotateY(0deg)`;
-                card.style.opacity = '1';
-                card.style.visibility = 'visible';
-                card.style.zIndex = '10';
-                card.style.pointerEvents = 'auto';
-            } else if (diff === -1) {
-                // Left Card (Tilted rightwards in 3D perspective)
-                card.style.transform = `translateX(-${spacing}px) translateZ(${zOffset}px) scale(0.92) rotateY(${tiltAngle}deg)`;
-                card.style.opacity = '0.95';
-                card.style.visibility = 'visible';
-                card.style.zIndex = '6';
-                card.style.pointerEvents = 'auto';
-            } else if (diff === 1) {
-                // Right Card (Tilted leftwards in 3D perspective)
-                card.style.transform = `translateX(${spacing}px) translateZ(${zOffset}px) scale(0.92) rotateY(-${tiltAngle}deg)`;
-                card.style.opacity = '0.95';
-                card.style.visibility = 'visible';
-                card.style.zIndex = '6';
-                card.style.pointerEvents = 'auto';
-            } else {
-                // ALL OTHER CARDS: STRICTLY HIDDEN (Only 3 cards ever visible)
-                card.style.transform = `translateX(${diff < 0 ? -spacing * 1.8 : spacing * 1.8}px) translateZ(${zOffset * 3}px) scale(0.6) rotateY(0deg)`;
-                card.style.opacity = '0';
-                card.style.visibility = 'hidden';
-                card.style.zIndex = '0';
-                card.style.pointerEvents = 'none';
-            }
-
-            card.onclick = (e) => {
-                if (diff !== 0) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    currentCarouselIndex = idx;
-                    updateCoverflowPositions();
-                    startCoverflowTimer();
-                }
-            };
-        });
-    }
-
-    function startCoverflowTimer() {
-        if (coverflowTimer) clearInterval(coverflowTimer);
-        coverflowTimer = setInterval(() => {
-            const spinner = document.getElementById('portfolioSpinner');
-            if (!spinner) return;
-            const cards = spinner.querySelectorAll('.portfolio-card');
-            if (!cards || cards.length === 0) return;
-            currentCarouselIndex = (currentCarouselIndex + 1) % cards.length;
-            updateCoverflowPositions();
-        }, 3200);
-    }
-
-    window.addEventListener('resize', updateCoverflowPositions);
-
     function renderFilteredPortfolio(category) {
         currentGalleryFilter = category || 'all';
         const stage = document.getElementById('portfolioStage');
@@ -904,7 +826,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const normalized = currentGalleryFilter.toLowerCase().trim();
 
         if (stage) stage.classList.remove('is-single-mode');
-        spinner.style.display = 'flex';
+        spinner.style.display = 'block';
         if (moreGrid) moreGrid.style.display = 'none';
 
         let displayPhotos = [];
@@ -920,7 +842,6 @@ document.addEventListener('DOMContentLoaded', () => {
             displayPhotos = [...livePortfolioList];
             if (moreContainer) moreContainer.style.display = 'none';
         } else {
-            // Filter photos matching this category
             const matchingLive = livePortfolioList.filter(item => {
                 const itemCat = categorizePhoto(item);
                 return itemCat === normalized || 
@@ -945,15 +866,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }];
             }
 
-            // Ensure we have at least 4 items so multi-card 3D rotation flows smoothly
-            while (displayPhotos.length < 4) {
+            while (displayPhotos.length < 8) {
                 displayPhotos = displayPhotos.concat(displayPhotos);
             }
             if (displayPhotos.length > 8) {
                 displayPhotos = displayPhotos.slice(0, 8);
             }
 
-            // Configure Show More Button for Direct Gallery Page Jump
             if (moreContainer && showMoreBtn) {
                 moreContainer.style.display = 'block';
                 const galleryUrl = `gallery.html?category=${encodeURIComponent(normalized)}`;
@@ -967,25 +886,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        currentCarouselIndex = 0;
+        const total = displayPhotos.length;
+        const radius = window.innerWidth < 768 ? 240 : (window.innerWidth < 992 ? 380 : 520);
+        const angleStep = 360 / Math.max(total, 1);
 
-        spinner.innerHTML = displayPhotos.map((photo) => {
+        spinner.innerHTML = displayPhotos.map((photo, index) => {
+            const rot = index * angleStep;
             return `
-                <div class="portfolio-card portfolio-item" data-category="${photo.category || categorizePhoto(photo)}">
+                <div class="portfolio-card portfolio-item" data-category="${photo.category || categorizePhoto(photo)}" style="transform: rotateY(${rot}deg) translateZ(${radius}px);">
                     <img src="${photo.image}" alt="${photo.alt || photo.title || 'Photography Album'}">
                 </div>
             `;
         }).join('');
-
-        updateCoverflowPositions();
-        startCoverflowTimer();
-
-        spinner.onmouseenter = () => {
-            if (coverflowTimer) clearInterval(coverflowTimer);
-        };
-        spinner.onmouseleave = () => {
-            startCoverflowTimer();
-        };
 
         attachLightboxHandlers();
     }
