@@ -839,37 +839,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Center Front Card (Flat, Prominent, Fully visible)
                 card.style.transform = `translateX(0px) translateZ(40px) scale(1.05) rotateY(0deg)`;
                 card.style.opacity = '1';
+                card.style.visibility = 'visible';
                 card.style.zIndex = '10';
                 card.style.pointerEvents = 'auto';
             } else if (diff === -1) {
                 // Left Card (Tilted rightwards in 3D perspective)
                 card.style.transform = `translateX(-${spacing}px) translateZ(${zOffset}px) scale(0.92) rotateY(${tiltAngle}deg)`;
                 card.style.opacity = '0.95';
+                card.style.visibility = 'visible';
                 card.style.zIndex = '6';
                 card.style.pointerEvents = 'auto';
             } else if (diff === 1) {
                 // Right Card (Tilted leftwards in 3D perspective)
                 card.style.transform = `translateX(${spacing}px) translateZ(${zOffset}px) scale(0.92) rotateY(-${tiltAngle}deg)`;
                 card.style.opacity = '0.95';
+                card.style.visibility = 'visible';
                 card.style.zIndex = '6';
                 card.style.pointerEvents = 'auto';
-            } else if (diff === -2) {
-                // Far Left Card
-                card.style.transform = `translateX(-${spacing * 1.55}px) translateZ(${zOffset * 2}px) scale(0.8) rotateY(${tiltAngle + 6}deg)`;
-                card.style.opacity = '0';
-                card.style.zIndex = '2';
-                card.style.pointerEvents = 'none';
-            } else if (diff === 2) {
-                // Far Right Card
-                card.style.transform = `translateX(${spacing * 1.55}px) translateZ(${zOffset * 2}px) scale(0.8) rotateY(-${tiltAngle + 6}deg)`;
-                card.style.opacity = '0';
-                card.style.zIndex = '2';
-                card.style.pointerEvents = 'none';
             } else {
-                // Background Hidden Cards
-                card.style.transform = `translateX(0px) translateZ(${zOffset * 3}px) scale(0.65) rotateY(0deg)`;
+                // ALL OTHER CARDS: STRICTLY HIDDEN (Only 3 cards ever visible)
+                card.style.transform = `translateX(${diff < 0 ? -spacing * 1.8 : spacing * 1.8}px) translateZ(${zOffset * 3}px) scale(0.6) rotateY(0deg)`;
                 card.style.opacity = '0';
-                card.style.zIndex = '1';
+                card.style.visibility = 'hidden';
+                card.style.zIndex = '0';
                 card.style.pointerEvents = 'none';
             }
 
