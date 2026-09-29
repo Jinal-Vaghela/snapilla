@@ -1579,8 +1579,8 @@
         }
 
         .portfolio-spinner {
-            width: 310px;
-            height: 450px;
+            width: 280px;
+            height: 420px;
             transform-style: preserve-3d;
             animation: rotateSpinner 45s linear infinite;
             position: relative;
@@ -1608,15 +1608,15 @@
             object-fit: cover;
         }
 
-        /* Set positions for 8 cards in 3D circle */
-        .portfolio-card:nth-child(1) { transform: rotateY(0deg) translateZ(500px); }
-        .portfolio-card:nth-child(2) { transform: rotateY(45deg) translateZ(500px); }
-        .portfolio-card:nth-child(3) { transform: rotateY(90deg) translateZ(500px); }
-        .portfolio-card:nth-child(4) { transform: rotateY(135deg) translateZ(500px); }
-        .portfolio-card:nth-child(5) { transform: rotateY(180deg) translateZ(500px); }
-        .portfolio-card:nth-child(6) { transform: rotateY(225deg) translateZ(500px); }
-        .portfolio-card:nth-child(7) { transform: rotateY(270deg) translateZ(500px); }
-        .portfolio-card:nth-child(8) { transform: rotateY(315deg) translateZ(500px); }
+        /* Set positions for 8 cards in 3D circle with generous gap to avoid overlapping */
+        .portfolio-card:nth-child(1) { transform: rotateY(0deg) translateZ(540px); }
+        .portfolio-card:nth-child(2) { transform: rotateY(45deg) translateZ(540px); }
+        .portfolio-card:nth-child(3) { transform: rotateY(90deg) translateZ(540px); }
+        .portfolio-card:nth-child(4) { transform: rotateY(135deg) translateZ(540px); }
+        .portfolio-card:nth-child(5) { transform: rotateY(180deg) translateZ(540px); }
+        .portfolio-card:nth-child(6) { transform: rotateY(225deg) translateZ(540px); }
+        .portfolio-card:nth-child(7) { transform: rotateY(270deg) translateZ(540px); }
+        .portfolio-card:nth-child(8) { transform: rotateY(315deg) translateZ(540px); }
 
         @keyframes rotateSpinner {
             from { transform: rotateY(0deg); }
