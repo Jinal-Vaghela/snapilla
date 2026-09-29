@@ -838,8 +838,19 @@ document.addEventListener('DOMContentLoaded', () => {
             morePhotos: []
         };
 
+        const BASE_DEFAULT_PHOTOS = [
+            { title: "Signature Portraits", category: "portraits", image: "p1.png", alt: "Signature Portrait Album" },
+            { title: "Family Memories", category: "family", image: "p2.png", alt: "Family Moments Album" },
+            { title: "Birthday Celebrations", category: "birthdays", image: "p3.png", alt: "Birthday Celebration Album" },
+            { title: "Special Occasions", category: "events", image: "p4.png", alt: "Special Occasion Album" },
+            { title: "Baby Photography", category: "baby", image: "baby.png", alt: "Baby Shoot Album" },
+            { title: "Wedding Shoots", category: "wedding", image: "wedding.png", alt: "Wedding Shoot Album" },
+            { title: "Model Portfolios", category: "models", image: "modeling.png", alt: "Model Shoot Album" },
+            { title: "Commercial Products", category: "products", image: "product.png", alt: "Product Shoot Album" }
+        ];
+
         if (normalized === 'all') {
-            displayPhotos = [...livePortfolioList];
+            displayPhotos = Array.isArray(livePortfolioList) && livePortfolioList.length > 0 ? [...livePortfolioList] : [...BASE_DEFAULT_PHOTOS];
             if (moreContainer) moreContainer.style.display = 'none';
         } else {
             const matchingLive = livePortfolioList.filter(item => {
@@ -866,13 +877,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }];
             }
 
-            while (displayPhotos.length < 8) {
-                displayPhotos = displayPhotos.concat(displayPhotos);
-            }
-            if (displayPhotos.length > 8) {
-                displayPhotos = displayPhotos.slice(0, 8);
-            }
-
             if (moreContainer && showMoreBtn) {
                 moreContainer.style.display = 'block';
                 const galleryUrl = `gallery.html?category=${encodeURIComponent(normalized)}`;
@@ -884,6 +888,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = galleryUrl;
                 };
             }
+        }
+
+        // GUARANTEE: The 3D rotating cylinder ALWAYS has exactly 8 cards so it NEVER rotates with only 1 card!
+        let fillIdx = 0;
+        while (displayPhotos.length < 8) {
+            displayPhotos.push(BASE_DEFAULT_PHOTOS[fillIdx % BASE_DEFAULT_PHOTOS.length]);
+            fillIdx++;
+        }
+        if (displayPhotos.length > 8) {
+            displayPhotos = displayPhotos.slice(0, 8);
         }
 
         const total = displayPhotos.length;
