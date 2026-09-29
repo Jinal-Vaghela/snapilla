@@ -1366,5 +1366,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initGalleryFiltering();
+    renderFilteredPortfolio('all');
     initDynamicContent();
 });
