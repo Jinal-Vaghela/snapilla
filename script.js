@@ -813,6 +813,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'all';
     }
 
+    const CORE_PORTFOLIO_CARDS = [
+        { title: "Signature Portraits", category: "portraits", image: "p1.png", alt: "Signature Portrait Album" },
+        { title: "Family Memories", category: "family", image: "p2.png", alt: "Family Moments Album" },
+        { title: "Birthday Celebrations", category: "birthdays", image: "p3.png", alt: "Birthday Celebration Album" },
+        { title: "Special Occasions", category: "events", image: "p4.png", alt: "Special Occasion Album" },
+        { title: "Baby Photography", category: "baby", image: "baby.png", alt: "Baby Shoot Album" },
+        { title: "Wedding Shoots", category: "wedding", image: "wedding.png", alt: "Wedding Shoot Album" },
+        { title: "Model Portfolios", category: "models", image: "modeling.png", alt: "Model Shoot Album" },
+        { title: "Commercial Products", category: "products", image: "product.png", alt: "Product Shoot Album" }
+    ];
+
     function renderFilteredPortfolio(category) {
         currentGalleryFilter = category || 'all';
         const stage = document.getElementById('portfolioStage');
@@ -838,22 +849,13 @@ document.addEventListener('DOMContentLoaded', () => {
             morePhotos: []
         };
 
-        const BASE_DEFAULT_PHOTOS = [
-            { title: "Signature Portraits", category: "portraits", image: "p1.png", alt: "Signature Portrait Album" },
-            { title: "Family Memories", category: "family", image: "p2.png", alt: "Family Moments Album" },
-            { title: "Birthday Celebrations", category: "birthdays", image: "p3.png", alt: "Birthday Celebration Album" },
-            { title: "Special Occasions", category: "events", image: "p4.png", alt: "Special Occasion Album" },
-            { title: "Baby Photography", category: "baby", image: "baby.png", alt: "Baby Shoot Album" },
-            { title: "Wedding Shoots", category: "wedding", image: "wedding.png", alt: "Wedding Shoot Album" },
-            { title: "Model Portfolios", category: "models", image: "modeling.png", alt: "Model Shoot Album" },
-            { title: "Commercial Products", category: "products", image: "product.png", alt: "Product Shoot Album" }
-        ];
-
         if (normalized === 'all') {
-            displayPhotos = Array.isArray(livePortfolioList) && livePortfolioList.length > 0 ? [...livePortfolioList] : [...BASE_DEFAULT_PHOTOS];
+            displayPhotos = (Array.isArray(livePortfolioList) && livePortfolioList.length >= 8) 
+                ? [...livePortfolioList] 
+                : [...CORE_PORTFOLIO_CARDS];
             if (moreContainer) moreContainer.style.display = 'none';
         } else {
-            const matchingLive = livePortfolioList.filter(item => {
+            const matchingLive = (Array.isArray(livePortfolioList) ? livePortfolioList : CORE_PORTFOLIO_CARDS).filter(item => {
                 const itemCat = categorizePhoto(item);
                 return itemCat === normalized || 
                        itemCat.startsWith(normalized.replace(/s$/, '')) || 
@@ -868,15 +870,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             displayPhotos = [...matchingLive, ...categoryExtras];
 
-            if (displayPhotos.length === 0) {
-                displayPhotos = [{
-                    image: meta.defaultImg || 'p1.png',
-                    title: meta.title + ' Showcase',
-                    alt: meta.title,
-                    category: normalized
-                }];
-            }
-
             if (moreContainer && showMoreBtn) {
                 moreContainer.style.display = 'block';
                 const galleryUrl = `gallery.html?category=${encodeURIComponent(normalized)}`;
@@ -890,10 +883,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // GUARANTEE: The 3D rotating cylinder ALWAYS has exactly 8 cards so it NEVER rotates with only 1 card!
+        // GUARANTEE: Always keep 8 distinct cards in the 3D rotating cylinder
         let fillIdx = 0;
         while (displayPhotos.length < 8) {
-            displayPhotos.push(BASE_DEFAULT_PHOTOS[fillIdx % BASE_DEFAULT_PHOTOS.length]);
+            displayPhotos.push(CORE_PORTFOLIO_CARDS[fillIdx % CORE_PORTFOLIO_CARDS.length]);
             fillIdx++;
         }
         if (displayPhotos.length > 8) {
@@ -908,7 +901,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const rot = index * angleStep;
             return `
                 <div class="portfolio-card portfolio-item" data-category="${photo.category || categorizePhoto(photo)}" style="transform: rotateY(${rot}deg) translateZ(${radius}px);">
-                    <img src="${photo.image}" alt="${photo.alt || photo.title || 'Photography Album'}">
+                    <img src="${photo.image || 'p1.png'}" alt="${photo.alt || photo.title || 'Photography Album'}">
                 </div>
             `;
         }).join('');
@@ -921,24 +914,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let photosList = Array.isArray(photosData) ? photosData : (photosData.items || [photosData]);
         if (!Array.isArray(photosList) || photosList.length === 0) return;
 
-        const baseDefaults = [
-            { title: "Signature Portraits", category: "portraits", image: "p1.png", alt: "Signature Portrait Album" },
-            { title: "Family Memories", category: "family", image: "p2.png", alt: "Family Moments Album" },
-            { title: "Birthday Celebrations", category: "birthdays", image: "p3.png", alt: "Birthday Celebration Album" },
-            { title: "Special Occasions", category: "events", image: "p4.png", alt: "Special Occasion Album" },
-            { title: "Baby Photography", category: "baby", image: "baby.png", alt: "Baby Shoot Album" },
-            { title: "Wedding Shoots", category: "wedding", image: "wedding.png", alt: "Wedding Shoot Album" },
-            { title: "Model Portfolios", category: "models", image: "modeling.png", alt: "Model Shoot Album" },
-            { title: "Commercial Products", category: "products", image: "product.png", alt: "Product Shoot Album" }
-        ];
-
         let combined = [...photosList];
         let pIdx = 0;
         while (combined.length < 8) {
-            combined.push(baseDefaults[pIdx % baseDefaults.length]);
+            combined.push(CORE_PORTFOLIO_CARDS[pIdx % CORE_PORTFOLIO_CARDS.length]);
             pIdx++;
         }
-        livePortfolioList = combined;
+        livePortfolioList = combined.slice(0, 8);
         renderFilteredPortfolio(currentGalleryFilter);
     }
 
@@ -1283,7 +1265,8 @@ document.addEventListener('DOMContentLoaded', () => {
             db.collection('content').doc('portfolio').onSnapshot(doc => {
                 if (doc.exists) {
                     const d = doc.data();
-                    const items = d.items || d;
+                    const rawItems = d.items || (Array.isArray(d) ? d : null);
+                    const items = (Array.isArray(rawItems) && rawItems.length >= 8) ? rawItems : CORE_PORTFOLIO_CARDS;
                     updatePortfolioDOM(items);
                     saveLocalContentCache('portfolio', items);
                 }
