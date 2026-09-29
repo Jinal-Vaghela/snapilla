@@ -813,11 +813,96 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'all';
     }
 
+    let currentCarouselIndex = 0;
+    let coverflowTimer = null;
+
+    function updateCoverflowPositions() {
+        const spinner = document.getElementById('portfolioSpinner');
+        if (!spinner) return;
+        const cards = spinner.querySelectorAll('.portfolio-card');
+        if (!cards || cards.length === 0) return;
+
+        const total = cards.length;
+        const isMobile = window.innerWidth < 768;
+        const isTablet = window.innerWidth < 992;
+
+        const spacing = isMobile ? 175 : (isTablet ? 260 : 360);
+        const zOffset = isMobile ? -50 : -90;
+        const tiltAngle = isMobile ? 18 : 24;
+
+        cards.forEach((card, idx) => {
+            let diff = (idx - currentCarouselIndex) % total;
+            if (diff > total / 2) diff -= total;
+            if (diff < -total / 2) diff += total;
+
+            if (diff === 0) {
+                // Center Front Card (Flat, Prominent, Fully visible)
+                card.style.transform = `translateX(0px) translateZ(40px) scale(1.05) rotateY(0deg)`;
+                card.style.opacity = '1';
+                card.style.zIndex = '10';
+                card.style.pointerEvents = 'auto';
+            } else if (diff === -1) {
+                // Left Card (Tilted rightwards in 3D perspective)
+                card.style.transform = `translateX(-${spacing}px) translateZ(${zOffset}px) scale(0.92) rotateY(${tiltAngle}deg)`;
+                card.style.opacity = '0.95';
+                card.style.zIndex = '6';
+                card.style.pointerEvents = 'auto';
+            } else if (diff === 1) {
+                // Right Card (Tilted leftwards in 3D perspective)
+                card.style.transform = `translateX(${spacing}px) translateZ(${zOffset}px) scale(0.92) rotateY(-${tiltAngle}deg)`;
+                card.style.opacity = '0.95';
+                card.style.zIndex = '6';
+                card.style.pointerEvents = 'auto';
+            } else if (diff === -2) {
+                // Far Left Card
+                card.style.transform = `translateX(-${spacing * 1.55}px) translateZ(${zOffset * 2}px) scale(0.8) rotateY(${tiltAngle + 6}deg)`;
+                card.style.opacity = '0';
+                card.style.zIndex = '2';
+                card.style.pointerEvents = 'none';
+            } else if (diff === 2) {
+                // Far Right Card
+                card.style.transform = `translateX(${spacing * 1.55}px) translateZ(${zOffset * 2}px) scale(0.8) rotateY(-${tiltAngle + 6}deg)`;
+                card.style.opacity = '0';
+                card.style.zIndex = '2';
+                card.style.pointerEvents = 'none';
+            } else {
+                // Background Hidden Cards
+                card.style.transform = `translateX(0px) translateZ(${zOffset * 3}px) scale(0.65) rotateY(0deg)`;
+                card.style.opacity = '0';
+                card.style.zIndex = '1';
+                card.style.pointerEvents = 'none';
+            }
+
+            card.onclick = (e) => {
+                if (diff !== 0) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    currentCarouselIndex = idx;
+                    updateCoverflowPositions();
+                    startCoverflowTimer();
+                }
+            };
+        });
+    }
+
+    function startCoverflowTimer() {
+        if (coverflowTimer) clearInterval(coverflowTimer);
+        coverflowTimer = setInterval(() => {
+            const spinner = document.getElementById('portfolioSpinner');
+            if (!spinner) return;
+            const cards = spinner.querySelectorAll('.portfolio-card');
+            if (!cards || cards.length === 0) return;
+            currentCarouselIndex = (currentCarouselIndex + 1) % cards.length;
+            updateCoverflowPositions();
+        }, 3200);
+    }
+
+    window.addEventListener('resize', updateCoverflowPositions);
+
     function renderFilteredPortfolio(category) {
         currentGalleryFilter = category || 'all';
         const stage = document.getElementById('portfolioStage');
         const spinner = document.getElementById('portfolioSpinner');
-        const singleShowcase = document.getElementById('portfolioSingleShowcase');
         const moreContainer = document.getElementById('portfolioMoreContainer');
         const showMoreBtn = document.getElementById('galleryShowMoreBtn');
         const moreGrid = document.getElementById('galleryMoreGrid');
@@ -826,10 +911,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const normalized = currentGalleryFilter.toLowerCase().trim();
 
-        // Always keep 3D Rotating Multi-Image Carousel Active
         if (stage) stage.classList.remove('is-single-mode');
-        spinner.style.display = 'block';
-        if (singleShowcase) singleShowcase.style.display = 'none';
+        spinner.style.display = 'flex';
         if (moreGrid) moreGrid.style.display = 'none';
 
         let displayPhotos = [];
@@ -870,8 +953,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }];
             }
 
-            // Ensure we have at least 6-8 items so the 3D rotating carousel stays full and dynamic
-            while (displayPhotos.length < 6) {
+            // Ensure we have at least 4 items so multi-card 3D rotation flows smoothly
+            while (displayPhotos.length < 4) {
                 displayPhotos = displayPhotos.concat(displayPhotos);
             }
             if (displayPhotos.length > 8) {
@@ -892,20 +975,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        const total = displayPhotos.length;
-        const cardWidth = window.innerWidth < 768 ? 170 : (window.innerWidth < 992 ? 220 : 280);
-        const minR = Math.round((cardWidth / 2) / Math.tan(Math.PI / Math.max(total, 1))) + (window.innerWidth < 768 ? 40 : 120);
-        const radius = window.innerWidth < 768 ? Math.max(minR, 250) : (window.innerWidth < 992 ? Math.max(minR, 380) : Math.max(minR, 540));
-        const angleStep = 360 / Math.max(total, 1);
+        currentCarouselIndex = 0;
 
-        spinner.innerHTML = displayPhotos.map((photo, index) => {
-            const rot = index * angleStep;
+        spinner.innerHTML = displayPhotos.map((photo) => {
             return `
-                <div class="portfolio-card portfolio-item" data-category="${photo.category || categorizePhoto(photo)}" style="transform: rotateY(${rot}deg) translateZ(${radius}px);">
+                <div class="portfolio-card portfolio-item" data-category="${photo.category || categorizePhoto(photo)}">
                     <img src="${photo.image}" alt="${photo.alt || photo.title || 'Photography Album'}">
                 </div>
             `;
         }).join('');
+
+        updateCoverflowPositions();
+        startCoverflowTimer();
+
+        spinner.onmouseenter = () => {
+            if (coverflowTimer) clearInterval(coverflowTimer);
+        };
+        spinner.onmouseleave = () => {
+            startCoverflowTimer();
+        };
 
         attachLightboxHandlers();
     }

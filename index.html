@@ -767,66 +767,7 @@
             }
         }
 
-        /* 3D Rotating Portfolio Carousel */
-        .portfolio-stage {
-            perspective: 2000px;
-            height: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            margin-top: 50px;
-        }
-
-        .portfolio-spinner {
-            position: relative;
-            width: 250px;
-            height: 350px;
-            transform-style: preserve-3d;
-            animation: rotateSpinner 25s infinite linear;
-        }
-
-        .portfolio-spinner:hover {
-            animation-play-state: paused;
-        }
-
-        .portfolio-card {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            left: 0;
-            top: 0;
-            background: #fff;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-            border: 2.5px solid #FEAB45;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            transition: transform 0.5s ease;
-            cursor: pointer;
-        }
-
-        .portfolio-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Create circular arrangement for 8 cards */
-        .portfolio-card:nth-child(1) { transform: rotateY(0deg) translateZ(500px); }
-        .portfolio-card:nth-child(2) { transform: rotateY(45deg) translateZ(500px); }
-        .portfolio-card:nth-child(3) { transform: rotateY(90deg) translateZ(500px); }
-        .portfolio-card:nth-child(4) { transform: rotateY(135deg) translateZ(500px); }
-        .portfolio-card:nth-child(5) { transform: rotateY(180deg) translateZ(500px); }
-        .portfolio-card:nth-child(6) { transform: rotateY(225deg) translateZ(500px); }
-        .portfolio-card:nth-child(7) { transform: rotateY(270deg) translateZ(500px); }
-        .portfolio-card:nth-child(8) { transform: rotateY(315deg) translateZ(500px); }
-
-        @keyframes rotateSpinner {
-            from { transform: rotateY(0deg); }
-            to { transform: rotateY(-360deg); }
-        }
+        /* Portfolio Gallery Section */
 
         /* Show More Button & Expandable Grid */
         .portfolio-more-container {
@@ -1453,61 +1394,49 @@
             100% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
         }
 
-        /* Portfolio 3D Spinner Restoration */
+        /* 3D Curved Flow Carousel */
         .portfolio-stage {
             width: 100%;
-            height: 600px;
-            perspective: 2500px;
+            min-height: 520px;
+            perspective: 1800px;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 100px 0;
+            padding: 50px 0;
+            position: relative;
             overflow: visible;
         }
 
         .portfolio-spinner {
-            width: 280px;
-            height: 420px;
-            transform-style: preserve-3d;
-            animation: rotateSpinner 45s linear infinite;
             position: relative;
+            width: 320px;
+            height: 460px;
+            transform-style: preserve-3d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .portfolio-card {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            left: 0;
-            top: 0;
+            width: 300px;
+            height: 440px;
             border-radius: 20px;
             overflow: hidden;
             border: 2.5px solid #FEAB45;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
             background: #fff;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            transition: transform 0.5s ease;
+            cursor: pointer;
+            transition: transform 0.65s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.65s ease;
+            will-change: transform, opacity;
+            user-select: none;
         }
 
         .portfolio-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        /* Set positions for 8 cards in 3D circle with generous gap to avoid overlapping */
-        .portfolio-card:nth-child(1) { transform: rotateY(0deg) translateZ(540px); }
-        .portfolio-card:nth-child(2) { transform: rotateY(45deg) translateZ(540px); }
-        .portfolio-card:nth-child(3) { transform: rotateY(90deg) translateZ(540px); }
-        .portfolio-card:nth-child(4) { transform: rotateY(135deg) translateZ(540px); }
-        .portfolio-card:nth-child(5) { transform: rotateY(180deg) translateZ(540px); }
-        .portfolio-card:nth-child(6) { transform: rotateY(225deg) translateZ(540px); }
-        .portfolio-card:nth-child(7) { transform: rotateY(270deg) translateZ(540px); }
-        .portfolio-card:nth-child(8) { transform: rotateY(315deg) translateZ(540px); }
-
-        @keyframes rotateSpinner {
-            from { transform: rotateY(0deg); }
-            to { transform: rotateY(360deg); }
+            pointer-events: none;
         }
 
         @keyframes marquee {
@@ -2350,26 +2279,19 @@
                 border-radius: 18px;
             }
 
-            /* 3D Spinner on Mobile: scaled translation so nothing gets cut off */
+            /* 3D Coverflow on Tablet */
             .portfolio-stage {
-                height: 420px;
-                perspective: 900px;
-                margin-top: 25px;
-                padding: 40px 0;
-                overflow: hidden;
+                min-height: 440px;
+                padding: 30px 0;
             }
             .portfolio-spinner {
-                width: 180px;
-                height: 270px;
+                width: 240px;
+                height: 360px;
             }
-            .portfolio-card:nth-child(1) { transform: rotateY(0deg) translateZ(240px); }
-            .portfolio-card:nth-child(2) { transform: rotateY(45deg) translateZ(240px); }
-            .portfolio-card:nth-child(3) { transform: rotateY(90deg) translateZ(240px); }
-            .portfolio-card:nth-child(4) { transform: rotateY(135deg) translateZ(240px); }
-            .portfolio-card:nth-child(5) { transform: rotateY(180deg) translateZ(240px); }
-            .portfolio-card:nth-child(6) { transform: rotateY(225deg) translateZ(240px); }
-            .portfolio-card:nth-child(7) { transform: rotateY(270deg) translateZ(240px); }
-            .portfolio-card:nth-child(8) { transform: rotateY(315deg) translateZ(240px); }
+            .portfolio-card {
+                width: 230px;
+                height: 340px;
+            }
 
             .gallery-filters {
                 gap: 8px;
@@ -2528,21 +2450,19 @@
                 font-size: 0.46rem;
                 max-width: 50px;
             }
+            /* 3D Coverflow on Mobile */
             .portfolio-stage {
-                height: 380px;
+                min-height: 360px;
+                padding: 20px 0;
             }
             .portfolio-spinner {
-                width: 160px;
-                height: 240px;
+                width: 190px;
+                height: 280px;
             }
-            .portfolio-card:nth-child(1) { transform: rotateY(0deg) translateZ(210px); }
-            .portfolio-card:nth-child(2) { transform: rotateY(45deg) translateZ(210px); }
-            .portfolio-card:nth-child(3) { transform: rotateY(90deg) translateZ(210px); }
-            .portfolio-card:nth-child(4) { transform: rotateY(135deg) translateZ(210px); }
-            .portfolio-card:nth-child(5) { transform: rotateY(180deg) translateZ(210px); }
-            .portfolio-card:nth-child(6) { transform: rotateY(225deg) translateZ(210px); }
-            .portfolio-card:nth-child(7) { transform: rotateY(270deg) translateZ(210px); }
-            .portfolio-card:nth-child(8) { transform: rotateY(315deg) translateZ(210px); }
+            .portfolio-card {
+                width: 180px;
+                height: 270px;
+            }
         }
     </style>
 </head>
