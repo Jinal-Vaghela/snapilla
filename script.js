@@ -918,9 +918,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updatePortfolioDOM(photosData) {
         if (!photosData) return;
-        const photosList = Array.isArray(photosData) ? photosData : (photosData.items || []);
+        let photosList = Array.isArray(photosData) ? photosData : (photosData.items || [photosData]);
         if (!Array.isArray(photosList) || photosList.length === 0) return;
-        livePortfolioList = photosList;
+
+        const baseDefaults = [
+            { title: "Signature Portraits", category: "portraits", image: "p1.png", alt: "Signature Portrait Album" },
+            { title: "Family Memories", category: "family", image: "p2.png", alt: "Family Moments Album" },
+            { title: "Birthday Celebrations", category: "birthdays", image: "p3.png", alt: "Birthday Celebration Album" },
+            { title: "Special Occasions", category: "events", image: "p4.png", alt: "Special Occasion Album" },
+            { title: "Baby Photography", category: "baby", image: "baby.png", alt: "Baby Shoot Album" },
+            { title: "Wedding Shoots", category: "wedding", image: "wedding.png", alt: "Wedding Shoot Album" },
+            { title: "Model Portfolios", category: "models", image: "modeling.png", alt: "Model Shoot Album" },
+            { title: "Commercial Products", category: "products", image: "product.png", alt: "Product Shoot Album" }
+        ];
+
+        let combined = [...photosList];
+        let pIdx = 0;
+        while (combined.length < 8) {
+            combined.push(baseDefaults[pIdx % baseDefaults.length]);
+            pIdx++;
+        }
+        livePortfolioList = combined;
         renderFilteredPortfolio(currentGalleryFilter);
     }
 
