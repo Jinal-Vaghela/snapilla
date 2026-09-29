@@ -901,7 +901,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const total = displayPhotos.length;
-        const radius = window.innerWidth < 768 ? 240 : (window.innerWidth < 992 ? 380 : 520);
+        const radius = window.innerWidth < 768 ? 220 : (window.innerWidth < 992 ? 320 : 440);
         const angleStep = 360 / Math.max(total, 1);
 
         spinner.innerHTML = displayPhotos.map((photo, index) => {
