@@ -1168,7 +1168,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function getStoredLocalContent() {
         try {
             const raw = localStorage.getItem('snapilla_local_content');
-            if (raw) return JSON.parse(raw);
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed && typeof parsed === 'object') {
+                    if (!Array.isArray(parsed.portfolio) || parsed.portfolio.length < 8) {
+                        if (typeof SNAP_DEFAULT_DATA !== 'undefined' && SNAP_DEFAULT_DATA.portfolio) {
+                            parsed.portfolio = JSON.parse(JSON.stringify(SNAP_DEFAULT_DATA.portfolio));
+                        }
+                    }
+                }
+                return parsed;
+            }
         } catch (e) {}
         return null;
     }
