@@ -775,8 +775,9 @@
 
     <!-- Firebase SDK Scripts for Live Firestore Content Synchronization -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js?v=3.2"></script>
+    <script src="firebase-config.js?v=3.6"></script>
 
     <script>
         // Gallery Wall Master Dataset
@@ -914,31 +915,64 @@
             setupLightbox();
         });
 
-        // Load Live Photos from Firestore or Local Cache
+        function updateGalleryFromPortfolioList(portfolioList) {
+            if (!Array.isArray(portfolioList) || portfolioList.length === 0) return;
+            currentPhotos = portfolioList.map((item, idx) => ({
+                id: 'live_' + idx,
+                title: item.title || `Snapilla Memory ${idx + 1}`,
+                category: (item.category || item.title || '').toLowerCase().includes('wed') ? 'wedding' :
+                          (item.category || item.title || '').toLowerCase().includes('baby') ? 'baby' :
+                          (item.category || item.title || '').toLowerCase().includes('prod') ? 'product' :
+                          (item.category || item.title || '').toLowerCase().includes('model') ? 'modeling' :
+                          (item.category || item.title || '').toLowerCase().includes('port') ? 'portrait' :
+                          (item.category || item.title || '').toLowerCase().includes('fam') ? 'family' :
+                          (item.category || item.title || '').toLowerCase().includes('birth') ? 'birthday' :
+                          (item.category || item.title || '').toLowerCase().includes('coupl') ? 'couple' : 'wedding',
+                categoryLabel: item.category || 'Studio Shoot',
+                image: item.image || 'p1.png',
+                caption: item.alt || 'Captured at Snapilla Studio ✨'
+            }));
+            renderPinboard();
+        }
+
+        // Load Live Photos from Firestore, BroadcastChannel, or Local Cache
         function loadLivePhotos() {
+            // 1. Check local cache first
             try {
                 const stored = localStorage.getItem('snapilla_local_content');
                 if (stored) {
                     const data = JSON.parse(stored);
                     if (data.portfolio && Array.isArray(data.portfolio) && data.portfolio.length > 0) {
-                        currentPhotos = data.portfolio.map((item, idx) => ({
-                            id: 'live_' + idx,
-                            title: item.title || `Snapilla Memory ${idx + 1}`,
-                            category: (item.category || item.title || '').toLowerCase().includes('wed') ? 'wedding' :
-                                      (item.category || item.title || '').toLowerCase().includes('baby') ? 'baby' :
-                                      (item.category || item.title || '').toLowerCase().includes('prod') ? 'product' :
-                                      (item.category || item.title || '').toLowerCase().includes('model') ? 'modeling' :
-                                      (item.category || item.title || '').toLowerCase().includes('port') ? 'portrait' :
-                                      (item.category || item.title || '').toLowerCase().includes('fam') ? 'family' :
-                                      (item.category || item.title || '').toLowerCase().includes('birth') ? 'birthday' : 'wedding',
-                            categoryLabel: item.category || 'Studio Shoot',
-                            image: item.image || 'p1.png',
-                            caption: item.alt || 'Captured at Snapilla Studio ✨'
-                        }));
+                        updateGalleryFromPortfolioList(data.portfolio);
                     }
                 }
-            } catch (e) {
-                console.log('Using default gallery set');
+            } catch (e) {}
+
+            // 2. Real-time Cross-Tab Synchronization
+            try {
+                if (typeof BroadcastChannel !== 'undefined') {
+                    const bc = new BroadcastChannel('snapilla_sync_channel');
+                    bc.onmessage = (event) => {
+                        if (event.data && event.data.content && event.data.content.portfolio) {
+                            updateGalleryFromPortfolioList(event.data.content.portfolio);
+                        }
+                    };
+                }
+            } catch (e) {}
+
+            // 3. Real-time Cloud Sync from Firebase Firestore
+            if (typeof isFirebaseInitialized !== 'undefined' && isFirebaseInitialized && typeof db !== 'undefined' && db) {
+                db.collection('content').doc('portfolio').onSnapshot(doc => {
+                    if (doc.exists) {
+                        const d = doc.data();
+                        const items = d.items || d;
+                        if (Array.isArray(items) && items.length > 0) {
+                            updateGalleryFromPortfolioList(items);
+                        }
+                    }
+                }, err => {
+                    console.warn('Gallery Firestore listener notice:', err);
+                });
             }
             renderPinboard();
         }

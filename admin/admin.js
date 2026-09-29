@@ -1554,6 +1554,50 @@ if (firebaseConfigForm) {
             }
         });
     }
+
+    // Cloud Connection Test Button
+    const btnTest = document.getElementById('btnTestFirebaseConnection');
+    const resultBox = document.getElementById('fbTestResult');
+    if (btnTest && resultBox) {
+        btnTest.addEventListener('click', async () => {
+            resultBox.style.display = 'block';
+            resultBox.style.background = 'rgba(255,255,255,0.05)';
+            resultBox.style.color = '#fff';
+            resultBox.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing read and write permissions on Cloud Firestore...';
+
+            if (!isFirebaseInitialized || !db) {
+                resultBox.style.background = 'rgba(239, 68, 68, 0.15)';
+                resultBox.style.color = '#f87171';
+                resultBox.innerHTML = '<strong>❌ Firebase is Not Initialized.</strong><br>Please verify your API Key and Project ID in the form below.';
+                return;
+            }
+
+            try {
+                const testRef = db.collection('content').doc('_ping_test');
+                const now = Date.now();
+                await testRef.set({ ping: now, time: new Date().toISOString() });
+                const snap = await testRef.get();
+
+                if (snap.exists && snap.data().ping === now) {
+                    resultBox.style.background = 'rgba(34, 197, 94, 0.15)';
+                    resultBox.style.color = '#4ade80';
+                    resultBox.innerHTML = '<strong>✅ Cloud Connection Successful!</strong><br>Firestore Read and Write permissions are active. Content edits will sync to all devices in real-time.';
+                    showToast('Cloud Firestore test passed!', 'success');
+                } else {
+                    throw new Error('Test document verification failed.');
+                }
+            } catch (err) {
+                resultBox.style.background = 'rgba(239, 68, 68, 0.15)';
+                resultBox.style.color = '#f87171';
+                let hint = 'Please check your Firestore Security Rules in the box below.';
+                if (err.code === 'permission-denied' || (err.message && err.message.includes('permission'))) {
+                    hint = '<strong>Missing or Insufficient Permissions!</strong> Your Firestore Database rules are blocking writes. Copy the rules from the green box below and publish them in Firebase Console → Firestore → Rules.';
+                }
+                resultBox.innerHTML = `<strong>❌ Cloud Test Failed:</strong> ${err.message}<br><br>${hint}`;
+                showToast('Cloud test failed: ' + err.message, 'error');
+            }
+        });
+    }
 }
 
 // ----------------------------------------------------
@@ -1585,14 +1629,23 @@ if (btnSeedData) {
 // 13. HELPERS
 // ----------------------------------------------------
 async function saveDoc(docName, data) {
+    let isCloudWritten = false;
     if (isFirebaseInitialized && db) {
         try {
             await db.collection('content').doc(docName).set(data, { merge: true });
+            isCloudWritten = true;
         } catch (e) {
-            console.error('Error saving to Firestore', e);
-            showToast('Firebase write failed: ' + e.message, 'error');
+            console.error('Error saving to Firestore:', e);
+            if (e.code === 'permission-denied' || (e.message && e.message.includes('permission'))) {
+                showToast('⚠️ Firestore Permission Denied! Check Firestore Rules in Firebase tab.', 'error');
+            } else {
+                showToast('⚠️ Firebase write failed: ' + e.message, 'error');
+            }
         }
+    } else {
+        console.warn('Firebase not connected. Saving locally to browser only.');
     }
+
     // Save in localStorage as cache/fallback
     localStorage.setItem('snapilla_local_content', JSON.stringify(currentContent));
 
@@ -1604,6 +1657,8 @@ async function saveDoc(docName, data) {
             bc.close();
         }
     } catch (e) {}
+
+    return isCloudWritten;
 }
 
 function getImageUrl(imgPath) {

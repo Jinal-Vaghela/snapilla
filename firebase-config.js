@@ -42,11 +42,17 @@ try {
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
-        db = firebase.firestore();
-        auth = firebase.auth();
-        storage = firebase.storage();
-        isFirebaseInitialized = true;
-        console.log('Firebase initialized successfully for Snapilla Studio.');
+        if (typeof firebase.firestore === 'function') {
+            db = firebase.firestore();
+        }
+        if (typeof firebase.auth === 'function') {
+            auth = firebase.auth();
+        }
+        if (typeof firebase.storage === 'function') {
+            storage = firebase.storage();
+        }
+        isFirebaseInitialized = (db !== null);
+        console.log('Firebase initialized successfully for Snapilla Studio. (Firestore connected: ' + (db !== null) + ')');
     } else {
         console.info('Firebase credentials not set yet. Running in default fallback mode.');
     }
