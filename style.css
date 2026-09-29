@@ -945,11 +945,10 @@ footer {
 
 /* Photo Cards & Gallery Clean Framing */
 .portfolio-card {
-    position: relative;
-    background: #fff !important;
-    border: 3px solid #E5C178 !important;
-    box-shadow: 0 15px 35px rgba(200, 150, 70, 0.18) !important;
-    border-radius: 16px;
+    background: #fff;
+    border: 2.5px solid #FEAB45;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    border-radius: 20px;
     overflow: hidden;
 }
 

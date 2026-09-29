@@ -835,7 +835,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (moreGrid) moreGrid.style.display = 'none';
 
             const total = livePortfolioList.length;
-            const radius = window.innerWidth < 768 ? 230 : (window.innerWidth < 992 ? 350 : 500);
+            const radius = window.innerWidth < 768 ? 260 : (window.innerWidth < 992 ? 400 : 580);
             const angleStep = 360 / Math.max(total, 1);
 
             spinner.innerHTML = livePortfolioList.map((photo, index) => {
