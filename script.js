@@ -571,6 +571,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const studioNoticeAddress = document.getElementById('studioNoticeAddress');
             if (studioNoticeAddress) studioNoticeAddress.textContent = data.address;
+
+            const footerAddress = document.getElementById('footerAddress');
+            if (footerAddress) footerAddress.innerHTML = `📍 ${data.address}`;
         }
 
         if (data.maps_url !== undefined) {
@@ -581,9 +584,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const contactPhone = document.getElementById('contactPhone');
         if (contactPhone && data.phone) contactPhone.textContent = data.phone;
+        const footerPhone = document.getElementById('footerPhone');
+        if (footerPhone && data.phone) footerPhone.innerHTML = `📞 ${data.phone}`;
 
         const contactEmail = document.getElementById('contactEmail');
         if (contactEmail && data.email) contactEmail.textContent = data.email;
+        const footerEmail = document.getElementById('footerEmail');
+        if (footerEmail && data.email) footerEmail.innerHTML = `📧 ${data.email}`;
 
         const footerTagline = document.getElementById('footerTagline');
         if (footerTagline && data.tagline) footerTagline.textContent = `“${data.tagline}”`;
@@ -1091,6 +1098,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const contactAddress = document.getElementById('contactAddress');
         if (contactAddress && loc) {
             contactAddress.textContent = loc;
+        }
+
+        const footerAddress = document.getElementById('footerAddress');
+        if (footerAddress && (loc || liveSettings.address)) {
+            footerAddress.innerHTML = `📍 ${loc || liveSettings.address}`;
         }
 
         const weekday = document.getElementById('studioHoursWeekday');
