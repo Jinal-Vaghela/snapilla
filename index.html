@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snapilla Studio | Interactive Photography Experience</title>
     <meta name="description" content="Snapilla Studio - Premium photography with interactive burn reveal effects.">
-    <link rel="stylesheet" href="style.css?v=5.1">
+    <link rel="stylesheet" href="style.css?v=6.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -1431,7 +1431,9 @@
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
             background: #fff;
             cursor: pointer;
-            transition: transform 0.5s ease;
+            transition: transform 0.5s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            opacity: 1 !important;
+            visibility: visible !important;
         }
 
         .portfolio-card img {
@@ -3064,14 +3066,14 @@
 
         <div class="portfolio-stage" id="portfolioStage" style="position: relative; z-index: 5;">
             <div class="portfolio-spinner" id="portfolioSpinner">
-                <div class="portfolio-card portfolio-item" data-category="portraits" style="transform: rotateY(0deg) translateZ(440px);"><img src="p1.png" alt="Signature Portrait Album" loading="lazy" decoding="async"></div>
-                <div class="portfolio-card portfolio-item" data-category="family" style="transform: rotateY(45deg) translateZ(440px);"><img src="p2.png" alt="Family Moments Album" loading="lazy" decoding="async"></div>
-                <div class="portfolio-card portfolio-item" data-category="birthdays" style="transform: rotateY(90deg) translateZ(440px);"><img src="p3.png" alt="Birthday Celebration Album" loading="lazy" decoding="async"></div>
-                <div class="portfolio-card portfolio-item" data-category="events" style="transform: rotateY(135deg) translateZ(440px);"><img src="p4.png" alt="Special Occasion Album" loading="lazy" decoding="async"></div>
-                <div class="portfolio-card portfolio-item" data-category="baby" style="transform: rotateY(180deg) translateZ(440px);"><img src="baby.png" alt="Baby Shoot Album" loading="lazy" decoding="async"></div>
-                <div class="portfolio-card portfolio-item" data-category="wedding" style="transform: rotateY(225deg) translateZ(440px);"><img src="wedding.png" alt="Wedding Shoot Album" loading="lazy" decoding="async"></div>
-                <div class="portfolio-card portfolio-item" data-category="models" style="transform: rotateY(270deg) translateZ(440px);"><img src="modeling.png" alt="Model Shoot Album" loading="lazy" decoding="async"></div>
-                <div class="portfolio-card portfolio-item" data-category="products" style="transform: rotateY(315deg) translateZ(440px);"><img src="product.png" alt="Product Shoot Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="portraits" style="transform: rotateY(0deg) translateZ(440px); opacity: 1 !important;"><img src="p1.png" alt="Signature Portrait Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="family" style="transform: rotateY(45deg) translateZ(440px); opacity: 1 !important;"><img src="p2.png" alt="Family Moments Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="birthdays" style="transform: rotateY(90deg) translateZ(440px); opacity: 1 !important;"><img src="p3.png" alt="Birthday Celebration Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="events" style="transform: rotateY(135deg) translateZ(440px); opacity: 1 !important;"><img src="p4.png" alt="Special Occasion Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="baby" style="transform: rotateY(180deg) translateZ(440px); opacity: 1 !important;"><img src="baby.png" alt="Baby Shoot Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="wedding" style="transform: rotateY(225deg) translateZ(440px); opacity: 1 !important;"><img src="wedding.png" alt="Wedding Shoot Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="models" style="transform: rotateY(270deg) translateZ(440px); opacity: 1 !important;"><img src="modeling.png" alt="Model Shoot Album" loading="lazy" decoding="async"></div>
+                <div class="portfolio-card" data-category="products" style="transform: rotateY(315deg) translateZ(440px); opacity: 1 !important;"><img src="product.png" alt="Product Shoot Album" loading="lazy" decoding="async"></div>
             </div>
         </div>
 
@@ -3441,7 +3443,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="webgl.js?v=5.1"></script>
-    <script src="script.js?v=5.1"></script>
+    <script src="script.js?v=6.0"></script>
 
     <!-- Standalone WhatsApp Booking Trigger Backup -->
     <script>

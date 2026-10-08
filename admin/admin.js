@@ -286,7 +286,17 @@ async function loadAllContent() {
                 services: (parsed.services && parsed.services.length > 0) ? parsed.services : SNAP_DEFAULT_DATA.services,
                 faqs: (parsed.faqs && parsed.faqs.length > 0) ? parsed.faqs : SNAP_DEFAULT_DATA.faqs,
                 pricing: (parsed.pricing && parsed.pricing.length > 0) ? parsed.pricing : SNAP_DEFAULT_DATA.pricing,
-                portfolio: (parsed.portfolio && parsed.portfolio.length > 0) ? parsed.portfolio : SNAP_DEFAULT_DATA.portfolio,
+                portfolio: (parsed.portfolio && Array.isArray(parsed.portfolio) && parsed.portfolio.length >= 8) 
+                    ? parsed.portfolio 
+                    : (function() {
+                        let pf = Array.isArray(parsed.portfolio) ? [...parsed.portfolio] : [];
+                        let idx = 0;
+                        while (pf.length < 8) {
+                            pf.push(SNAP_DEFAULT_DATA.portfolio[idx % SNAP_DEFAULT_DATA.portfolio.length]);
+                            idx++;
+                        }
+                        return pf;
+                    })(),
                 testimonials: (parsed.testimonials && parsed.testimonials.length > 0) ? parsed.testimonials : SNAP_DEFAULT_DATA.testimonials
             };
         } catch (err) {}
@@ -326,7 +336,13 @@ async function loadAllContent() {
             // Portfolio
             const portSnap = await db.collection('content').doc('portfolio').get();
             if (portSnap.exists && Array.isArray(portSnap.data().items)) {
-                currentContent.portfolio = portSnap.data().items;
+                let pf = [...portSnap.data().items];
+                let idx = 0;
+                while (pf.length < 8) {
+                    pf.push(SNAP_DEFAULT_DATA.portfolio[idx % SNAP_DEFAULT_DATA.portfolio.length]);
+                    idx++;
+                }
+                currentContent.portfolio = pf;
             }
 
             // Pricing
@@ -957,6 +973,10 @@ function editPortfolio(index) {
 }
 
 async function deletePortfolio(index) {
+    if (currentContent.portfolio.length <= 8) {
+        showToast('⚠️ The 3D rotating cylinder requires at least 8 photos to form the complete 3D circle. You can edit/replace this photo instead of deleting it.', 'warning');
+        return;
+    }
     if (confirm('Delete this photo from the 3D rotating portfolio?')) {
         currentContent.portfolio.splice(index, 1);
         await saveDoc('portfolio', { items: currentContent.portfolio });

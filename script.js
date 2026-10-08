@@ -416,7 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, observerOptions);
 
     function observeElements() {
-        document.querySelectorAll('.service-card, .portfolio-item, .section-title').forEach(el => {
+        document.querySelectorAll('.service-card, .section-title').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'all 0.6s ease-out';
@@ -826,85 +826,86 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderFilteredPortfolio(category) {
         currentGalleryFilter = category || 'all';
-        const stage = document.getElementById('portfolioStage');
         const spinner = document.getElementById('portfolioSpinner');
         const moreContainer = document.getElementById('portfolioMoreContainer');
         const showMoreBtn = document.getElementById('galleryShowMoreBtn');
-        const moreGrid = document.getElementById('galleryMoreGrid');
 
         if (!spinner) return;
 
         const normalized = currentGalleryFilter.toLowerCase().trim();
 
-        if (stage) stage.classList.remove('is-single-mode');
-        spinner.style.display = 'block';
-        if (moreGrid) moreGrid.style.display = 'none';
+        // 1. ALWAYS ensure exactly 8 distinct cards for the 3D rotating cylinder
+        const basePool = (Array.isArray(livePortfolioList) && livePortfolioList.length >= 8) 
+            ? livePortfolioList 
+            : CORE_PORTFOLIO_CARDS;
 
-        let displayPhotos = [];
-        const meta = CATEGORY_META[normalized] || {
-            title: normalized.charAt(0).toUpperCase() + normalized.slice(1),
-            subtitle: 'Professional dedicated photography session by Snapilla Studio.',
-            icon: 'fas fa-camera',
-            defaultImg: 'p1.png',
-            morePhotos: []
-        };
-
-        if (normalized === 'all') {
-            displayPhotos = (Array.isArray(livePortfolioList) && livePortfolioList.length >= 8) 
-                ? [...livePortfolioList] 
-                : [...CORE_PORTFOLIO_CARDS];
-            if (moreContainer) moreContainer.style.display = 'none';
-        } else {
-            const matchingLive = (Array.isArray(livePortfolioList) ? livePortfolioList : CORE_PORTFOLIO_CARDS).filter(item => {
-                const itemCat = categorizePhoto(item);
-                return itemCat === normalized || 
-                       itemCat.startsWith(normalized.replace(/s$/, '')) || 
-                       normalized.includes(itemCat) ||
-                       itemCat.includes(normalized.replace(/s$/, ''));
-            });
-
-            const categoryExtras = (meta.morePhotos || []).map(p => ({
-                ...p,
-                category: normalized
-            }));
-
-            displayPhotos = [...matchingLive, ...categoryExtras];
-
-            if (moreContainer && showMoreBtn) {
-                moreContainer.style.display = 'block';
-                const galleryUrl = `gallery.html?category=${encodeURIComponent(normalized)}`;
-                showMoreBtn.setAttribute('href', galleryUrl);
-                showMoreBtn.innerHTML = `<i class="fas fa-images"></i> <span>Explore All ${meta.title} Photos on Gallery</span>`;
-
-                showMoreBtn.onclick = (e) => {
-                    e.preventDefault();
-                    window.location.href = galleryUrl;
-                };
-            }
-        }
-
-        // GUARANTEE: Always keep 8 distinct cards in the 3D rotating cylinder
+        let displayPhotos = [...basePool];
         let fillIdx = 0;
         while (displayPhotos.length < 8) {
             displayPhotos.push(CORE_PORTFOLIO_CARDS[fillIdx % CORE_PORTFOLIO_CARDS.length]);
             fillIdx++;
         }
-        if (displayPhotos.length > 8) {
-            displayPhotos = displayPhotos.slice(0, 8);
+        displayPhotos = displayPhotos.slice(0, 8);
+
+        // 2. Locate target card if a specific category was clicked
+        let targetIdx = -1;
+        if (normalized !== 'all') {
+            targetIdx = displayPhotos.findIndex(photo => {
+                const cat = (photo.category || categorizePhoto(photo)).toLowerCase();
+                return cat === normalized || 
+                       cat.startsWith(normalized.replace(/s$/, '')) || 
+                       normalized.includes(cat) ||
+                       cat.includes(normalized.replace(/s$/, ''));
+            });
         }
 
-        const total = displayPhotos.length;
+        // 3. Show/hide 'Explore All in Gallery' button
+        const meta = CATEGORY_META[normalized] || {
+            title: normalized.charAt(0).toUpperCase() + normalized.slice(1)
+        };
+        if (normalized !== 'all' && moreContainer && showMoreBtn) {
+            moreContainer.style.display = 'block';
+            const galleryUrl = `gallery.html?category=${encodeURIComponent(normalized)}`;
+            showMoreBtn.setAttribute('href', galleryUrl);
+            showMoreBtn.innerHTML = `<i class="fas fa-images"></i> <span>Explore All ${meta.title} Photos on Gallery</span>`;
+            showMoreBtn.onclick = (e) => {
+                e.preventDefault();
+                window.location.href = galleryUrl;
+            };
+        } else if (moreContainer) {
+            moreContainer.style.display = 'none';
+        }
+
+        // 4. Render all 8 cards around the 3D cylinder
         const radius = window.innerWidth < 768 ? 220 : (window.innerWidth < 992 ? 320 : 440);
-        const angleStep = 360 / Math.max(total, 1);
+        const angleStep = 45; // Exactly 360 / 8 = 45 deg
 
         spinner.innerHTML = displayPhotos.map((photo, index) => {
             const rot = index * angleStep;
+            const photoCat = (photo.category || categorizePhoto(photo)).toLowerCase();
+            const isTarget = (targetIdx === index);
+            const highlightStyle = isTarget 
+                ? 'box-shadow: 0 0 35px rgba(254, 171, 69, 0.95), 0 0 15px #FEAB45; border: 3px solid #FEAB45; z-index: 20;' 
+                : '';
+
             return `
-                <div class="portfolio-card portfolio-item" data-category="${photo.category || categorizePhoto(photo)}" style="transform: rotateY(${rot}deg) translateZ(${radius}px);">
-                    <img src="${photo.image || 'p1.png'}" alt="${photo.alt || photo.title || 'Photography Album'}">
+                <div class="portfolio-card" data-category="${photoCat}" style="transform: rotateY(${rot}deg) translateZ(${radius}px); opacity: 1 !important; ${highlightStyle}">
+                    <img src="${photo.image || 'p1.png'}" alt="${photo.alt || photo.title || 'Photography Album'}" loading="eager">
                 </div>
             `;
         }).join('');
+
+        // 5. Control rotation: if specific category selected, rotate to focus that card; if 'all', spin infinitely
+        if (targetIdx !== -1 && normalized !== 'all') {
+            const targetRotation = -(targetIdx * angleStep);
+            spinner.style.animation = 'none';
+            spinner.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+            spinner.style.transform = `rotateY(${targetRotation}deg)`;
+        } else {
+            spinner.style.transition = '';
+            spinner.style.transform = '';
+            spinner.style.animation = 'rotateSpinner 32s linear infinite';
+        }
 
         attachLightboxHandlers();
     }
