@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snapilla Studio | Interactive Photography Experience</title>
     <meta name="description" content="Snapilla Studio - Premium photography with interactive burn reveal effects.">
-    <link rel="stylesheet" href="style.css?v=6.1">
+    <link rel="stylesheet" href="style.css?v=6.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -148,6 +148,8 @@
             box-shadow: 0 25px 60px rgba(0,0,0,0.18);
             border: 2px solid rgba(255,255,255,0.85);
             margin: auto;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
         @keyframes heroFadeUp {
@@ -2094,11 +2096,13 @@
                 max-width: 390px;
                 padding: 18px 16px 16px 16px;
                 border-radius: 24px;
-                background: rgba(255, 255, 255, 0.82);
+                background: rgba(255, 255, 255, 0.85);
                 backdrop-filter: blur(14px);
                 -webkit-backdrop-filter: blur(14px);
                 box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
                 border: 1.5px solid rgba(255, 255, 255, 0.85);
+                box-sizing: border-box;
+                overflow: hidden;
             }
             .hero-badge {
                 font-size: 0.65rem;
@@ -2113,7 +2117,7 @@
                 text-overflow: ellipsis;
             }
             .hero-content h1 {
-                font-size: 1.45rem;
+                font-size: 1.42rem;
                 -webkit-text-stroke: 1px #000;
                 text-shadow: 1.5px 1.5px 0px #000;
                 margin-bottom: 5px;
@@ -2139,28 +2143,29 @@
             }
             .hero-categories-bar {
                 width: 100%;
+                max-width: 100%;
                 margin: 0 auto 12px auto;
+                box-sizing: border-box;
             }
             .hero-categories-list {
                 display: flex;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                justify-content: flex-start;
-                gap: 6px;
-                padding: 2px 4px 6px 4px;
-                scrollbar-width: none;
-                -webkit-overflow-scrolling: touch;
-            }
-            .hero-categories-list::-webkit-scrollbar {
-                display: none;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                gap: 5px 6px;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                padding: 0;
             }
             .hero-cat-pill {
-                flex-shrink: 0;
-                padding: 5px 11px;
-                font-size: 0.72rem;
+                padding: 4px 9px;
+                font-size: 0.69rem;
+                font-weight: 600;
                 white-space: nowrap;
                 border-radius: 20px;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+                box-sizing: border-box;
             }
             .hero-btns {
                 display: flex !important;
@@ -2493,20 +2498,25 @@
                 width: 92%;
                 padding: 16px 12px 14px 12px;
                 border-radius: 20px;
+                box-sizing: border-box;
+                overflow: hidden;
             }
             .hero-content h1 {
-                font-size: 1.3rem;
+                font-size: 1.25rem;
             }
             .hero-slogan {
-                font-size: 0.76rem;
+                font-size: 0.74rem;
             }
             .hero-desc {
-                font-size: 0.74rem;
+                font-size: 0.72rem;
                 margin-bottom: 8px;
             }
+            .hero-categories-list {
+                gap: 4px;
+            }
             .hero-cat-pill {
-                padding: 4px 9px;
-                font-size: 0.68rem;
+                padding: 3px 8px;
+                font-size: 0.65rem;
             }
             .hero-btns .btn-burn {
                 font-size: 0.72rem !important;
@@ -3512,7 +3522,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="webgl.js?v=5.1"></script>
-    <script src="script.js?v=6.1"></script>
+    <script src="script.js?v=6.2"></script>
 
     <!-- Standalone WhatsApp Booking Trigger Backup -->
     <script>
