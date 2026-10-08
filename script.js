@@ -37,7 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
+            link.addEventListener('click', (e) => {
+                // If tapping the Gallery dropdown trigger, keep mobile menu open and toggle dropdown only!
+                if (link.classList.contains('nav-dropdown-trigger') || link.id === 'galleryNavTrigger') {
+                    return;
+                }
                 navLinks.classList.remove('active');
                 const icon = navToggle.querySelector('i');
                 if (icon) {
@@ -876,8 +880,9 @@ document.addEventListener('DOMContentLoaded', () => {
             moreContainer.style.display = 'none';
         }
 
-        // 4. Render all 8 cards around the 3D cylinder
-        const radius = window.innerWidth < 768 ? 220 : (window.innerWidth < 992 ? 320 : 440);
+        // 4. Render all 8 cards around the 3D cylinder with zero-overlap geometry
+        const w = window.innerWidth;
+        const radius = w < 420 ? 220 : (w < 768 ? 260 : (w < 992 ? 340 : 440));
         const angleStep = 45; // Exactly 360 / 8 = 45 deg
 
         spinner.innerHTML = displayPhotos.map((photo, index) => {
@@ -909,6 +914,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         attachLightboxHandlers();
     }
+
+    // Auto-adjust 3D carousel radius on window resize / orientation change to prevent overlapping
+    let carouselResizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(carouselResizeTimer);
+        carouselResizeTimer = setTimeout(() => {
+            renderFilteredPortfolio(currentGalleryFilter);
+        }, 150);
+    });
 
     function updatePortfolioDOM(photosData) {
         if (!photosData) return;

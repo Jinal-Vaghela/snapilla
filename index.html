@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snapilla Studio | Interactive Photography Experience</title>
     <meta name="description" content="Snapilla Studio - Premium photography with interactive burn reveal effects.">
-    <link rel="stylesheet" href="style.css?v=6.2">
+    <link rel="stylesheet" href="style.css?v=6.3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -1411,8 +1411,8 @@
 
         .portfolio-spinner {
             position: relative;
-            width: 260px;
-            height: 380px;
+            width: 215px;
+            height: 320px;
             transform-style: preserve-3d;
             animation: rotateSpinner 32s linear infinite;
         }
@@ -2058,6 +2058,21 @@
             .final-cta-sec {
                 padding: 0 4% 70px 4% !important;
             }
+            /* 3D Coverflow on Tablet */
+            .portfolio-stage {
+                min-height: 420px;
+                height: 420px;
+                padding: 25px 0;
+                perspective: 1200px;
+            }
+            .portfolio-spinner {
+                width: 170px;
+                height: 255px;
+            }
+            .portfolio-card {
+                width: 100% !important;
+                height: 100% !important;
+            }
         }
 
         @media (max-width: 768px) {
@@ -2351,18 +2366,21 @@
                 border-radius: 18px;
             }
 
-            /* 3D Coverflow on Tablet */
+            /* 3D Coverflow on Mobile */
             .portfolio-stage {
-                min-height: 440px;
-                padding: 30px 0;
+                min-height: 340px;
+                height: 340px;
+                padding: 15px 0;
+                perspective: 950px;
             }
             .portfolio-spinner {
-                width: 240px;
-                height: 360px;
+                width: 130px;
+                height: 195px;
             }
             .portfolio-card {
-                width: 230px;
-                height: 340px;
+                width: 100% !important;
+                height: 100% !important;
+                border-radius: 14px;
             }
 
             .gallery-filters {
@@ -2547,18 +2565,21 @@
                 font-size: 0.46rem;
                 max-width: 50px;
             }
-            /* 3D Coverflow on Mobile */
+            /* 3D Coverflow on Small Mobile */
             .portfolio-stage {
-                min-height: 360px;
-                padding: 20px 0;
+                min-height: 290px;
+                height: 290px;
+                padding: 10px 0;
+                perspective: 800px;
             }
             .portfolio-spinner {
-                width: 190px;
-                height: 280px;
+                width: 110px;
+                height: 165px;
             }
             .portfolio-card {
-                width: 180px;
-                height: 270px;
+                width: 100% !important;
+                height: 100% !important;
+                border-radius: 12px;
             }
         }
     </style>
@@ -3522,7 +3543,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="webgl.js?v=5.1"></script>
-    <script src="script.js?v=6.2"></script>
+    <script src="script.js?v=6.3"></script>
 
     <!-- Standalone WhatsApp Booking Trigger Backup -->
     <script>
